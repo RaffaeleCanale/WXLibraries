@@ -10,6 +10,7 @@ import java.util.function.BiConsumer;
 
 import static com.wx.properties.structures.map.TestMap.integerMap;
 import static com.wx.properties.structures.map.TestMap.stringMap;
+import static com.wx.properties.structures.set.TestSet.stringSet;
 import static org.junit.Assert.*;
 
 /**
@@ -29,6 +30,7 @@ public abstract class MapResourceTest {
         MAP_WITH_EMPTY_2(stringMap("k1", "", "", "")),
         MAP_WITH_SPACE_1(stringMap(" ", "v1", "k2", "v2")),
         MAP_WITH_SPACE_2(stringMap("  ", " el2 ", "   ", "    ")),
+        MAP_WITH_HASH_COLLISIONS(stringMap("FB", "FB", "Ea", "EA", "Siblings", "Siblings", "Teheran", "Teheran")),
 
         INT_MAP(integerMap(1, 2, 3, 2, 5, 6, 7, 8, 9, 10, 11, 12)),
         INT_MAP_NULL(integerMap(1, 2, 3, null, 5, 6, null, 8, 9, 10, 11, 12));

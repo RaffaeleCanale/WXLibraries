@@ -32,6 +32,7 @@ public abstract class SetResourceTest {
         SET_WITH_EMPTY(stringSet("el1", "", "el3")),
         SET_WITH_SPACE_1(stringSet("el1", " ", "el3")),
         SET_WITH_SPACE_2(stringSet("  ", " el2 ", "   ", "    ")),
+        SET_WITH_HASH_COLLISIONS(stringSet("FB", "Ea", "Siblings", "Teheran")),
 
         INT_SET(integerSet(1, 2, 3, 4)),
         INT_SET_WITH_NULL(integerSet(1, 2, null, 4));
