@@ -14,13 +14,13 @@ public abstract class AbstractStructureView implements StructureView {
 
     transient volatile Set<Entry<String, String>> entrySet;
 
-    public AbstractStructureView(String headerKey, Map<String, String> map) {
+    protected AbstractStructureView(String headerKey, Map<String, String> map) {
         this.headerKey = Objects.requireNonNull(headerKey);
         this.map = Objects.requireNonNull(map);
 
-        if (isKeyInView(headerKey)) {
-            throw new IllegalArgumentException("Header key cannot be included in structure view");
-        }
+//        if (isKeyInView(headerKey)) {
+//            throw new IllegalArgumentException("Header key cannot be included in structure view");
+//        }
     }
 
     protected abstract boolean isKeyInView(String realKey);
