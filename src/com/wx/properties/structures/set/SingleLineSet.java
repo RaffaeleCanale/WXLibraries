@@ -1,13 +1,11 @@
 package com.wx.properties.structures.set;
 
 import com.wx.properties.structures.view.StructureView;
-import com.wx.util.Args;
+import com.wx.util.DefArgs;
 import com.wx.util.representables.TypeCaster;
 import com.wx.util.representables.string.SetRepr;
 
 import java.util.*;
-
-import static java.io.File.separator;
 
 /**
  * Created on 20/01/2016
@@ -21,7 +19,7 @@ public class SingleLineSet<E> extends SetResource<E> {
 
         @Override
         public <E> SetResource<E> loadSet(StructureView view, TypeCaster<String, E> caster, Object... args) {
-            String separator = new Args<>(args).arg(0, null, String::valueOf);
+            String separator = new DefArgs<>(args).arg(0, null, String::valueOf);
             SetRepr<E> setRepr = new SetRepr<>(caster, separator);
             String header = view.getHeader();
 
@@ -35,7 +33,7 @@ public class SingleLineSet<E> extends SetResource<E> {
 
         @Override
         public <E> SetResource<E> createSet(StructureView view, TypeCaster<String, E> caster, Set<E> otherSet, Object... args) {
-            String separator = new Args<>(args).arg(0, null, String::valueOf);
+            String separator = new DefArgs<>(args).arg(0, null, String::valueOf);
             Objects.requireNonNull(otherSet);
             SetRepr<E> setRepr = new SetRepr<>(caster, separator);
 

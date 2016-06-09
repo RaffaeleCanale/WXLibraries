@@ -1,7 +1,7 @@
 package com.wx.properties.structures.list;
 
 import com.wx.properties.structures.view.StructureView;
-import com.wx.util.Args;
+import com.wx.util.DefArgs;
 import com.wx.util.representables.TypeCaster;
 import com.wx.util.representables.string.ListRepr;
 
@@ -20,7 +20,7 @@ public class SingleLineList<E> extends ListResource<E> {
     public static class Factory implements ListResourceFactory {
         @Override
         public <E> ListResource<E> loadList(StructureView view, TypeCaster<String, E> caster, Object... args) {
-            String separator = new Args<>(args).arg(0, null, String::valueOf);
+            String separator = new DefArgs<>(args).arg(0, null, String::valueOf);
             String header = view.getHeader();
 
             ListRepr<E> listRepr = new ListRepr<>(caster, separator);
@@ -37,7 +37,7 @@ public class SingleLineList<E> extends ListResource<E> {
 
         @Override
         public <E> ListResource<E> createList(StructureView view, TypeCaster<String, E> caster, List<E> otherList, Object... args) {
-            String separator = new Args<>(args).arg(0, null, String::valueOf);
+            String separator = new DefArgs<>(args).arg(0, null, String::valueOf);
             Objects.requireNonNull(otherList);
 
             ListRepr<E> listRepr = new ListRepr<>(caster, separator);

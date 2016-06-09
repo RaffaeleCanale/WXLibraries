@@ -5,7 +5,7 @@
 package com.wx.properties.structures.map;
 
 import com.wx.properties.structures.view.StructureView;
-import com.wx.util.Args;
+import com.wx.util.DefArgs;
 import com.wx.util.representables.TypeCaster;
 import com.wx.util.representables.string.IntRepr;
 import com.wx.util.representables.string.PairRepr;
@@ -23,7 +23,7 @@ public class RefHashMap<K, V> extends MapResource<K, V> {
         @Override
         public <K, V> MapResource<K, V> loadMap(StructureView view, TypeCaster<String, K> kCaster, TypeCaster<String, V> vCaster, Object... args) {
             String header = view.getHeader();
-            String separator = new Args<>(args).arg(0, null, String::valueOf);
+            String separator = new DefArgs<>(args).arg(0, null, String::valueOf);
 
             RefHashMap<K, V> newMap = new RefHashMap<>(view, separator, kCaster,
                     vCaster);
@@ -39,7 +39,7 @@ public class RefHashMap<K, V> extends MapResource<K, V> {
         @Override
         public <K, V> MapResource<K, V> createMap(StructureView view, TypeCaster<String, K> kCaster, TypeCaster<String, V> vCaster, Map<K, V> otherMap, Object... args) {
             Objects.requireNonNull(otherMap);
-            String separator = new Args<>(args).arg(0, null, String::valueOf);
+            String separator = new DefArgs<>(args).arg(0, null, String::valueOf);
 
             RefHashMap<K, V> newMap = new RefHashMap<>(view, separator, kCaster,
                     vCaster);
