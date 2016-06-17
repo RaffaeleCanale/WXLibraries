@@ -1,0 +1,117 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: AESCrypter</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.wx.crypto.cipher</a> ]
+</div>
+
+<h1>Coverage Summary for Class: AESCrypter (com.wx.crypto.cipher)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AESCrypter</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 3)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;/*
+<i>2</i>&nbsp; * To change this template, choose Tools | Templates
+<i>3</i>&nbsp; * and open the template in the editor.
+<i>4</i>&nbsp; */
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;package com.wx.crypto.cipher;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;import com.wx.crypto.CryptoException;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;/**
+<i>11</i>&nbsp; *
+<i>12</i>&nbsp; * @author Raffaele Canale - raffaelecanale@gmail.com
+<i>13</i>&nbsp; * @version 0.1
+<i>14</i>&nbsp; *
+<i>15</i>&nbsp; * Project: WXLibraries
+<i>16</i>&nbsp; * File: AESCrypter.java (UTF-8)
+<i>17</i>&nbsp; * Date: 29 déc. 2012 
+<i>18</i>&nbsp; */
+<i>19</i>&nbsp;public class AESCrypter extends CipherCrypter {
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;    private static final String ALGORITHM_NAME = &quot;AES&quot;;
+<i>22</i>&nbsp;    private static final int DEFAULT_KEY_LENGTH = 128;
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;    public AESCrypter() {
+<b class="nc"><i>25</i>&nbsp;        super(ALGORITHM_NAME, ALGORITHM_NAME, DEFAULT_KEY_LENGTH);</b>
+<i>26</i>&nbsp;    }
+<i>27</i>&nbsp;    
+<i>28</i>&nbsp;    public AESCrypter(char[] password, byte[] salt) 
+<i>29</i>&nbsp;            throws CryptoException {
+<b class="nc"><i>30</i>&nbsp;        this();</b>
+<b class="nc"><i>31</i>&nbsp;        generateKey(password, salt);</b>
+<i>32</i>&nbsp;    }
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2014-11-07 23:06</div>
+</div>
+</body>
+</html>

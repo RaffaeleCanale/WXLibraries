@@ -1,0 +1,919 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ResourceWrapper</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.wx.resource.manager</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ResourceWrapper (com.wx.resource.manager)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ResourceWrapper</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 57)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 113)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ResourceWrapper$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 4)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">ResourceWrapper$2</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 4)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">ResourceWrapper$ActionStringRepr</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 5)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 69)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 126)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.wx.resource.manager;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.wx.crypto.Crypter;
+<i>4</i>&nbsp;import com.wx.crypto.CryptoException;
+<i>5</i>&nbsp;import com.wx.resource.manager.list.ListResource;
+<i>6</i>&nbsp;import com.wx.resource.manager.map.MapResource;
+<i>7</i>&nbsp;import com.wx.resource.manager.set.SetResource;
+<i>8</i>&nbsp;import com.wx.resource.property.ResourceActionProperty;
+<i>9</i>&nbsp;import com.wx.resource.property.ResourceProperty;
+<i>10</i>&nbsp;import com.wx.util.representables.TypeCaster;
+<i>11</i>&nbsp;import com.wx.util.representables.string.BooleanRepr;
+<i>12</i>&nbsp;import com.wx.util.representables.string.CharRepr;
+<i>13</i>&nbsp;import com.wx.util.representables.string.DoubleRepr;
+<i>14</i>&nbsp;import com.wx.util.representables.string.IntRepr;
+<i>15</i>&nbsp;import com.wx.util.representables.string.StringRepr;
+<i>16</i>&nbsp;import java.io.File;
+<i>17</i>&nbsp;import java.io.FileNotFoundException;
+<i>18</i>&nbsp;import java.io.IOException;
+<i>19</i>&nbsp;import java.io.OutputStream;
+<i>20</i>&nbsp;import java.util.AbstractList;
+<i>21</i>&nbsp;import java.util.ArrayList;
+<i>22</i>&nbsp;import java.util.Arrays;
+<i>23</i>&nbsp;import java.util.Collection;
+<i>24</i>&nbsp;import java.util.Iterator;
+<i>25</i>&nbsp;import java.util.List;
+<i>26</i>&nbsp;import java.util.Map;
+<i>27</i>&nbsp;import java.util.Set;
+<i>28</i>&nbsp;
+<i>29</i>&nbsp;/**
+<i>30</i>&nbsp; *
+<i>31</i>&nbsp; * This is a simple interface for any generic resource class that offers more
+<i>32</i>&nbsp; * functionalities like:
+<i>33</i>&nbsp; *
+<i>34</i>&nbsp; * &lt;ul&gt;
+<i>35</i>&nbsp; * &lt;li&gt; Provides a lot of convenient overload methods (like getString,
+<i>36</i>&nbsp; * getDouble, getList, etc...), including default options for some of those
+<i>37</i>&nbsp; * structures.
+<i>38</i>&nbsp; * &lt;li&gt; Provides key translation so that any type of key can be used as long as
+<i>39</i>&nbsp; * a {@link TypeCaster} is given.
+<i>40</i>&nbsp; * &lt;li&gt; Special key commands, see {@link #getActionValue(Object, TypeCaster, Object[])
+<i>41</i>&nbsp; * }&lt;/li&gt;
+<i>42</i>&nbsp; * &lt;/ul&gt;
+<i>43</i>&nbsp; *
+<i>44</i>&nbsp; * @param &lt;UserKeyType&gt; Type of the key to be used for this interface
+<i>45</i>&nbsp; *
+<i>46</i>&nbsp; * @author Raffaele Canale - raffaelecanale@gmail.com
+<i>47</i>&nbsp; * @version 1.5
+<i>48</i>&nbsp; *
+<i>49</i>&nbsp; * Project: WXLibraries File: ResourceInterface.java (UTF-8) Date: May 13, 2013
+<i>50</i>&nbsp; *
+<i>51</i>&nbsp; * TODO Write JavaDoc
+<i>52</i>&nbsp; */
+<b class="nc"><i>53</i>&nbsp;public class ResourceWrapper&lt;UserKeyType&gt; {</b>
+<i>54</i>&nbsp;
+<b class="nc"><i>55</i>&nbsp;    private static final Structure DEFAULT_LIST = Structure.list_indexed;</b>
+<b class="nc"><i>56</i>&nbsp;    private static final String[] DEFAULT_LIST_OPTIONS = null;</b>
+<b class="nc"><i>57</i>&nbsp;    private static final Structure DEFAULT_MAP = Structure.map_ref_hash;</b>
+<b class="nc"><i>58</i>&nbsp;    private static final String[] DEFAULT_MAP_OPTIONS = {&quot;//&quot;};</b>
+<b class="nc"><i>59</i>&nbsp;    private static final Structure DEFAULT_SET = Structure.set_ref;</b>
+<b class="nc"><i>60</i>&nbsp;    private static final String[] DEFAULT_SET_OPTIONS = {&quot;//&quot;};</b>
+<i>61</i>&nbsp;    //
+<i>62</i>&nbsp;    private final TypeCaster&lt;String, UserKeyType&gt; keyCaster;
+<i>63</i>&nbsp;    private final ResourcePage page;
+<i>64</i>&nbsp;
+<i>65</i>&nbsp;    public boolean save() throws FileNotFoundException, IOException, CryptoException {
+<b class="nc"><i>66</i>&nbsp;        return page.save();</b>
+<i>67</i>&nbsp;    }
+<i>68</i>&nbsp;
+<i>69</i>&nbsp;    public boolean save(OutputStream out) throws IOException {
+<b class="nc"><i>70</i>&nbsp;        return page.save(out);</b>
+<i>71</i>&nbsp;    }
+<i>72</i>&nbsp;    
+<i>73</i>&nbsp;    
+<i>74</i>&nbsp;
+<i>75</i>&nbsp;    public void forceSave() throws FileNotFoundException, IOException, CryptoException {
+<b class="nc"><i>76</i>&nbsp;        page.forceSave();</b>
+<i>77</i>&nbsp;    }
+<i>78</i>&nbsp;
+<i>79</i>&nbsp;    public void cacheCrypter(Crypter crypter) {
+<b class="nc"><i>80</i>&nbsp;        page.cacheCrypter(crypter);</b>
+<i>81</i>&nbsp;    }
+<i>82</i>&nbsp;
+<i>83</i>&nbsp;//    public File getFile() {
+<i>84</i>&nbsp;//        return page.getFile();
+<i>85</i>&nbsp;//    }
+<i>86</i>&nbsp;
+<i>87</i>&nbsp;    public void matchAndReplaceKeys(String pattern, String replacement,
+<i>88</i>&nbsp;            final Collection&lt;UserKeyType&gt; result) {
+<b class="nc"><i>89</i>&nbsp;        List&lt;String&gt; addCollection = new AbstractList&lt;String&gt;() {</b>
+<i>90</i>&nbsp;            @Override
+<i>91</i>&nbsp;            public String get(int index) {
+<b class="nc"><i>92</i>&nbsp;                throw new UnsupportedOperationException(&quot;Write-only.&quot;);</b>
+<i>93</i>&nbsp;            }
+<i>94</i>&nbsp;            @Override
+<i>95</i>&nbsp;            public void add(int index, String element) {
+<b class="nc"><i>96</i>&nbsp;                result.add(keyCaster.castOut(element));</b>
+<i>97</i>&nbsp;            }            
+<i>98</i>&nbsp;            @Override
+<i>99</i>&nbsp;            public int size() {
+<b class="nc"><i>100</i>&nbsp;                return result.size();</b>
+<i>101</i>&nbsp;            }
+<i>102</i>&nbsp;        };
+<i>103</i>&nbsp;        
+<b class="nc"><i>104</i>&nbsp;        page.matchAndReplaceKeys(pattern, replacement, addCollection);</b>
+<i>105</i>&nbsp;    }
+<i>106</i>&nbsp;
+<i>107</i>&nbsp;    public void matchKeys(String pattern, final Collection&lt;UserKeyType&gt; result) {
+<b class="nc"><i>108</i>&nbsp;        List&lt;String&gt; addCollection = new AbstractList&lt;String&gt;() {</b>
+<i>109</i>&nbsp;            @Override
+<i>110</i>&nbsp;            public String get(int index) {
+<b class="nc"><i>111</i>&nbsp;                throw new UnsupportedOperationException(&quot;Write-only.&quot;);</b>
+<i>112</i>&nbsp;            }
+<i>113</i>&nbsp;            @Override
+<i>114</i>&nbsp;            public void add(int index, String element) {
+<b class="nc"><i>115</i>&nbsp;                result.add(keyCaster.castOut(element));</b>
+<i>116</i>&nbsp;            }            
+<i>117</i>&nbsp;            @Override
+<i>118</i>&nbsp;            public int size() {
+<b class="nc"><i>119</i>&nbsp;                return result.size();</b>
+<i>120</i>&nbsp;            }
+<i>121</i>&nbsp;        };
+<b class="nc"><i>122</i>&nbsp;        page.matchKeys(pattern, addCollection);</b>
+<i>123</i>&nbsp;    }
+<i>124</i>&nbsp;
+<i>125</i>&nbsp;    public &lt;Type&gt; ResourceProperty&lt;Type&gt; getProperty(UserKeyType key, TypeCaster&lt;String, Type&gt; caster) {
+<b class="nc"><i>126</i>&nbsp;        return new ResourceProperty&lt;&gt;(page, keyCaster.castIn(key), caster);</b>
+<i>127</i>&nbsp;    }
+<i>128</i>&nbsp;    
+<i>129</i>&nbsp;    public ResourceActionProperty&lt;String&gt; getActionProperty(UserKeyType key) {
+<b class="nc"><i>130</i>&nbsp;        return getActionProperty(key, new StringRepr());</b>
+<i>131</i>&nbsp;    }
+<i>132</i>&nbsp;    
+<i>133</i>&nbsp;    public &lt;Type&gt; ResourceActionProperty&lt;Type&gt; getActionProperty(UserKeyType key, TypeCaster&lt;String, Type&gt; caster) {
+<b class="nc"><i>134</i>&nbsp;        return new ResourceActionProperty&lt;&gt;(page, keyCaster.castIn(key), caster);</b>
+<i>135</i>&nbsp;    }
+<i>136</i>&nbsp;    
+<i>137</i>&nbsp;    public ResourceProperty&lt;Integer&gt; getIntProperty(UserKeyType key) {
+<b class="nc"><i>138</i>&nbsp;        return getProperty(key, new IntRepr());</b>
+<i>139</i>&nbsp;    }
+<i>140</i>&nbsp;    
+<i>141</i>&nbsp;    public ResourceWrapper(ResourcePage page,
+<b class="nc"><i>142</i>&nbsp;            TypeCaster&lt;String, UserKeyType&gt; keyCaster) {</b>
+<b class="nc"><i>143</i>&nbsp;        this.keyCaster = keyCaster;</b>
+<b class="nc"><i>144</i>&nbsp;        this.page = page;</b>
+<i>145</i>&nbsp;    }
+<i>146</i>&nbsp;
+<i>147</i>&nbsp;    // &lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;getValue&quot;&gt;
+<i>148</i>&nbsp;    private &lt;E&gt; E getValue(String key, TypeCaster&lt;String, E&gt; representable) {
+<b class="nc"><i>149</i>&nbsp;        return page.getValue(key, representable);</b>
+<i>150</i>&nbsp;    }
+<i>151</i>&nbsp;
+<i>152</i>&nbsp;    public &lt;E&gt; E getValue(UserKeyType key, TypeCaster&lt;String, E&gt; caster) {
+<b class="nc"><i>153</i>&nbsp;        return getValue(keyCaster.castIn(key), caster);</b>
+<i>154</i>&nbsp;    }
+<i>155</i>&nbsp;
+<i>156</i>&nbsp;    /**
+<i>157</i>&nbsp;     * Generic method to access properties value with commands.&lt;br&gt; With this
+<i>158</i>&nbsp;     * method, if the field has commands, those are performed before and then
+<i>159</i>&nbsp;     * casted using the given {@code Representable}. &lt;br&gt;&lt;br&gt; For example,
+<i>160</i>&nbsp;     * consider the following
+<i>161</i>&nbsp;     * properties:&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;{@code myProp1 = 24}&lt;br&gt;
+<i>162</i>&nbsp;     * &amp;nbsp;&amp;nbsp;&amp;nbsp;{@code myProp2 = ${field:myProp1}${param:0}}&lt;br&gt;&lt;br&gt;
+<i>163</i>&nbsp;     * Then, calling
+<i>164</i>&nbsp;     * &lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;{@code getValue(&quot;myProp2&quot;, new IntRepr(), 1)}&lt;br&gt;
+<i>165</i>&nbsp;     * will throw an exception since {@code &quot;${field:myProp1}${param:0}&quot;} can&#39;t
+<i>166</i>&nbsp;     * be casted into an integer.&lt;br&gt; However, calling &lt;br&gt;
+<i>167</i>&nbsp;     * &amp;nbsp;&amp;nbsp;&amp;nbsp;{@code getActionValue(&quot;myProp2&quot;, new IntRepr(), 1)}&lt;br&gt;
+<i>168</i>&nbsp;     * will first perform the actions, then cast, resulting with {@code 241} an
+<i>169</i>&nbsp;     * no exception.
+<i>170</i>&nbsp;     *
+<i>171</i>&nbsp;     *
+<i>172</i>&nbsp;     * @param &lt;E&gt;           Type of the value.
+<i>173</i>&nbsp;     * @param key           Key mapped to the value.
+<i>174</i>&nbsp;     * @param representable Representable to cast the property {@code String}
+<i>175</i>&nbsp;     *                      into {@code E}
+<i>176</i>&nbsp;     * @param params        Optional parameters for commands
+<i>177</i>&nbsp;     *
+<i>178</i>&nbsp;     * @return The corresponding {@code E} value or {@code null} if key doesn&#39;t
+<i>179</i>&nbsp;     *         exist.
+<i>180</i>&nbsp;     *
+<i>181</i>&nbsp;     * @see #performCommands(String, Object[])
+<i>182</i>&nbsp;     */
+<i>183</i>&nbsp;    public &lt;E&gt; E getActionValue(UserKeyType key,
+<i>184</i>&nbsp;            TypeCaster&lt;String, E&gt; representable,
+<i>185</i>&nbsp;            Object... params) {
+<b class="nc"><i>186</i>&nbsp;        String value = getValue(keyCaster.castIn(key), new ActionStringRepr(params));</b>
+<b class="nc"><i>187</i>&nbsp;        return representable.castOut(value);</b>
+<i>188</i>&nbsp;    }
+<i>189</i>&nbsp;
+<i>190</i>&nbsp;    /**
+<i>191</i>&nbsp;     * Returns the {@code char} value mapped to the given key.&lt;br&gt; This method
+<i>192</i>&nbsp;     * is not compatible with special commands.
+<i>193</i>&nbsp;     *
+<i>194</i>&nbsp;     * @param key The field key
+<i>195</i>&nbsp;     *
+<i>196</i>&nbsp;     * @return The field value
+<i>197</i>&nbsp;     */
+<i>198</i>&nbsp;    public char getChar(UserKeyType key) {
+<b class="nc"><i>199</i>&nbsp;        return getValue(keyCaster.castIn(key), new CharRepr());</b>
+<i>200</i>&nbsp;    }
+<i>201</i>&nbsp;
+<i>202</i>&nbsp;    /**
+<i>203</i>&nbsp;     * Returns the {@code String} value mapped to the given key.&lt;br&gt; This method
+<i>204</i>&nbsp;     * is compatible with the key characters {@code ${...}} that permit the use
+<i>205</i>&nbsp;     * of special commands.
+<i>206</i>&nbsp;     *
+<i>207</i>&nbsp;     * @param key   The field key.
+<i>208</i>&nbsp;     * @param param Array containing the parameters if a
+<i>209</i>&nbsp;     *              {@code ${param:&amp;lt;N&amp;gt;}} command is found.
+<i>210</i>&nbsp;     *
+<i>211</i>&nbsp;     * @return The field value or {@code null} if an error occurred.
+<i>212</i>&nbsp;     *
+<i>213</i>&nbsp;     * @see #performCommands
+<i>214</i>&nbsp;     */
+<i>215</i>&nbsp;    public String getString(UserKeyType key, Object... param) {
+<b class="nc"><i>216</i>&nbsp;        return getValue(keyCaster.castIn(key), new ActionStringRepr(param));</b>
+<i>217</i>&nbsp;    }
+<i>218</i>&nbsp;
+<i>219</i>&nbsp;    /**
+<i>220</i>&nbsp;     * Returns the {@code char[]} value mapped to the given key.&lt;br&gt; Special
+<i>221</i>&nbsp;     * commands are not supported. This uses an IndexedList to store the array.
+<i>222</i>&nbsp;     *
+<i>223</i>&nbsp;     * @param key The field key
+<i>224</i>&nbsp;     *
+<i>225</i>&nbsp;     * @return The field value or {@code null} if this key is none existing or
+<i>226</i>&nbsp;     *         an error occurred.
+<i>227</i>&nbsp;     *
+<i>228</i>&nbsp;     * @deprecated Use {@code getList} or {@code getString(...).toCharArray()}
+<i>229</i>&nbsp;     * instead.
+<i>230</i>&nbsp;     */
+<i>231</i>&nbsp;    public char[] getCharArray(UserKeyType key) {
+<b class="nc"><i>232</i>&nbsp;        List&lt;Character&gt; charactersList = getList(key, new CharRepr());</b>
+<i>233</i>&nbsp;
+<b class="nc"><i>234</i>&nbsp;        if (charactersList == null) {</b>
+<b class="nc"><i>235</i>&nbsp;            return null;</b>
+<i>236</i>&nbsp;        }
+<i>237</i>&nbsp;
+<b class="nc"><i>238</i>&nbsp;        char[] result = new char[charactersList.size()];</b>
+<b class="nc"><i>239</i>&nbsp;        int i = 0;</b>
+<b class="nc"><i>240</i>&nbsp;        for (Iterator&lt;Character&gt; it = charactersList.iterator(); it.hasNext();) {</b>
+<b class="nc"><i>241</i>&nbsp;            Character elem = it.next();</b>
+<b class="nc"><i>242</i>&nbsp;            result[i++] = elem;</b>
+<b class="nc"><i>243</i>&nbsp;        }</b>
+<b class="nc"><i>244</i>&nbsp;        return result;</b>
+<i>245</i>&nbsp;    }
+<i>246</i>&nbsp;
+<i>247</i>&nbsp;    /**
+<i>248</i>&nbsp;     * Returns a {@code boolean} representation of the value mapped to the given
+<i>249</i>&nbsp;     * field key.&lt;br&gt; The field is not compatible with key characters and
+<i>250</i>&nbsp;     * special commands.&lt;br&gt;&lt;br&gt; Example:&lt;br&gt; {@code Test.myBooleanField = true}
+<i>251</i>&nbsp;     *
+<i>252</i>&nbsp;     * @param key The field key.
+<i>253</i>&nbsp;     *
+<i>254</i>&nbsp;     * @return {@code boolean} value.
+<i>255</i>&nbsp;     *
+<i>256</i>&nbsp;     * @see getString(KeyType key)
+<i>257</i>&nbsp;     */
+<i>258</i>&nbsp;    public boolean getBoolean(UserKeyType key) {
+<b class="nc"><i>259</i>&nbsp;        return getValue(keyCaster.castIn(key), new BooleanRepr());</b>
+<i>260</i>&nbsp;    }
+<i>261</i>&nbsp;
+<i>262</i>&nbsp;    /**
+<i>263</i>&nbsp;     * Returns an {@code int} representation of the value mapped to the given
+<i>264</i>&nbsp;     * field key.&lt;br&gt; The field is not compatible with key characters and
+<i>265</i>&nbsp;     * special commands.&lt;br&gt;&lt;br&gt; Example:&lt;br&gt; {@code Test.myIntegerField = 24}
+<i>266</i>&nbsp;     *
+<i>267</i>&nbsp;     * @param key The field key.
+<i>268</i>&nbsp;     *
+<i>269</i>&nbsp;     * @return {@code int} value.
+<i>270</i>&nbsp;     *
+<i>271</i>&nbsp;     * @see getString(KeyType key)
+<i>272</i>&nbsp;     */
+<i>273</i>&nbsp;    public int getInt(UserKeyType key) {
+<b class="nc"><i>274</i>&nbsp;        return getValue(keyCaster.castIn(key), new IntRepr());</b>
+<i>275</i>&nbsp;    }
+<i>276</i>&nbsp;
+<i>277</i>&nbsp;    /**
+<i>278</i>&nbsp;     * Returns a {@code double} representation of the value mapped to the given
+<i>279</i>&nbsp;     * field key.&lt;br&gt; The field is not compatible with key characters and
+<i>280</i>&nbsp;     * special commands.&lt;br&gt;&lt;br&gt; Example:&lt;br&gt; {@code Test.myDoubleField = 24.1}
+<i>281</i>&nbsp;     *
+<i>282</i>&nbsp;     * @param key The field key.
+<i>283</i>&nbsp;     *
+<i>284</i>&nbsp;     * @return {@code Double} value.
+<i>285</i>&nbsp;     *
+<i>286</i>&nbsp;     * @see getString(KeyType key)
+<i>287</i>&nbsp;     */
+<i>288</i>&nbsp;    public double getDouble(UserKeyType key) {
+<b class="nc"><i>289</i>&nbsp;        return getValue(keyCaster.castIn(key), new DoubleRepr());</b>
+<i>290</i>&nbsp;    }
+<i>291</i>&nbsp;    // &lt;/editor-fold&gt;
+<i>292</i>&nbsp;
+<i>293</i>&nbsp;    //&lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;set value&quot;&gt;
+<i>294</i>&nbsp;    private &lt;E&gt; String setValue(String key, E value,
+<i>295</i>&nbsp;            TypeCaster&lt;String, E&gt; caster) {
+<b class="nc"><i>296</i>&nbsp;        return page.setValue(key, value, caster);</b>
+<i>297</i>&nbsp;    }
+<i>298</i>&nbsp;
+<i>299</i>&nbsp;    /**
+<i>300</i>&nbsp;     * Sets a property.
+<i>301</i>&nbsp;     *
+<i>302</i>&nbsp;     * @param &lt;E&gt;           Type of the property
+<i>303</i>&nbsp;     * @param key           Key of the property
+<i>304</i>&nbsp;     * @param value         Value to be set to this key
+<i>305</i>&nbsp;     * @param representable Representable to cast the value
+<i>306</i>&nbsp;     *
+<i>307</i>&nbsp;     * @return the old raw value or {@code null} if there was not
+<i>308</i>&nbsp;     */
+<i>309</i>&nbsp;    public &lt;E&gt; String setProperty(UserKeyType key, E value,
+<i>310</i>&nbsp;            TypeCaster&lt;String, E&gt; representable) {
+<b class="nc"><i>311</i>&nbsp;        return setValue(keyCaster.castIn(key), value, representable);</b>
+<i>312</i>&nbsp;    }
+<i>313</i>&nbsp;
+<i>314</i>&nbsp;    /**
+<i>315</i>&nbsp;     * Sets an action {@code String} property
+<i>316</i>&nbsp;     *
+<i>317</i>&nbsp;     * @param key   Key of the property
+<i>318</i>&nbsp;     * @param value Value to be set
+<i>319</i>&nbsp;     *
+<i>320</i>&nbsp;     * @return the old value or {@code null} if there was not
+<i>321</i>&nbsp;     *
+<i>322</i>&nbsp;     * @see #performCommands(String, Object[])
+<i>323</i>&nbsp;     */
+<i>324</i>&nbsp;    public String setProperty(UserKeyType key, String value) {
+<b class="nc"><i>325</i>&nbsp;        return setValue(keyCaster.castIn(key), value, new ActionStringRepr());</b>
+<i>326</i>&nbsp;    }
+<i>327</i>&nbsp;
+<i>328</i>&nbsp;    /**
+<i>329</i>&nbsp;     * Sets an {@code int} property
+<i>330</i>&nbsp;     *
+<i>331</i>&nbsp;     * @param key   Key of the property
+<i>332</i>&nbsp;     * @param value Value to be set
+<i>333</i>&nbsp;     *
+<i>334</i>&nbsp;     * @return the old value or {@code null} if there was not
+<i>335</i>&nbsp;     */
+<i>336</i>&nbsp;    public String setProperty(UserKeyType key, int value) {
+<b class="nc"><i>337</i>&nbsp;        return setValue(keyCaster.castIn(key), value, new IntRepr());</b>
+<i>338</i>&nbsp;    }
+<i>339</i>&nbsp;
+<i>340</i>&nbsp;    /**
+<i>341</i>&nbsp;     * Sets a {@code double} property
+<i>342</i>&nbsp;     *
+<i>343</i>&nbsp;     * @param key   Key of the property
+<i>344</i>&nbsp;     * @param value Value to be set
+<i>345</i>&nbsp;     *
+<i>346</i>&nbsp;     * @return the old value or {@code null} if there was not
+<i>347</i>&nbsp;     */
+<i>348</i>&nbsp;    public String setProperty(UserKeyType key, double value) {
+<b class="nc"><i>349</i>&nbsp;        return setValue(keyCaster.castIn(key), value, new DoubleRepr());</b>
+<i>350</i>&nbsp;    }
+<i>351</i>&nbsp;
+<i>352</i>&nbsp;    /**
+<i>353</i>&nbsp;     * Sets a {@code boolean} property
+<i>354</i>&nbsp;     *
+<i>355</i>&nbsp;     * @param key   Key of the property
+<i>356</i>&nbsp;     * @param value Value to be set
+<i>357</i>&nbsp;     *
+<i>358</i>&nbsp;     * @return the old value or {@code null} if there was not
+<i>359</i>&nbsp;     */
+<i>360</i>&nbsp;    public String setProperty(UserKeyType key, boolean value) {
+<b class="nc"><i>361</i>&nbsp;        return setValue(keyCaster.castIn(key), value, new BooleanRepr());</b>
+<i>362</i>&nbsp;    }
+<i>363</i>&nbsp;
+<i>364</i>&nbsp;    /**
+<i>365</i>&nbsp;     * Sets a {@code char[]} property
+<i>366</i>&nbsp;     *
+<i>367</i>&nbsp;     * @param key   Key of the property
+<i>368</i>&nbsp;     * @param value Value to be set
+<i>369</i>&nbsp;     *
+<i>370</i>&nbsp;     * @deprecated Arrays not supported, use lists
+<i>371</i>&nbsp;     */
+<i>372</i>&nbsp;    public void setProperty(UserKeyType key, char[] value) {
+<i>373</i>&nbsp;        /* Note:
+<i>374</i>&nbsp;         * The current algorithm does not support the return of the previous
+<i>375</i>&nbsp;         * stored value!
+<i>376</i>&nbsp;         * Fact is, it uses a list to store the array, and when a list is set,
+<i>377</i>&nbsp;         * it does return the reference of the ListResource and not the previous
+<i>378</i>&nbsp;         * value. Possible fixes are:
+<i>379</i>&nbsp;         * 
+<i>380</i>&nbsp;         * - Leave it like that and allow a tiny leak, meaning, this would be
+<i>381</i>&nbsp;         *   the only setProperty not to respect the rule (currently used)
+<i>382</i>&nbsp;         *
+<i>383</i>&nbsp;         * - Change the algorithm used here (or maybe simply add a get before)
+<i>384</i>&nbsp;         *   in order to get the necessary information
+<i>385</i>&nbsp;         * 
+<i>386</i>&nbsp;         * - Change the fact that setMap/List/Set do return a reference instead
+<i>387</i>&nbsp;         *   of the previous value
+<i>388</i>&nbsp;         */
+<b class="nc"><i>389</i>&nbsp;        List&lt;Character&gt; charactersList = new ArrayList&lt;&gt;();</b>
+<b class="nc"><i>390</i>&nbsp;        for (char elem : value) {</b>
+<b class="nc"><i>391</i>&nbsp;            charactersList.add(elem);</b>
+<i>392</i>&nbsp;        }
+<i>393</i>&nbsp;
+<b class="nc"><i>394</i>&nbsp;        setList(key, charactersList, new CharRepr());</b>
+<i>395</i>&nbsp;    }
+<i>396</i>&nbsp;
+<i>397</i>&nbsp;    /**
+<i>398</i>&nbsp;     * Set a whole map of properties.
+<i>399</i>&nbsp;     *
+<i>400</i>&nbsp;     * @param &lt;E&gt;           Type of the properties (must be the same for all
+<i>401</i>&nbsp;     *                      properties)
+<i>402</i>&nbsp;     * @param properties    The keys - values to set.
+<i>403</i>&nbsp;     * @param representable Representable for the values
+<i>404</i>&nbsp;     */
+<i>405</i>&nbsp;    public &lt;E&gt; void setProperties(Map&lt;UserKeyType, E&gt; properties,
+<i>406</i>&nbsp;            TypeCaster&lt;String, E&gt; representable) {
+<b class="nc"><i>407</i>&nbsp;        for (UserKeyType key : properties.keySet()) {</b>
+<b class="nc"><i>408</i>&nbsp;            setProperty(key, properties.get(key), representable);</b>
+<b class="nc"><i>409</i>&nbsp;        }</b>
+<i>410</i>&nbsp;    }
+<i>411</i>&nbsp;
+<i>412</i>&nbsp;    /**
+<i>413</i>&nbsp;     * Set a whole map of properties.
+<i>414</i>&nbsp;     *
+<i>415</i>&nbsp;     * @param properties The keys - values to set.
+<i>416</i>&nbsp;     */
+<i>417</i>&nbsp;    public void setProperties(Map&lt;UserKeyType, String&gt; properties) {
+<b class="nc"><i>418</i>&nbsp;        setProperties(properties, new ActionStringRepr());</b>
+<i>419</i>&nbsp;    }
+<i>420</i>&nbsp;    //&lt;/editor-fold&gt;
+<i>421</i>&nbsp;
+<i>422</i>&nbsp;    private String removeProperty(String key) {
+<b class="nc"><i>423</i>&nbsp;        return page.removeProperty(key);</b>
+<i>424</i>&nbsp;    }
+<i>425</i>&nbsp;
+<i>426</i>&nbsp;    public String removeProperty(UserKeyType key) {
+<b class="nc"><i>427</i>&nbsp;        return removeProperty(keyCaster.castIn(key));</b>
+<i>428</i>&nbsp;    }
+<i>429</i>&nbsp;
+<i>430</i>&nbsp;    public boolean removeProperties(Collection&lt;UserKeyType&gt; keys) {
+<b class="nc"><i>431</i>&nbsp;        boolean changed = false;</b>
+<b class="nc"><i>432</i>&nbsp;        for (UserKeyType key : keys) {</b>
+<b class="nc"><i>433</i>&nbsp;            if (removeProperty(keyCaster.castIn(key)) != null) {</b>
+<b class="nc"><i>434</i>&nbsp;                changed = true;</b>
+<i>435</i>&nbsp;            }
+<b class="nc"><i>436</i>&nbsp;        }</b>
+<i>437</i>&nbsp;
+<b class="nc"><i>438</i>&nbsp;        return changed;</b>
+<i>439</i>&nbsp;    }
+<i>440</i>&nbsp;        
+<i>441</i>&nbsp;
+<i>442</i>&nbsp;    //&lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;getList&quot;&gt;
+<i>443</i>&nbsp;    private &lt;E&gt; ListResource&lt;E&gt; getList(String key,
+<i>444</i>&nbsp;            TypeCaster&lt;String, E&gt; subRepresentable) {
+<b class="nc"><i>445</i>&nbsp;        return page.getList(key, subRepresentable);</b>
+<i>446</i>&nbsp;    }
+<i>447</i>&nbsp;
+<i>448</i>&nbsp;    /**
+<i>449</i>&nbsp;     * Returns a the list mapped to the given key. Note that the returned list
+<i>450</i>&nbsp;     * is still attached to this {@code ResourceMap}, therefore, all
+<i>451</i>&nbsp;     * modifications applied to it will directly affect the corresponding
+<i>452</i>&nbsp;     * properties.
+<i>453</i>&nbsp;     *
+<i>454</i>&nbsp;     * @param &lt;E&gt;              Type of the elements of the list
+<i>455</i>&nbsp;     * @param key              Key mapped to this list
+<i>456</i>&nbsp;     * @param subRepresentable {@code Representable} used to cast the elements
+<i>457</i>&nbsp;     *                         of the list
+<i>458</i>&nbsp;     *
+<i>459</i>&nbsp;     * @return The corresponding list
+<i>460</i>&nbsp;     */
+<i>461</i>&nbsp;    public &lt;E&gt; ListResource&lt;E&gt; getList(UserKeyType key,
+<i>462</i>&nbsp;            TypeCaster&lt;String, E&gt; subRepresentable) {
+<b class="nc"><i>463</i>&nbsp;        return getList(keyCaster.castIn(key), subRepresentable);</b>
+<i>464</i>&nbsp;    }
+<i>465</i>&nbsp;
+<i>466</i>&nbsp;    /**
+<i>467</i>&nbsp;     * Gets a {@code String ListResource} from the given key.&lt;br&gt;
+<i>468</i>&nbsp;     *
+<i>469</i>&nbsp;     * @param key   Key that points on the lists header
+<i>470</i>&nbsp;     * @param param Parameters
+<i>471</i>&nbsp;     *
+<i>472</i>&nbsp;     * @return A {@link ListResource} from the given key or {@code null} if the
+<i>473</i>&nbsp;     *         key does not exist
+<i>474</i>&nbsp;     *
+<i>475</i>&nbsp;     * @see #getList(String, Representable, boolean)
+<i>476</i>&nbsp;     */
+<i>477</i>&nbsp;    public ListResource&lt;String&gt; getList(UserKeyType key, Object... param) {
+<b class="nc"><i>478</i>&nbsp;        return getList(key, new ActionStringRepr(param));</b>
+<i>479</i>&nbsp;    }
+<i>480</i>&nbsp;    //&lt;/editor-fold&gt;
+<i>481</i>&nbsp;
+<i>482</i>&nbsp;    //&lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;setList&quot;&gt;
+<i>483</i>&nbsp;    private &lt;E&gt; ListResource&lt;E&gt; setList(String key, List&lt;E&gt; list,
+<i>484</i>&nbsp;            TypeCaster&lt;String, E&gt; caster, Structure implementation,
+<i>485</i>&nbsp;            String... options) {
+<b class="nc"><i>486</i>&nbsp;        return page.setList(key, list, caster, implementation, options);</b>
+<i>487</i>&nbsp;    }
+<i>488</i>&nbsp;
+<i>489</i>&nbsp;    public &lt;E&gt; ListResource&lt;E&gt; setList(UserKeyType key, List&lt;E&gt; list,
+<i>490</i>&nbsp;            TypeCaster&lt;String, E&gt; subRepresentable) {
+<b class="nc"><i>491</i>&nbsp;        return setList(keyCaster.castIn(key), list, subRepresentable,</b>
+<i>492</i>&nbsp;                DEFAULT_LIST, DEFAULT_LIST_OPTIONS);
+<i>493</i>&nbsp;    }
+<i>494</i>&nbsp;    
+<i>495</i>&nbsp;    public ListResource&lt;String&gt; setList(UserKeyType key, String... elements) {
+<b class="nc"><i>496</i>&nbsp;        assert elements != null;</b>
+<b class="nc"><i>497</i>&nbsp;        return setList(keyCaster.castIn(key), Arrays.asList(elements),</b>
+<i>498</i>&nbsp;                new StringRepr(), DEFAULT_LIST, DEFAULT_LIST_OPTIONS);
+<i>499</i>&nbsp;    }
+<i>500</i>&nbsp;
+<i>501</i>&nbsp;    public ListResource&lt;String&gt; setList(UserKeyType key, List&lt;String&gt; list,
+<i>502</i>&nbsp;            Object... param) {
+<b class="nc"><i>503</i>&nbsp;        return setList(keyCaster.castIn(key), list, new ActionStringRepr(param),</b>
+<i>504</i>&nbsp;                DEFAULT_LIST, DEFAULT_LIST_OPTIONS);
+<i>505</i>&nbsp;    }
+<i>506</i>&nbsp;    //&lt;/editor-fold&gt;
+<i>507</i>&nbsp;
+<i>508</i>&nbsp;    //&lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;getMap&quot;&gt;
+<i>509</i>&nbsp;    private &lt;K, V&gt; MapResource&lt;K, V&gt; getMap(String key,
+<i>510</i>&nbsp;            TypeCaster&lt;String, K&gt; kRepresentable,
+<i>511</i>&nbsp;            TypeCaster&lt;String, V&gt; vRepresentable) {
+<b class="nc"><i>512</i>&nbsp;        return page.getMap(key, kRepresentable, vRepresentable);</b>
+<i>513</i>&nbsp;    }
+<i>514</i>&nbsp;
+<i>515</i>&nbsp;    /**
+<i>516</i>&nbsp;     * Returns a {@code Map} contained in the field.&lt;br&gt; Note that the returned
+<i>517</i>&nbsp;     * map is still attached to this {@code ResourceMap}, therefore, all
+<i>518</i>&nbsp;     * modifications applied to it will directly affect the corresponding
+<i>519</i>&nbsp;     * properties
+<i>520</i>&nbsp;     *
+<i>521</i>&nbsp;     * @param &lt;K&gt;            Type of the key
+<i>522</i>&nbsp;     * @param &lt;V&gt;            Type of the value
+<i>523</i>&nbsp;     * @param key            Key pointing to the map&#39;s header
+<i>524</i>&nbsp;     * @param kRepresentable Representable to cast the key field
+<i>525</i>&nbsp;     * @param vRepresentable Representable to cast the value field
+<i>526</i>&nbsp;     *
+<i>527</i>&nbsp;     * @return The corresponding {@code Map} or {@code null} if the key is not
+<i>528</i>&nbsp;     *         loaded.
+<i>529</i>&nbsp;     */
+<i>530</i>&nbsp;    public &lt;K, V&gt; MapResource&lt;K, V&gt; getMap(UserKeyType key,
+<i>531</i>&nbsp;            TypeCaster&lt;String, K&gt; kRepresentable,
+<i>532</i>&nbsp;            TypeCaster&lt;String, V&gt; vRepresentable) {
+<b class="nc"><i>533</i>&nbsp;        return getMap(keyCaster.castIn(key), kRepresentable, vRepresentable);</b>
+<i>534</i>&nbsp;    }
+<i>535</i>&nbsp;
+<i>536</i>&nbsp;    /**
+<i>537</i>&nbsp;     * Returns a {@code Map} contained in the field.
+<i>538</i>&nbsp;     *
+<i>539</i>&nbsp;     * @param key   Key pointing to the map&#39;s header
+<i>540</i>&nbsp;     * @param param (Optional) parameters
+<i>541</i>&nbsp;     *
+<i>542</i>&nbsp;     * @return The corresponding {@code Map} or {@code null} if the key is not
+<i>543</i>&nbsp;     *         loaded.
+<i>544</i>&nbsp;     */
+<i>545</i>&nbsp;    public MapResource&lt;String, String&gt; getMap(UserKeyType key, Object... param) {
+<b class="nc"><i>546</i>&nbsp;        TypeCaster&lt;String, String&gt; repr = new ActionStringRepr(param);</b>
+<b class="nc"><i>547</i>&nbsp;        return getMap(keyCaster.castIn(key), repr, repr);</b>
+<i>548</i>&nbsp;    }
+<i>549</i>&nbsp;    //&lt;/editor-fold&gt;
+<i>550</i>&nbsp;
+<i>551</i>&nbsp;    //&lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;setMap&quot;&gt;
+<i>552</i>&nbsp;    private &lt;K, V&gt; MapResource&lt;K, V&gt; setMap(String key, Map&lt;K, V&gt; map,
+<i>553</i>&nbsp;            TypeCaster&lt;String, K&gt; kCaster, TypeCaster&lt;String, V&gt; vCaster,
+<i>554</i>&nbsp;            Structure implementation, String... options) {
+<b class="nc"><i>555</i>&nbsp;        return page.setMap(key, map, kCaster, vCaster, implementation, options);</b>
+<i>556</i>&nbsp;    }
+<i>557</i>&nbsp;
+<i>558</i>&nbsp;    public &lt;K, V&gt; MapResource&lt;K, V&gt; setMap(UserKeyType key, Map&lt;K, V&gt; map,
+<i>559</i>&nbsp;            TypeCaster&lt;String, K&gt; kCaster, TypeCaster&lt;String, V&gt; vCaster,
+<i>560</i>&nbsp;            Structure implementation, String... options) {
+<b class="nc"><i>561</i>&nbsp;        return setMap(keyCaster.castIn(key), map, kCaster, vCaster,</b>
+<i>562</i>&nbsp;                implementation, options);
+<i>563</i>&nbsp;    }
+<i>564</i>&nbsp;
+<i>565</i>&nbsp;    public &lt;K, V&gt; MapResource&lt;K, V&gt; setMap(UserKeyType key, Map&lt;K, V&gt; map,
+<i>566</i>&nbsp;            TypeCaster&lt;String, K&gt; kCaster, TypeCaster&lt;String, V&gt; vCaster) {
+<b class="nc"><i>567</i>&nbsp;        return setMap(keyCaster.castIn(key), map, kCaster, vCaster,</b>
+<i>568</i>&nbsp;                DEFAULT_MAP, DEFAULT_MAP_OPTIONS);
+<i>569</i>&nbsp;    }
+<i>570</i>&nbsp;
+<i>571</i>&nbsp;    public MapResource&lt;String, String&gt; setMap(UserKeyType key,
+<i>572</i>&nbsp;            Map&lt;String, String&gt; map,
+<i>573</i>&nbsp;            Object... params) {
+<b class="nc"><i>574</i>&nbsp;        TypeCaster&lt;String, String&gt; caster = new ActionStringRepr(params);</b>
+<b class="nc"><i>575</i>&nbsp;        return setMap(keyCaster.castIn(key), map, caster, caster,</b>
+<i>576</i>&nbsp;                DEFAULT_MAP, DEFAULT_MAP_OPTIONS);
+<i>577</i>&nbsp;    }
+<i>578</i>&nbsp;    //&lt;/editor-fold&gt;
+<i>579</i>&nbsp;
+<i>580</i>&nbsp;    //&lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;getSet&quot;&gt;   
+<i>581</i>&nbsp;    private &lt;E&gt; SetResource&lt;E&gt; getSet(String key,
+<i>582</i>&nbsp;            TypeCaster&lt;String, E&gt; repr) {
+<b class="nc"><i>583</i>&nbsp;        return page.getSet(key, repr);</b>
+<i>584</i>&nbsp;    }
+<i>585</i>&nbsp;
+<i>586</i>&nbsp;    /**
+<i>587</i>&nbsp;     * Returns the {@code Set} contained mapped to the given key. Note that the
+<i>588</i>&nbsp;     * returned set is still linked to this {@code ResourceMap}, therefore, all
+<i>589</i>&nbsp;     * modifications applied to it will directly affect the corresponding
+<i>590</i>&nbsp;     * properties.
+<i>591</i>&nbsp;     *
+<i>592</i>&nbsp;     * @param &lt;E&gt;  Type of the elements in the set
+<i>593</i>&nbsp;     * @param key  Key mapped to the set
+<i>594</i>&nbsp;     * @param repr {@code Representable} used to cast the elements in the set
+<i>595</i>&nbsp;     *
+<i>596</i>&nbsp;     * @return The corresponding set or {@code null} if the key is not loaded
+<i>597</i>&nbsp;     */
+<i>598</i>&nbsp;    public &lt;E&gt; SetResource&lt;E&gt; getSet(UserKeyType key, TypeCaster&lt;String, E&gt; repr) {
+<b class="nc"><i>599</i>&nbsp;        return getSet(keyCaster.castIn(key), repr);</b>
+<i>600</i>&nbsp;    }
+<i>601</i>&nbsp;
+<i>602</i>&nbsp;    /**
+<i>603</i>&nbsp;     * Returns the {@code Set} contained mapped to the given key. Note that the
+<i>604</i>&nbsp;     * returned set is still linked to this {@code ResourceMap}, therefore, all
+<i>605</i>&nbsp;     * modifications applied to it will directly affect the corresponding
+<i>606</i>&nbsp;     * properties.
+<i>607</i>&nbsp;     *
+<i>608</i>&nbsp;     * @param key    Key mapped to the set
+<i>609</i>&nbsp;     * @param params (optional) Parameters
+<i>610</i>&nbsp;     *
+<i>611</i>&nbsp;     * @return The corresponding set or {@code null} if the key is not loaded
+<i>612</i>&nbsp;     */
+<i>613</i>&nbsp;    public SetResource&lt;String&gt; getSet(UserKeyType key, Object... params) {
+<b class="nc"><i>614</i>&nbsp;        return getSet(keyCaster.castIn(key), new ActionStringRepr(params));</b>
+<i>615</i>&nbsp;    }
+<i>616</i>&nbsp;    //&lt;/editor-fold&gt;
+<i>617</i>&nbsp;
+<i>618</i>&nbsp;    //&lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;setSet&quot;&gt;   
+<i>619</i>&nbsp;    private &lt;E&gt; SetResource&lt;E&gt; setSet(String key, Set&lt;E&gt; set,
+<i>620</i>&nbsp;            TypeCaster&lt;String, E&gt; repr, Structure implementation,
+<i>621</i>&nbsp;            String[] options) {
+<b class="nc"><i>622</i>&nbsp;        return page.setSet(key, set, repr, implementation, options);</b>
+<i>623</i>&nbsp;    }
+<i>624</i>&nbsp;
+<i>625</i>&nbsp;    public &lt;E&gt; SetResource&lt;E&gt; setSet(UserKeyType key, TypeCaster&lt;String, E&gt; repr,
+<i>626</i>&nbsp;            Set&lt;E&gt; set, Structure implementation, String[] options) {
+<b class="nc"><i>627</i>&nbsp;        return setSet(keyCaster.castIn(key), set, repr, implementation, options);</b>
+<i>628</i>&nbsp;    }
+<i>629</i>&nbsp;
+<i>630</i>&nbsp;    public &lt;E&gt; SetResource&lt;E&gt; setSet(UserKeyType key, Set&lt;E&gt; set,
+<i>631</i>&nbsp;            TypeCaster&lt;String, E&gt; repr) {
+<b class="nc"><i>632</i>&nbsp;        return setSet(keyCaster.castIn(key), set, repr, DEFAULT_SET,</b>
+<i>633</i>&nbsp;                DEFAULT_SET_OPTIONS);
+<i>634</i>&nbsp;    }
+<i>635</i>&nbsp;
+<i>636</i>&nbsp;    public SetResource&lt;String&gt; setSet(UserKeyType key, Set&lt;String&gt; set,
+<i>637</i>&nbsp;            Object... params) {
+<b class="nc"><i>638</i>&nbsp;        return setSet(keyCaster.castIn(key), set, new ActionStringRepr(params),</b>
+<i>639</i>&nbsp;                DEFAULT_SET, DEFAULT_SET_OPTIONS);
+<i>640</i>&nbsp;    }
+<i>641</i>&nbsp;    //&lt;/editor-fold&gt;
+<i>642</i>&nbsp;
+<i>643</i>&nbsp;    /**
+<i>644</i>&nbsp;     * Tells if a specific key exists or not.
+<i>645</i>&nbsp;     *
+<i>646</i>&nbsp;     * @param key The key to test.
+<i>647</i>&nbsp;     *
+<i>648</i>&nbsp;     * @return {@code true} if this key exists.
+<i>649</i>&nbsp;     */
+<i>650</i>&nbsp;    public boolean containsKey(UserKeyType key) {
+<b class="nc"><i>651</i>&nbsp;        return page.containsKey(keyCaster.castIn(key));</b>
+<i>652</i>&nbsp;    }
+<i>653</i>&nbsp;
+<i>654</i>&nbsp;    @Override
+<i>655</i>&nbsp;    public String toString() {
+<b class="nc"><i>656</i>&nbsp;        return page.toString();</b>
+<i>657</i>&nbsp;    }
+<i>658</i>&nbsp;
+<i>659</i>&nbsp;    /**
+<i>660</i>&nbsp;     * This method performs all commands contained in a field if any. It works
+<i>661</i>&nbsp;     * specifically with the {@link #getString(String, Object[]) }, so if some
+<i>662</i>&nbsp;     * commands lead to other type fields, it could result with unexpected
+<i>663</i>&nbsp;     * results.&lt;br&gt; Actual implemented commands are:
+<i>664</i>&nbsp;     *
+<i>665</i>&nbsp;     * &lt;lu&gt; &lt;li&gt; &lt;b&gt;{@code param:&lt;N&gt;}&lt;/b&gt; &lt;p&gt; Adds a free parameter at this
+<i>666</i>&nbsp;     * right place. If this command is used in a field, so when calling this
+<i>667</i>&nbsp;     * field you must place the wanted parameters in the &lt;b&gt;{@code param}&lt;/b&gt;
+<i>668</i>&nbsp;     * array. The number &lt;b&gt;N&lt;/b&gt; is the index of the wanted parameter (since a
+<i>669</i>&nbsp;     * single field can contain several parameters) and the value of this
+<i>670</i>&nbsp;     * parameter should be found at the same index of the &lt;b&gt;{@code param}&lt;/b&gt;
+<i>671</i>&nbsp;     * array.&lt;br&gt; If this command is found and the given {@code param} is
+<i>672</i>&nbsp;     * {@code null} or the given {@code param} doesn&#39;t contain the index
+<i>673</i>&nbsp;     * &lt;b&gt;N&lt;/b&gt;, then an exception is thrown.&lt;/p&gt;&lt;br&gt;
+<i>674</i>&nbsp;     * Example:&lt;br&gt;{@code Test.field1 = my configurable field ${param:0}.}&lt;br&gt;
+<i>675</i>&nbsp;     * &lt;br&gt;
+<i>676</i>&nbsp;     *
+<i>677</i>&nbsp;     * &lt;li&gt; &lt;b&gt;{@code field:&lt;Field Key&gt;}&lt;/b&gt; &lt;p&gt; Places at this right place the
+<i>678</i>&nbsp;     * value of another field. If such a command is found, the replace value is
+<i>679</i>&nbsp;     * found using this same method &lt;b&gt;{@code getString(Field Key, param)}&lt;/b&gt;,
+<i>680</i>&nbsp;     * which means that the &lt;b&gt;Field Key&lt;/b&gt; can also contain special commands
+<i>681</i>&nbsp;     * in it. It also means that exceptions could be thrown if any error occurs
+<i>682</i>&nbsp;     * while getting &lt;b&gt;Field Key&lt;/b&gt; value.&lt;/p&gt;&lt;br&gt; Example:&lt;br&gt;
+<i>683</i>&nbsp;     * {@code Test.field2 = This is ${field:Test.field1}.}&lt;br&gt;&lt;br&gt;
+<i>684</i>&nbsp;     *
+<i>685</i>&nbsp;     * &lt;li&gt; &lt;b&gt;{@code null}&lt;/b&gt; &lt;p&gt; Permits to store {@code null} values. Just
+<i>686</i>&nbsp;     * place this command in the field and it will always return a {@code null}
+<i>687</i>&nbsp;     * value.&lt;/p&gt;&lt;br&gt; Example:&lt;br&gt; {@code Test.field3 = ${null}} &lt;/lu&gt;&lt;br&gt;&lt;br&gt;
+<i>688</i>&nbsp;     *
+<i>689</i>&nbsp;     * @param key        The field key.
+<i>690</i>&nbsp;     * @param fieldValue The field to update.
+<i>691</i>&nbsp;     * @param param      Array containing the parameters if a
+<i>692</i>&nbsp;     *                   {@code ${param:&lt;N&gt;}} command is found.
+<i>693</i>&nbsp;     *
+<i>694</i>&nbsp;     * @return The value of field with all commands properly replaced by the
+<i>695</i>&nbsp;     *         wanted value or the exact same field if no command is found.
+<i>696</i>&nbsp;     *
+<i>697</i>&nbsp;     *
+<i>698</i>&nbsp;     */
+<i>699</i>&nbsp;    private String performCommands(String fieldValue, final Object... param) {
+<b class="nc"><i>700</i>&nbsp;        if (fieldValue == null) {</b>
+<b class="nc"><i>701</i>&nbsp;            throw new NullPointerException();</b>
+<i>702</i>&nbsp;        }
+<i>703</i>&nbsp;
+<b class="nc"><i>704</i>&nbsp;        StringBuilder tmp = new StringBuilder(fieldValue);</b>
+<i>705</i>&nbsp;
+<i>706</i>&nbsp;        int startIndex;
+<b class="nc"><i>707</i>&nbsp;        while ((startIndex = tmp.indexOf(&quot;${&quot;)) != -1) {</b>
+<b class="nc"><i>708</i>&nbsp;            int lastIndex = tmp.indexOf(&quot;}&quot;);</b>
+<b class="nc"><i>709</i>&nbsp;            if (lastIndex == -1 || lastIndex &lt; startIndex) {</b>
+<b class="nc"><i>710</i>&nbsp;                throw new IllegalArgumentException(&quot;Illegal property &quot;</b>
+<i>711</i>&nbsp;                        + &quot;construction. Character &#39;}&#39; missing or doubled.&quot;);
+<i>712</i>&nbsp;            }
+<i>713</i>&nbsp;
+<b class="nc"><i>714</i>&nbsp;            String innerCommand = tmp.substring(startIndex + 2, lastIndex);</b>
+<i>715</i>&nbsp;            String replaceValue;
+<i>716</i>&nbsp;
+<b class="nc"><i>717</i>&nbsp;            if (innerCommand.startsWith(&quot;param:&quot;)) {</b>
+<b class="nc"><i>718</i>&nbsp;                int paramIndex = Integer.parseInt(innerCommand.substring(6));</b>
+<b class="nc"><i>719</i>&nbsp;                if (param == null || paramIndex &gt;= param.length) {</b>
+<b class="nc"><i>720</i>&nbsp;                    throw new IllegalArgumentException(&quot;Tried to access a&quot;</b>
+<i>721</i>&nbsp;                            + &quot; parametable field with invalid parameters.&quot;
+<i>722</i>&nbsp;                            + &quot;\nNeed index &quot; + paramIndex + &quot; but given &quot;
+<i>723</i>&nbsp;                            + &quot;parameters &quot; + (param == null ? &quot;is null&quot;
+<i>724</i>&nbsp;                            : &quot;size is &quot; + param.length + &quot;\nField: &quot;
+<i>725</i>&nbsp;                            + fieldValue));
+<i>726</i>&nbsp;                }
+<i>727</i>&nbsp;
+<b class="nc"><i>728</i>&nbsp;                replaceValue = param[paramIndex].toString();</b>
+<b class="nc"><i>729</i>&nbsp;            } else if (innerCommand.startsWith(&quot;field:&quot;)) {</b>
+<i>730</i>&nbsp;
+<i>731</i>&nbsp;                //KeyType key = keyStrategy.getUserKeyFromString(innerCommand.substring(6));
+<b class="nc"><i>732</i>&nbsp;                String key = innerCommand.substring(6);</b>
+<i>733</i>&nbsp;
+<b class="nc"><i>734</i>&nbsp;                replaceValue = getValue(key, new ActionStringRepr(param));</b>
+<i>735</i>&nbsp;
+<b class="nc"><i>736</i>&nbsp;            } else if (innerCommand.equals(&quot;null&quot;)) {</b>
+<b class="nc"><i>737</i>&nbsp;                return null;</b>
+<b class="nc"><i>738</i>&nbsp;            } else if (innerCommand.equals(&quot;space&quot;)) {</b>
+<i>739</i>&nbsp;
+<b class="nc"><i>740</i>&nbsp;                replaceValue = &quot; &quot;;</b>
+<i>741</i>&nbsp;
+<i>742</i>&nbsp;            } else {
+<b class="nc"><i>743</i>&nbsp;                throw new IllegalArgumentException(&quot;An unknow command has been &quot;</b>
+<i>744</i>&nbsp;                        + &quot;found: &quot; + innerCommand + &quot;\nField: &quot; + fieldValue);
+<i>745</i>&nbsp;            }
+<i>746</i>&nbsp;
+<b class="nc"><i>747</i>&nbsp;            tmp.replace(startIndex, lastIndex + 1, replaceValue);</b>
+<b class="nc"><i>748</i>&nbsp;        }</b>
+<i>749</i>&nbsp;
+<b class="nc"><i>750</i>&nbsp;        return tmp.toString();</b>
+<i>751</i>&nbsp;    }
+<i>752</i>&nbsp;
+<b class="nc"><i>753</i>&nbsp;    private class ActionStringRepr implements TypeCaster&lt;String, String&gt; {</b>
+<i>754</i>&nbsp;
+<i>755</i>&nbsp;        private final Object[] param;
+<i>756</i>&nbsp;
+<b class="nc"><i>757</i>&nbsp;        private ActionStringRepr(Object... param) {</b>
+<b class="nc"><i>758</i>&nbsp;            this.param = param;</b>
+<i>759</i>&nbsp;        }
+<i>760</i>&nbsp;
+<i>761</i>&nbsp;        @Override
+<i>762</i>&nbsp;        public String castIn(String e) {
+<b class="nc"><i>763</i>&nbsp;            return e == null ? &quot;${null}&quot; : e;</b>
+<i>764</i>&nbsp;        }
+<i>765</i>&nbsp;
+<i>766</i>&nbsp;        @Override
+<i>767</i>&nbsp;        public String castOut(String value) {
+<b class="nc"><i>768</i>&nbsp;            return value == null ? null : performCommands(value, param);</b>
+<i>769</i>&nbsp;        }
+<i>770</i>&nbsp;
+<i>771</i>&nbsp;    }
+<i>772</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2014-11-07 23:06</div>
+</div>
+</body>
+</html>

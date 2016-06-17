@@ -1,0 +1,546 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Console</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.wx.console</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Console (com.wx.console)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Console</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 60)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 157)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.wx.console;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.wx.console.color.Color;
+<i>4</i>&nbsp;import java.util.Collection;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;/**
+<i>7</i>&nbsp; *
+<i>8</i>&nbsp; * @author Raffaele Canale - raffaelecanale@gmail.com
+<i>9</i>&nbsp; * @version 0.1
+<i>10</i>&nbsp; *
+<i>11</i>&nbsp; * Project: WXLibraries File: Console.java (UTF-8) Date: 13 oct. 2012
+<i>12</i>&nbsp; */
+<b class="nc"><i>13</i>&nbsp;public abstract class Console {</b>
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;    /*
+<i>16</i>&nbsp;     * NOTE:
+<i>17</i>&nbsp;     * Uncommented
+<i>18</i>&nbsp;     * Untested
+<i>19</i>&nbsp;     */
+<i>20</i>&nbsp;    private int lineSize;
+<b class="nc"><i>21</i>&nbsp;    private StringBuilder spacePrefix = new StringBuilder();</b>
+<i>22</i>&nbsp;    private boolean prefixFinished;
+<i>23</i>&nbsp;    private Integer widthBuffer;
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;    //&lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;Out methods&quot;&gt;
+<i>26</i>&nbsp;    public void print(boolean b) {
+<b class="nc"><i>27</i>&nbsp;        writeOut(b ? &quot;true&quot; : &quot;false&quot;);</b>
+<i>28</i>&nbsp;    }
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;    public void print(char c) {
+<b class="nc"><i>31</i>&nbsp;        writeOut(String.valueOf(c));</b>
+<i>32</i>&nbsp;    }
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;    public void print(int i) {
+<b class="nc"><i>35</i>&nbsp;        writeOut(String.valueOf(i));</b>
+<i>36</i>&nbsp;    }
+<i>37</i>&nbsp;
+<i>38</i>&nbsp;    public void print(long l) {
+<b class="nc"><i>39</i>&nbsp;        writeOut(String.valueOf(l));</b>
+<i>40</i>&nbsp;    }
+<i>41</i>&nbsp;
+<i>42</i>&nbsp;    public void print(float f) {
+<b class="nc"><i>43</i>&nbsp;        writeOut(String.valueOf(f));</b>
+<i>44</i>&nbsp;    }
+<i>45</i>&nbsp;
+<i>46</i>&nbsp;    public void print(double d) {
+<b class="nc"><i>47</i>&nbsp;        writeOut(String.valueOf(d));</b>
+<i>48</i>&nbsp;    }
+<i>49</i>&nbsp;
+<i>50</i>&nbsp;    public void print(char s[]) {
+<b class="nc"><i>51</i>&nbsp;        writeOut(String.valueOf(s));</b>
+<i>52</i>&nbsp;    }
+<i>53</i>&nbsp;
+<i>54</i>&nbsp;    public void print(String s) {
+<b class="nc"><i>55</i>&nbsp;        if (s == null) {</b>
+<b class="nc"><i>56</i>&nbsp;            s = &quot;null&quot;;</b>
+<i>57</i>&nbsp;        }
+<b class="nc"><i>58</i>&nbsp;        writeOut(s);</b>
+<i>59</i>&nbsp;    }
+<i>60</i>&nbsp;
+<i>61</i>&nbsp;    public void print(Object obj) {
+<b class="nc"><i>62</i>&nbsp;        writeOut(String.valueOf(obj));</b>
+<i>63</i>&nbsp;    }
+<i>64</i>&nbsp;
+<i>65</i>&nbsp;    public void print(Object[] objs) {
+<b class="nc"><i>66</i>&nbsp;        if (objs == null) {</b>
+<b class="nc"><i>67</i>&nbsp;            writeOut(&quot;null&quot;);</b>
+<i>68</i>&nbsp;        } else {
+<b class="nc"><i>69</i>&nbsp;            boolean first = true;</b>
+<b class="nc"><i>70</i>&nbsp;            for (Object obj : objs) {</b>
+<b class="nc"><i>71</i>&nbsp;                if (first) {</b>
+<b class="nc"><i>72</i>&nbsp;                    writeOut(String.valueOf(obj));</b>
+<i>73</i>&nbsp;                } else {
+<b class="nc"><i>74</i>&nbsp;                    writeOut(&quot;, &quot; + String.valueOf(obj));</b>
+<i>75</i>&nbsp;                }
+<i>76</i>&nbsp;            }
+<i>77</i>&nbsp;        }
+<i>78</i>&nbsp;    }
+<i>79</i>&nbsp;
+<i>80</i>&nbsp;    public void println() {
+<b class="nc"><i>81</i>&nbsp;        newLineOut();</b>
+<i>82</i>&nbsp;    }
+<i>83</i>&nbsp;
+<i>84</i>&nbsp;    public synchronized void println(boolean x) {
+<b class="nc"><i>85</i>&nbsp;        print(x);</b>
+<b class="nc"><i>86</i>&nbsp;        newLineOut();</b>
+<i>87</i>&nbsp;    }
+<i>88</i>&nbsp;
+<i>89</i>&nbsp;    public synchronized void println(char x) {
+<b class="nc"><i>90</i>&nbsp;        print(x);</b>
+<b class="nc"><i>91</i>&nbsp;        newLineOut();</b>
+<i>92</i>&nbsp;    }
+<i>93</i>&nbsp;
+<i>94</i>&nbsp;    public synchronized void println(int x) {
+<b class="nc"><i>95</i>&nbsp;        print(x);</b>
+<b class="nc"><i>96</i>&nbsp;        newLineOut();</b>
+<i>97</i>&nbsp;    }
+<i>98</i>&nbsp;
+<i>99</i>&nbsp;    public synchronized void println(long x) {
+<b class="nc"><i>100</i>&nbsp;        print(x);</b>
+<b class="nc"><i>101</i>&nbsp;        newLineOut();</b>
+<i>102</i>&nbsp;    }
+<i>103</i>&nbsp;
+<i>104</i>&nbsp;    public synchronized void println(float x) {
+<b class="nc"><i>105</i>&nbsp;        print(x);</b>
+<b class="nc"><i>106</i>&nbsp;        newLineOut();</b>
+<i>107</i>&nbsp;    }
+<i>108</i>&nbsp;
+<i>109</i>&nbsp;    public synchronized void println(double x) {
+<b class="nc"><i>110</i>&nbsp;        print(x);</b>
+<b class="nc"><i>111</i>&nbsp;        newLineOut();</b>
+<i>112</i>&nbsp;    }
+<i>113</i>&nbsp;
+<i>114</i>&nbsp;    public synchronized void println(char x[]) {
+<b class="nc"><i>115</i>&nbsp;        print(x);</b>
+<b class="nc"><i>116</i>&nbsp;        newLineOut();</b>
+<i>117</i>&nbsp;    }
+<i>118</i>&nbsp;
+<i>119</i>&nbsp;    public synchronized void println(String x) {
+<b class="nc"><i>120</i>&nbsp;        print(x);</b>
+<b class="nc"><i>121</i>&nbsp;        newLineOut();</b>
+<i>122</i>&nbsp;    }
+<i>123</i>&nbsp;
+<i>124</i>&nbsp;    public synchronized &lt;E&gt; void println(Collection&lt;E&gt; collection) {
+<b class="nc"><i>125</i>&nbsp;        if (collection == null) {</b>
+<b class="nc"><i>126</i>&nbsp;            print(&quot;null&quot;);</b>
+<b class="nc"><i>127</i>&nbsp;            newLineOut();</b>
+<i>128</i>&nbsp;        } else {
+<b class="nc"><i>129</i>&nbsp;            for (E e : collection) {</b>
+<b class="nc"><i>130</i>&nbsp;                print(e);</b>
+<b class="nc"><i>131</i>&nbsp;                newLineOut();</b>
+<b class="nc"><i>132</i>&nbsp;            }</b>
+<i>133</i>&nbsp;        }
+<i>134</i>&nbsp;    }
+<i>135</i>&nbsp;
+<i>136</i>&nbsp;    public synchronized void println(Object x) {
+<b class="nc"><i>137</i>&nbsp;        print(String.valueOf(x));</b>
+<b class="nc"><i>138</i>&nbsp;        newLineOut();</b>
+<i>139</i>&nbsp;    }
+<i>140</i>&nbsp;
+<i>141</i>&nbsp;    public synchronized void println(Object[] objs) {
+<b class="nc"><i>142</i>&nbsp;        print(objs);</b>
+<b class="nc"><i>143</i>&nbsp;        newLineOut();</b>
+<i>144</i>&nbsp;    }
+<i>145</i>&nbsp;
+<i>146</i>&nbsp;    public synchronized void println(Object[] objs, String prefix) {
+<b class="nc"><i>147</i>&nbsp;        if (objs == null) {</b>
+<b class="nc"><i>148</i>&nbsp;            writeOut(&quot;null&quot;);</b>
+<i>149</i>&nbsp;        } else {
+<b class="nc"><i>150</i>&nbsp;            for (Object obj : objs) {</b>
+<b class="nc"><i>151</i>&nbsp;                writeOut(prefix + String.valueOf(obj));</b>
+<b class="nc"><i>152</i>&nbsp;                newLineOut();</b>
+<i>153</i>&nbsp;            }
+<i>154</i>&nbsp;        }
+<i>155</i>&nbsp;    }
+<i>156</i>&nbsp;
+<i>157</i>&nbsp;    protected void writeOut(String s) {
+<b class="nc"><i>158</i>&nbsp;        int consoleWidth = getConsoleWidth();</b>
+<b class="nc"><i>159</i>&nbsp;        if (consoleWidth &lt; 0) {</b>
+<b class="nc"><i>160</i>&nbsp;            writeOut0(s);</b>
+<i>161</i>&nbsp;            return;
+<i>162</i>&nbsp;        }
+<i>163</i>&nbsp;        
+<b class="nc"><i>164</i>&nbsp;        if (!prefixFinished) {</b>
+<b class="nc"><i>165</i>&nbsp;            prefixFinished = extractPrefixSpaces(s);            </b>
+<i>166</i>&nbsp;        }
+<i>167</i>&nbsp;        
+<b class="nc"><i>168</i>&nbsp;        incrementLineSize(s);</b>
+<i>169</i>&nbsp;        
+<b class="nc"><i>170</i>&nbsp;        if (lineSize &gt;= consoleWidth) {</b>
+<b class="nc"><i>171</i>&nbsp;            if (!prefixFinished) { // No text</b>
+<b class="nc"><i>172</i>&nbsp;                writeOut0(s.substring(0, consoleWidth));</b>
+<b class="nc"><i>173</i>&nbsp;                newLineOut();</b>
+<b class="nc"><i>174</i>&nbsp;                s = s.substring(consoleWidth, lineSize);</b>
+<b class="nc"><i>175</i>&nbsp;                writeOut(s);</b>
+<i>176</i>&nbsp;                return;
+<i>177</i>&nbsp;            }
+<i>178</i>&nbsp;            
+<b class="nc"><i>179</i>&nbsp;            int cutIndex = findCut(consoleWidth, s);</b>
+<b class="nc"><i>180</i>&nbsp;            String prefix = spacePrefix.toString();</b>
+<i>181</i>&nbsp;//            System.out.println(&quot;P &quot; + prefix.length());
+<i>182</i>&nbsp;//            System.out.println(&quot;CUT &quot; + lineSize + &quot;/&quot; + consoleWidth + &quot; AT &quot; + cutIndex + &quot; from &quot; + s);
+<b class="nc"><i>183</i>&nbsp;            writeOut0(s.substring(0, cutIndex));</b>
+<b class="nc"><i>184</i>&nbsp;            newLineOut0();</b>
+<b class="nc"><i>185</i>&nbsp;            writeOut0(prefix);</b>
+<i>186</i>&nbsp;            
+<i>187</i>&nbsp;//            spacePrefix.append(prefix);
+<b class="nc"><i>188</i>&nbsp;            lineSize = 0;</b>
+<b class="nc"><i>189</i>&nbsp;            incrementLineSize(prefix);</b>
+<b class="nc"><i>190</i>&nbsp;            assert prefixFinished;</b>
+<i>191</i>&nbsp;            
+<b class="nc"><i>192</i>&nbsp;            writeOut(trimLeft(s.substring(cutIndex, s.length())));</b>
+<i>193</i>&nbsp;            
+<b class="nc"><i>194</i>&nbsp;        } else {</b>
+<i>195</i>&nbsp;//            System.out.println(&quot;NO CUT (&quot; + lineSize + &quot;/&quot; + consoleWidth + &quot;): &quot; + s.length());
+<b class="nc"><i>196</i>&nbsp;            writeOut0(s);</b>
+<i>197</i>&nbsp;        }
+<i>198</i>&nbsp;    }
+<i>199</i>&nbsp;    
+<i>200</i>&nbsp;    private void incrementLineSize(String value) {
+<i>201</i>&nbsp;//        for (char c : value.toCharArray()) {
+<i>202</i>&nbsp;//            if (c == &#39;\t&#39;) {
+<i>203</i>&nbsp;//                lineSize += 4;
+<i>204</i>&nbsp;//            } else {
+<i>205</i>&nbsp;//                lineSize += 1;
+<i>206</i>&nbsp;//            }
+<i>207</i>&nbsp;//        }
+<b class="nc"><i>208</i>&nbsp;        lineSize += value.length();</b>
+<i>209</i>&nbsp;    }
+<i>210</i>&nbsp;    
+<i>211</i>&nbsp;    private String trimLeft(String value) {
+<b class="nc"><i>212</i>&nbsp;        for (int i = 0; i &lt; value.length(); i++) {</b>
+<b class="nc"><i>213</i>&nbsp;            char c = value.charAt(i);</b>
+<b class="nc"><i>214</i>&nbsp;            if (!isSpace(c)) {</b>
+<b class="nc"><i>215</i>&nbsp;                return value.substring(i);</b>
+<i>216</i>&nbsp;            }
+<i>217</i>&nbsp;        }
+<i>218</i>&nbsp;        
+<b class="nc"><i>219</i>&nbsp;        return value;</b>
+<i>220</i>&nbsp;    }
+<i>221</i>&nbsp;
+<i>222</i>&nbsp;    private static boolean isSpace(char c) {
+<b class="nc"><i>223</i>&nbsp;        return c == &#39; &#39;;</b>
+<i>224</i>&nbsp;    }
+<i>225</i>&nbsp;    
+<i>226</i>&nbsp;    private int findCut(int consoleWidth, String value) {
+<b class="nc"><i>227</i>&nbsp;        int lastPossibleChar = value.length() - (lineSize - consoleWidth) - 1;</b>
+<b class="nc"><i>228</i>&nbsp;        assert lastPossibleChar &gt;= 0 &amp;&amp; lastPossibleChar &lt; value.length();</b>
+<i>229</i>&nbsp;        
+<b class="nc"><i>230</i>&nbsp;        for (int i = lastPossibleChar; i &gt; 0; i--) {</b>
+<b class="nc"><i>231</i>&nbsp;            char c = value.charAt(i);</b>
+<b class="nc"><i>232</i>&nbsp;            if (isSpace(c)) {</b>
+<i>233</i>&nbsp;//                System.out.println(&quot;FOUND CUT at &quot; + value.substring(i - 1, i + 2));
+<b class="nc"><i>234</i>&nbsp;                return i;</b>
+<i>235</i>&nbsp;            }
+<i>236</i>&nbsp;        }
+<i>237</i>&nbsp;        
+<b class="nc"><i>238</i>&nbsp;        return 0;</b>
+<i>239</i>&nbsp;    }
+<i>240</i>&nbsp;    
+<i>241</i>&nbsp;    private boolean extractPrefixSpaces(String value) {
+<b class="nc"><i>242</i>&nbsp;        for (int i = 0; i &lt; value.length(); i++) {</b>
+<b class="nc"><i>243</i>&nbsp;            char c = value.charAt(i);</b>
+<b class="nc"><i>244</i>&nbsp;            if (isSpace(c)) {</b>
+<b class="nc"><i>245</i>&nbsp;                spacePrefix.append(c);</b>
+<b class="nc"><i>246</i>&nbsp;            } else if (c == &#39;-&#39;) {</b>
+<b class="nc"><i>247</i>&nbsp;                spacePrefix.append(&#39; &#39;);</b>
+<i>248</i>&nbsp;            } else {
+<b class="nc"><i>249</i>&nbsp;                return true;</b>
+<i>250</i>&nbsp;            }
+<i>251</i>&nbsp;        }
+<b class="nc"><i>252</i>&nbsp;        return false;</b>
+<i>253</i>&nbsp;    }
+<i>254</i>&nbsp;
+<i>255</i>&nbsp;    protected abstract void writeOut0(String s);
+<i>256</i>&nbsp;
+<i>257</i>&nbsp;    protected void newLineOut() {
+<b class="nc"><i>258</i>&nbsp;        spacePrefix = new StringBuilder();</b>
+<b class="nc"><i>259</i>&nbsp;        prefixFinished = false;</b>
+<b class="nc"><i>260</i>&nbsp;        lineSize = 0;</b>
+<b class="nc"><i>261</i>&nbsp;        newLineOut0();</b>
+<i>262</i>&nbsp;    }
+<i>263</i>&nbsp;    
+<i>264</i>&nbsp;    protected abstract void newLineOut0();
+<i>265</i>&nbsp;
+<i>266</i>&nbsp;    public abstract void closeOut();
+<i>267</i>&nbsp;
+<i>268</i>&nbsp;    public abstract void flushOut();
+<i>269</i>&nbsp;    //&lt;/editor-fold&gt;
+<i>270</i>&nbsp;
+<i>271</i>&nbsp;    //&lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;Err methods&quot;&gt;
+<i>272</i>&nbsp;    public void err(boolean b) {
+<b class="nc"><i>273</i>&nbsp;        writeErr(b ? &quot;true&quot; : &quot;false&quot;);</b>
+<i>274</i>&nbsp;    }
+<i>275</i>&nbsp;
+<i>276</i>&nbsp;    public void err(char c) {
+<b class="nc"><i>277</i>&nbsp;        writeErr(String.valueOf(c));</b>
+<i>278</i>&nbsp;    }
+<i>279</i>&nbsp;
+<i>280</i>&nbsp;    public void err(int i) {
+<b class="nc"><i>281</i>&nbsp;        writeErr(String.valueOf(i));</b>
+<i>282</i>&nbsp;    }
+<i>283</i>&nbsp;
+<i>284</i>&nbsp;    public void err(long l) {
+<b class="nc"><i>285</i>&nbsp;        writeErr(String.valueOf(l));</b>
+<i>286</i>&nbsp;    }
+<i>287</i>&nbsp;
+<i>288</i>&nbsp;    public void err(float f) {
+<b class="nc"><i>289</i>&nbsp;        writeErr(String.valueOf(f));</b>
+<i>290</i>&nbsp;    }
+<i>291</i>&nbsp;
+<i>292</i>&nbsp;    public void err(double d) {
+<b class="nc"><i>293</i>&nbsp;        writeErr(String.valueOf(d));</b>
+<i>294</i>&nbsp;    }
+<i>295</i>&nbsp;
+<i>296</i>&nbsp;    public void err(char s[]) {
+<b class="nc"><i>297</i>&nbsp;        writeErr(String.valueOf(s));</b>
+<i>298</i>&nbsp;    }
+<i>299</i>&nbsp;
+<i>300</i>&nbsp;    public void err(String s) {
+<b class="nc"><i>301</i>&nbsp;        if (s == null) {</b>
+<b class="nc"><i>302</i>&nbsp;            s = &quot;null&quot;;</b>
+<i>303</i>&nbsp;        }
+<b class="nc"><i>304</i>&nbsp;        writeErr(s);</b>
+<i>305</i>&nbsp;    }
+<i>306</i>&nbsp;
+<i>307</i>&nbsp;    public void err(Object obj) {
+<b class="nc"><i>308</i>&nbsp;        writeErr(String.valueOf(obj));</b>
+<i>309</i>&nbsp;    }
+<i>310</i>&nbsp;
+<i>311</i>&nbsp;    public void err(Object[] objs) {
+<b class="nc"><i>312</i>&nbsp;        if (objs == null) {</b>
+<b class="nc"><i>313</i>&nbsp;            writeErr(&quot;null&quot;);</b>
+<i>314</i>&nbsp;        } else {
+<b class="nc"><i>315</i>&nbsp;            boolean first = true;</b>
+<b class="nc"><i>316</i>&nbsp;            for (Object obj : objs) {</b>
+<b class="nc"><i>317</i>&nbsp;                if (first) {</b>
+<b class="nc"><i>318</i>&nbsp;                    writeErr(String.valueOf(obj));</b>
+<i>319</i>&nbsp;                } else {
+<b class="nc"><i>320</i>&nbsp;                    writeErr(&quot;, &quot; + String.valueOf(obj));</b>
+<i>321</i>&nbsp;                }
+<i>322</i>&nbsp;            }
+<i>323</i>&nbsp;        }
+<i>324</i>&nbsp;    }
+<i>325</i>&nbsp;
+<i>326</i>&nbsp;    public void errln() {
+<b class="nc"><i>327</i>&nbsp;        newLineErr();</b>
+<i>328</i>&nbsp;    }
+<i>329</i>&nbsp;
+<i>330</i>&nbsp;    public synchronized void errln(boolean x) {
+<b class="nc"><i>331</i>&nbsp;        err(x);</b>
+<b class="nc"><i>332</i>&nbsp;        newLineErr();</b>
+<i>333</i>&nbsp;    }
+<i>334</i>&nbsp;
+<i>335</i>&nbsp;    public synchronized void errln(char x) {
+<b class="nc"><i>336</i>&nbsp;        err(x);</b>
+<b class="nc"><i>337</i>&nbsp;        newLineErr();</b>
+<i>338</i>&nbsp;    }
+<i>339</i>&nbsp;
+<i>340</i>&nbsp;    public synchronized void errln(int x) {
+<b class="nc"><i>341</i>&nbsp;        err(x);</b>
+<b class="nc"><i>342</i>&nbsp;        newLineErr();</b>
+<i>343</i>&nbsp;    }
+<i>344</i>&nbsp;
+<i>345</i>&nbsp;    public synchronized void errln(long x) {
+<b class="nc"><i>346</i>&nbsp;        err(x);</b>
+<b class="nc"><i>347</i>&nbsp;        newLineErr();</b>
+<i>348</i>&nbsp;    }
+<i>349</i>&nbsp;
+<i>350</i>&nbsp;    public synchronized void errln(float x) {
+<b class="nc"><i>351</i>&nbsp;        err(x);</b>
+<b class="nc"><i>352</i>&nbsp;        newLineErr();</b>
+<i>353</i>&nbsp;    }
+<i>354</i>&nbsp;
+<i>355</i>&nbsp;    public synchronized void errln(double x) {
+<b class="nc"><i>356</i>&nbsp;        err(x);</b>
+<b class="nc"><i>357</i>&nbsp;        newLineErr();</b>
+<i>358</i>&nbsp;    }
+<i>359</i>&nbsp;
+<i>360</i>&nbsp;    public synchronized void errln(char x[]) {
+<b class="nc"><i>361</i>&nbsp;        err(x);</b>
+<b class="nc"><i>362</i>&nbsp;        newLineErr();</b>
+<i>363</i>&nbsp;    }
+<i>364</i>&nbsp;
+<i>365</i>&nbsp;    public synchronized void errln(String x) {
+<b class="nc"><i>366</i>&nbsp;        err(x);</b>
+<b class="nc"><i>367</i>&nbsp;        newLineErr();</b>
+<i>368</i>&nbsp;    }
+<i>369</i>&nbsp;
+<i>370</i>&nbsp;    public synchronized void errln(Object x) {
+<b class="nc"><i>371</i>&nbsp;        err(String.valueOf(x));</b>
+<b class="nc"><i>372</i>&nbsp;        newLineErr();</b>
+<i>373</i>&nbsp;    }
+<i>374</i>&nbsp;
+<i>375</i>&nbsp;    public synchronized void errln(Object[] objs) {
+<b class="nc"><i>376</i>&nbsp;        err(objs);</b>
+<b class="nc"><i>377</i>&nbsp;        newLineErr();</b>
+<i>378</i>&nbsp;    }
+<i>379</i>&nbsp;
+<i>380</i>&nbsp;    public synchronized void errln(Object[] objs, String prefix) {
+<b class="nc"><i>381</i>&nbsp;        if (objs == null) {</b>
+<b class="nc"><i>382</i>&nbsp;            writeErr(&quot;null&quot;);</b>
+<i>383</i>&nbsp;        } else {
+<b class="nc"><i>384</i>&nbsp;            for (Object obj : objs) {</b>
+<b class="nc"><i>385</i>&nbsp;                writeErr(prefix + String.valueOf(obj));</b>
+<b class="nc"><i>386</i>&nbsp;                newLineErr();</b>
+<i>387</i>&nbsp;            }
+<i>388</i>&nbsp;        }
+<i>389</i>&nbsp;    }
+<i>390</i>&nbsp;
+<i>391</i>&nbsp;    protected abstract void writeErr(String s);
+<i>392</i>&nbsp;
+<i>393</i>&nbsp;    protected abstract void newLineErr();
+<i>394</i>&nbsp;
+<i>395</i>&nbsp;    public abstract void closeErr();
+<i>396</i>&nbsp;
+<i>397</i>&nbsp;    public abstract void flushErr();
+<i>398</i>&nbsp;    //&lt;/editor-fold&gt;
+<i>399</i>&nbsp;
+<i>400</i>&nbsp;    public void flush() {
+<b class="nc"><i>401</i>&nbsp;        flushOut();</b>
+<b class="nc"><i>402</i>&nbsp;        flushErr();</b>
+<i>403</i>&nbsp;    }
+<i>404</i>&nbsp;
+<i>405</i>&nbsp;    public void close() {
+<b class="nc"><i>406</i>&nbsp;        closeOut();</b>
+<b class="nc"><i>407</i>&nbsp;        closeErr();</b>
+<b class="nc"><i>408</i>&nbsp;        closeInput();</b>
+<i>409</i>&nbsp;    }
+<i>410</i>&nbsp;
+<i>411</i>&nbsp;    public abstract String nextLine();
+<i>412</i>&nbsp;
+<i>413</i>&nbsp;    public abstract boolean nextBoolean();
+<i>414</i>&nbsp;
+<i>415</i>&nbsp;    public abstract char nextChar();
+<i>416</i>&nbsp;
+<i>417</i>&nbsp;    public abstract long nextLong();
+<i>418</i>&nbsp;
+<i>419</i>&nbsp;    public abstract float nextFloat();
+<i>420</i>&nbsp;
+<i>421</i>&nbsp;    public abstract int nextInt();
+<i>422</i>&nbsp;
+<i>423</i>&nbsp;    public abstract double nextDouble();
+<i>424</i>&nbsp;
+<i>425</i>&nbsp;    public abstract void closeInput();
+<i>426</i>&nbsp;
+<i>427</i>&nbsp;    public void resetBold() {
+<i>428</i>&nbsp;    }
+<i>429</i>&nbsp;
+<i>430</i>&nbsp;    public void setBold() {
+<i>431</i>&nbsp;    }
+<i>432</i>&nbsp;
+<i>433</i>&nbsp;    public void setBackgroundColor(Color color) {
+<i>434</i>&nbsp;    }
+<i>435</i>&nbsp;
+<i>436</i>&nbsp;    public void setColor(Color color) {
+<i>437</i>&nbsp;    }
+<i>438</i>&nbsp;
+<i>439</i>&nbsp;    public void resetStyle() {
+<i>440</i>&nbsp;    }
+<i>441</i>&nbsp;
+<i>442</i>&nbsp;    public void carriageReturn() {
+<i>443</i>&nbsp;    }
+<i>444</i>&nbsp;
+<i>445</i>&nbsp;    public char[] readPassword() {
+<b class="nc"><i>446</i>&nbsp;        throw new UnsupportedOperationException(&quot;Not supported yet.&quot;);</b>
+<i>447</i>&nbsp;    }
+<i>448</i>&nbsp;
+<i>449</i>&nbsp;    public void probeWidthBuffer() {
+<b class="nc"><i>450</i>&nbsp;        setWidthBuffer(-1);</b>
+<i>451</i>&nbsp;    }
+<i>452</i>&nbsp;    
+<i>453</i>&nbsp;    public int getConsoleWidth() {
+<b class="nc"><i>454</i>&nbsp;        if (widthBuffer == null) {</b>
+<b class="nc"><i>455</i>&nbsp;            probeWidthBuffer();</b>
+<i>456</i>&nbsp;        }
+<b class="nc"><i>457</i>&nbsp;        return widthBuffer;</b>
+<i>458</i>&nbsp;    }
+<i>459</i>&nbsp;
+<i>460</i>&nbsp;    protected void setWidthBuffer(int widthBuffer) {
+<b class="nc"><i>461</i>&nbsp;        this.widthBuffer = widthBuffer;</b>
+<i>462</i>&nbsp;    }
+<i>463</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2014-11-07 23:06</div>
+</div>
+</body>
+</html>

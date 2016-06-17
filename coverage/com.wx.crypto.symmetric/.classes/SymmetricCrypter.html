@@ -1,0 +1,217 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: SymmetricCrypter</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.wx.crypto.symmetric</a> ]
+</div>
+
+<h1>Coverage Summary for Class: SymmetricCrypter (com.wx.crypto.symmetric)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">SymmetricCrypter</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 35)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;/*
+<i>2</i>&nbsp; * To change this template, choose Tools | Templates
+<i>3</i>&nbsp; * and open the template in the editor.
+<i>4</i>&nbsp; */
+<i>5</i>&nbsp;package com.wx.crypto.symmetric;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;import com.wx.crypto.Crypter;
+<i>8</i>&nbsp;import com.wx.crypto.CryptoException;
+<i>9</i>&nbsp;import java.io.InputStream;
+<i>10</i>&nbsp;import java.io.OutputStream;
+<i>11</i>&nbsp;import java.math.BigInteger;
+<i>12</i>&nbsp;import java.security.NoSuchAlgorithmException;
+<i>13</i>&nbsp;import java.security.SecureRandom;
+<i>14</i>&nbsp;import java.security.spec.InvalidKeySpecException;
+<i>15</i>&nbsp;import java.security.spec.KeySpec;
+<i>16</i>&nbsp;import java.util.Arrays;
+<i>17</i>&nbsp;import javax.crypto.SecretKey;
+<i>18</i>&nbsp;import javax.crypto.SecretKeyFactory;
+<i>19</i>&nbsp;import javax.crypto.spec.PBEKeySpec;
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;/**
+<i>22</i>&nbsp; *
+<i>23</i>&nbsp; * @author Raffaele Canale - raffaelecanale@gmail.com
+<i>24</i>&nbsp; * @version 0.1
+<i>25</i>&nbsp; *
+<i>26</i>&nbsp; * Project: WXLibraries File: SymmetricCrypter.java (UTF-8) Date: 29 déc. 2012
+<i>27</i>&nbsp; */
+<i>28</i>&nbsp;public class SymmetricCrypter extends Crypter {
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;    private static final String ALGORITHM_NAME = &quot;Symmetric&quot;;
+<b class="nc"><i>31</i>&nbsp;    private static final int[] SUPPORTED_SIZES = {64, 128, 192, 256};</b>
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;    private byte[] mKey;
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;    public SymmetricCrypter() {
+<b class="nc"><i>36</i>&nbsp;        super(SUPPORTED_SIZES);</b>
+<i>37</i>&nbsp;    }
+<i>38</i>&nbsp;
+<i>39</i>&nbsp;    public SymmetricCrypter(int keySize) throws CryptoException {
+<b class="nc"><i>40</i>&nbsp;        super(SUPPORTED_SIZES);</b>
+<b class="nc"><i>41</i>&nbsp;        setKeyLength(keySize);</b>
+<i>42</i>&nbsp;    }
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;    public SymmetricCrypter(char[] key, byte[] salt) throws CryptoException {
+<b class="nc"><i>45</i>&nbsp;        super(SUPPORTED_SIZES);</b>
+<b class="nc"><i>46</i>&nbsp;        generateKey(key, salt);</b>
+<i>47</i>&nbsp;    }
+<i>48</i>&nbsp;
+<i>49</i>&nbsp;//    @Override
+<i>50</i>&nbsp;//    public void initKey(byte[] key) throws CryptoException {
+<i>51</i>&nbsp;//        mKey = Arrays.copyOf(key, key.length);
+<i>52</i>&nbsp;//    }
+<i>53</i>&nbsp;    
+<i>54</i>&nbsp;    @Override
+<i>55</i>&nbsp;    protected void initKey(byte[] key, int size) throws CryptoException {
+<b class="nc"><i>56</i>&nbsp;        mKey = Arrays.copyOf(key, size / 8);</b>
+<i>57</i>&nbsp;    }
+<i>58</i>&nbsp;
+<i>59</i>&nbsp;    @Override
+<i>60</i>&nbsp;    protected void generateKey(char[] password, byte[] salt, int keySize, 
+<i>61</i>&nbsp;            int iterationsCount, String hashAlgorithm) throws CryptoException {
+<i>62</i>&nbsp;        try {
+<b class="nc"><i>63</i>&nbsp;            SecretKeyFactory factory =</b>
+<b class="nc"><i>64</i>&nbsp;                    SecretKeyFactory.getInstance(&quot;PBKDF2With&quot; + hashAlgorithm);</b>
+<i>65</i>&nbsp;            // TODO Maybe use PBEAlgorithm instead of hash
+<b class="nc"><i>66</i>&nbsp;            KeySpec spec = new PBEKeySpec(password, salt, iterationsCount, </b>
+<i>67</i>&nbsp;                    keySize);
+<i>68</i>&nbsp;            
+<b class="nc"><i>69</i>&nbsp;            SecretKey tmp = factory.generateSecret(spec);</b>
+<b class="nc"><i>70</i>&nbsp;            mKey = tmp.getEncoded();</b>
+<b class="nc"><i>71</i>&nbsp;        } catch (NoSuchAlgorithmException ex) {</b>
+<b class="nc"><i>72</i>&nbsp;            throw new CryptoException(ex, this);</b>
+<b class="nc"><i>73</i>&nbsp;        } catch (InvalidKeySpecException ex) {</b>
+<b class="nc"><i>74</i>&nbsp;            throw new CryptoException(&quot;&quot;, ex, this);</b>
+<b class="nc"><i>75</i>&nbsp;        }</b>
+<i>76</i>&nbsp;    }
+<i>77</i>&nbsp;
+<i>78</i>&nbsp;    @Override
+<i>79</i>&nbsp;    protected final void generateRandomKey(int size) throws CryptoException {
+<b class="nc"><i>80</i>&nbsp;        mKey = new byte[size / 8];</b>
+<b class="nc"><i>81</i>&nbsp;        SecureRandom random = new SecureRandom();</b>
+<b class="nc"><i>82</i>&nbsp;        random.nextBytes(mKey);</b>
+<i>83</i>&nbsp;    }
+<i>84</i>&nbsp;
+<i>85</i>&nbsp;    @Override
+<i>86</i>&nbsp;    public String getAlgorithmName() {
+<b class="nc"><i>87</i>&nbsp;        return ALGORITHM_NAME;</b>
+<i>88</i>&nbsp;    }
+<i>89</i>&nbsp;
+<i>90</i>&nbsp;    @Override
+<i>91</i>&nbsp;    public byte[] getKey() {
+<b class="nc"><i>92</i>&nbsp;        return Arrays.copyOf(mKey, mKey.length);</b>
+<i>93</i>&nbsp;    }
+<i>94</i>&nbsp;
+<i>95</i>&nbsp;    @Override
+<i>96</i>&nbsp;    public String toString() {
+<b class="nc"><i>97</i>&nbsp;        return &quot;Symmetric key (key size: &quot; + getKeyLength() + &quot;)&quot;;</b>
+<i>98</i>&nbsp;    }
+<i>99</i>&nbsp;
+<i>100</i>&nbsp;    @Override
+<i>101</i>&nbsp;    protected InputStream getInputStream0(InputStream in, byte[] iv,
+<i>102</i>&nbsp;            boolean encrypt)
+<i>103</i>&nbsp;            throws CryptoException {
+<b class="nc"><i>104</i>&nbsp;        return new SymmetricInputStream(in, mKey, initOffset(iv, mKey.length));</b>
+<i>105</i>&nbsp;    }
+<i>106</i>&nbsp;
+<i>107</i>&nbsp;    @Override
+<i>108</i>&nbsp;    protected OutputStream getOutputStream0(OutputStream out, byte[] iv, 
+<i>109</i>&nbsp;            boolean encrypt)
+<i>110</i>&nbsp;            throws CryptoException {
+<b class="nc"><i>111</i>&nbsp;        return new SymmetricOutputStream(out, mKey, initOffset(iv, mKey.length));</b>
+<i>112</i>&nbsp;    }
+<i>113</i>&nbsp;
+<i>114</i>&nbsp;    @Override
+<i>115</i>&nbsp;    protected byte[] doFinal(byte[] data, byte[] iv, boolean encrypt) {
+<b class="nc"><i>116</i>&nbsp;        byte[] result = new byte[data.length];</b>
+<b class="nc"><i>117</i>&nbsp;        for (int i = 0, keyIndex = initOffset(iv, mKey.length); </b>
+<b class="nc"><i>118</i>&nbsp;                i &lt; data.length; </b>
+<b class="nc"><i>119</i>&nbsp;                i++, keyIndex = (keyIndex + 1) % mKey.length) {</b>
+<b class="nc"><i>120</i>&nbsp;            result[i] = (byte) (data[i] ^ mKey[keyIndex]);</b>
+<i>121</i>&nbsp;        }
+<i>122</i>&nbsp;
+<b class="nc"><i>123</i>&nbsp;        return result;</b>
+<i>124</i>&nbsp;    }
+<i>125</i>&nbsp;    
+<i>126</i>&nbsp;    private int initOffset(byte[] iv, int keyByteLength) {
+<b class="nc"><i>127</i>&nbsp;        if (iv == null) {</b>
+<b class="nc"><i>128</i>&nbsp;            return 0;</b>
+<i>129</i>&nbsp;        } else {
+<b class="nc"><i>130</i>&nbsp;            return new BigInteger(iv).remainder(</b>
+<b class="nc"><i>131</i>&nbsp;                    BigInteger.valueOf(keyByteLength)).intValue();</b>
+<i>132</i>&nbsp;        }
+<i>133</i>&nbsp;    }
+<i>134</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2014-11-07 23:06</div>
+</div>
+</body>
+</html>

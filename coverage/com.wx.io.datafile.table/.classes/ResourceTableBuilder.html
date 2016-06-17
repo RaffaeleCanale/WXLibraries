@@ -1,0 +1,547 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ResourceTableBuilder</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.wx.io.datafile.table</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ResourceTableBuilder (com.wx.io.datafile.table)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ResourceTableBuilder</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 101)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ResourceTableBuilder$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 4)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">ResourceTableBuilder$ColumnCaster</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 20)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">ResourceTableBuilder$InfoKeys</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 11)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">ResourceTableBuilder$KeyCaster</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 3)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 20)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 139)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.wx.io.datafile.table;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.wx.crypto.CryptoException;
+<i>4</i>&nbsp;import com.wx.io.datafile.DataFile;
+<i>5</i>&nbsp;import com.wx.io.datafile.StrategyHelper;
+<i>6</i>&nbsp;import com.wx.io.datafile.StrategyHelper.DataFileStrategies;
+<i>7</i>&nbsp;import com.wx.io.datafile.StrategyHelper.DataPageStrategies;
+<i>8</i>&nbsp;import com.wx.io.datafile.StrategyHelper.IdGeneratorStrategies;
+<i>9</i>&nbsp;import com.wx.io.datafile.StrategyHelper.RegisterStrategies;
+<i>10</i>&nbsp;import com.wx.io.datafile.impl.MultiplePageFile;
+<i>11</i>&nbsp;import com.wx.io.datafile.impl.SinglePageFile;
+<i>12</i>&nbsp;import com.wx.io.datafile.page.DataPageFactory;
+<i>13</i>&nbsp;import com.wx.io.datafile.page.impl.BitMappedPage;
+<i>14</i>&nbsp;import com.wx.io.datafile.page.impl.CachedOnlyPage;
+<i>15</i>&nbsp;import com.wx.io.datafile.register.RegisterColType;
+<i>16</i>&nbsp;import com.wx.io.datafile.register.RegisterColumn;
+<i>17</i>&nbsp;import com.wx.io.datafile.register.RegisterSaveStrategy;
+<i>18</i>&nbsp;import com.wx.io.datafile.register.fixlen.FixedLengthRegister;
+<i>19</i>&nbsp;import com.wx.io.datafile.register.varlen.DynamicLengthRegister;
+<i>20</i>&nbsp;import com.wx.io.datafile.table.id.IdGeneratorInterface;
+<i>21</i>&nbsp;import com.wx.io.datafile.table.id.IncrementalIdGenerator;
+<i>22</i>&nbsp;import com.wx.resource.manager.ResourcePage;
+<i>23</i>&nbsp;import com.wx.resource.property.ResourceProperty;
+<i>24</i>&nbsp;import com.wx.resource.manager.ResourceWrapper;
+<i>25</i>&nbsp;import com.wx.util.representables.TypeCaster;
+<i>26</i>&nbsp;import com.wx.util.representables.string.EnumCaster;
+<i>27</i>&nbsp;import com.wx.util.representables.string.IntRepr;
+<i>28</i>&nbsp;import com.wx.util.representables.string.StringRepr;
+<i>29</i>&nbsp;import java.io.File;
+<i>30</i>&nbsp;import java.io.FileNotFoundException;
+<i>31</i>&nbsp;import java.io.IOException;
+<i>32</i>&nbsp;import java.util.Arrays;
+<i>33</i>&nbsp;import java.util.List;
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;/**
+<i>36</i>&nbsp; * This is builder easily allows to create or load tables. All the necessary
+<i>37</i>&nbsp; * information needed for that operation is read/stored in a
+<i>38</i>&nbsp; * {@link ResourcePage}.
+<i>39</i>&nbsp; * &lt;br&gt;&lt;br&gt;
+<i>40</i>&nbsp; * This class uses {@link StrategyHelper} for all strategy decisions.
+<i>41</i>&nbsp; *
+<i>42</i>&nbsp; * @author Raffaele Canale - raffaelecanale@gmail.com
+<i>43</i>&nbsp; * @version 1.0
+<i>44</i>&nbsp; *
+<i>45</i>&nbsp; * Project: WXLibraries.ANT File: ResourceTableBuilder.java (UTF-8) Date: Oct
+<i>46</i>&nbsp; * 11, 2013
+<i>47</i>&nbsp; */
+<b class="nc"><i>48</i>&nbsp;public class ResourceTableBuilder {</b>
+<i>49</i>&nbsp;
+<i>50</i>&nbsp;    final static String DEFAULT_INFO_FILE_PREFIX = &quot;&quot;;
+<i>51</i>&nbsp;    final static String DEFAULT_INFO_FILE_EXTENSION = &quot;_info.rtb&quot;;
+<i>52</i>&nbsp;    final static boolean DEFAULT_INFO_XML = false;
+<i>53</i>&nbsp;
+<i>54</i>&nbsp;    private final String tableName;
+<i>55</i>&nbsp;    private ResourceWrapper&lt;InfoKeys&gt; info;
+<i>56</i>&nbsp;    private final File dataFileDirectory;
+<i>57</i>&nbsp;
+<i>58</i>&nbsp;    /**
+<i>59</i>&nbsp;     * Constructs a new table builder.&lt;br&gt;&lt;br&gt;
+<i>60</i>&nbsp;     * Note that since no {@link ResourcePage} is provided, the builder will
+<i>61</i>&nbsp;     * automatically create/load a page within the data file directory.
+<i>62</i>&nbsp;     *
+<i>63</i>&nbsp;     * @param tableName         Name of the table
+<i>64</i>&nbsp;     * @param dataFileDirectory Directory of the {@code DataFile}
+<i>65</i>&nbsp;     */
+<b class="nc"><i>66</i>&nbsp;    public ResourceTableBuilder(String tableName, File dataFileDirectory) {</b>
+<b class="nc"><i>67</i>&nbsp;        this.tableName = tableName;</b>
+<b class="nc"><i>68</i>&nbsp;        this.dataFileDirectory = dataFileDirectory;</b>
+<i>69</i>&nbsp;    }
+<i>70</i>&nbsp;
+<i>71</i>&nbsp;    /**
+<i>72</i>&nbsp;     * Constructs a new table builder.
+<i>73</i>&nbsp;     *
+<i>74</i>&nbsp;     * @param tableName         Name of the table
+<i>75</i>&nbsp;     * @param dataFileDirectory Directory of the {@code DataFile}
+<i>76</i>&nbsp;     * @param infoPage          {@code ResourcePage} where the table info will
+<i>77</i>&nbsp;     *                          be stored/loaded
+<i>78</i>&nbsp;     */
+<i>79</i>&nbsp;    public ResourceTableBuilder(String tableName, File dataFileDirectory,
+<b class="nc"><i>80</i>&nbsp;            ResourcePage infoPage) {</b>
+<b class="nc"><i>81</i>&nbsp;        this.tableName = tableName;</b>
+<b class="nc"><i>82</i>&nbsp;        this.dataFileDirectory = dataFileDirectory;</b>
+<b class="nc"><i>83</i>&nbsp;        this.info = new ResourceWrapper&lt;&gt;(infoPage, new KeyCaster());</b>
+<i>84</i>&nbsp;    }
+<i>85</i>&nbsp;
+<i>86</i>&nbsp;    /**
+<i>87</i>&nbsp;     * Creates a new table.&lt;br&gt;&lt;br&gt;
+<i>88</i>&nbsp;     *
+<i>89</i>&nbsp;     * Note that this method will use all the strategies and options as given by
+<i>90</i>&nbsp;     * the {@link StrategyHelper}. To use custom strategies, set them on the
+<i>91</i>&nbsp;     * {@link StrategyHelper} first.
+<i>92</i>&nbsp;     *
+<i>93</i>&nbsp;     * @param columns Columns of the table to create.
+<i>94</i>&nbsp;     *
+<i>95</i>&nbsp;     * @return The created table
+<i>96</i>&nbsp;     *
+<i>97</i>&nbsp;     * @throws IOException
+<i>98</i>&nbsp;     */
+<i>99</i>&nbsp;    public Table createTable(RegisterColumn[] columns) throws IOException {
+<b class="nc"><i>100</i>&nbsp;        checkInfoPage(false);</b>
+<i>101</i>&nbsp;
+<i>102</i>&nbsp;        // Columns
+<b class="nc"><i>103</i>&nbsp;        info.setList(InfoKeys.cols, Arrays.asList(columns), new ColumnCaster());</b>
+<i>104</i>&nbsp;
+<i>105</i>&nbsp;        // Id generator
+<i>106</i>&nbsp;        IdGeneratorStrategies idGeneratorStrategy
+<b class="nc"><i>107</i>&nbsp;                = StrategyHelper.getIdGeneratorStrategy();</b>
+<b class="nc"><i>108</i>&nbsp;        IdGeneratorInterface idGenerator = initGenerator(idGeneratorStrategy);</b>
+<b class="nc"><i>109</i>&nbsp;        info.setProperty(InfoKeys.idGeneratorStrategy, idGeneratorStrategy,</b>
+<b class="nc"><i>110</i>&nbsp;                new EnumCaster&lt;&gt;(IdGeneratorStrategies.values()));</b>
+<i>111</i>&nbsp;
+<i>112</i>&nbsp;        // Register strategy
+<i>113</i>&nbsp;        RegisterStrategies registerStrategy
+<b class="nc"><i>114</i>&nbsp;                = StrategyHelper.getRegisterStrategy();</b>
+<b class="nc"><i>115</i>&nbsp;        RegisterSaveStrategy register = initRegisterStrategy(registerStrategy,</b>
+<i>116</i>&nbsp;                columns);
+<b class="nc"><i>117</i>&nbsp;        info.setProperty(InfoKeys.registerStrategy, registerStrategy,</b>
+<b class="nc"><i>118</i>&nbsp;                new EnumCaster&lt;&gt;(RegisterStrategies.values()));</b>
+<i>119</i>&nbsp;
+<i>120</i>&nbsp;        // Page strategy
+<b class="nc"><i>121</i>&nbsp;        DataPageStrategies pageStrategy = StrategyHelper.getPageStrategy();</b>
+<b class="nc"><i>122</i>&nbsp;        Object[] pageOptions = StrategyHelper.getPageOptions();</b>
+<b class="nc"><i>123</i>&nbsp;        DataPageFactory pageFactory = initPageFactory(pageStrategy, register, pageOptions);</b>
+<b class="nc"><i>124</i>&nbsp;        info.setProperty(InfoKeys.pageStrategy, pageStrategy,</b>
+<b class="nc"><i>125</i>&nbsp;                new EnumCaster&lt;&gt;(DataPageStrategies.values()));</b>
+<i>126</i>&nbsp;
+<i>127</i>&nbsp;        // File strategy
+<b class="nc"><i>128</i>&nbsp;        DataFileStrategies fileStrategy = StrategyHelper.getFileStrategy();</b>
+<b class="nc"><i>129</i>&nbsp;        Object[] fileOptions = StrategyHelper.getFileOptions();</b>
+<b class="nc"><i>130</i>&nbsp;        DataFile dataFile = initDataFile(fileStrategy, pageFactory, dataFileDirectory, fileOptions);</b>
+<b class="nc"><i>131</i>&nbsp;        info.setProperty(InfoKeys.fileStrategy, fileStrategy,</b>
+<b class="nc"><i>132</i>&nbsp;                new EnumCaster&lt;&gt;(DataFileStrategies.values()));</b>
+<i>133</i>&nbsp;        try {
+<b class="nc"><i>134</i>&nbsp;            info.save();</b>
+<b class="nc"><i>135</i>&nbsp;        } catch (CryptoException ex) {</b>
+<i>136</i>&nbsp;            // Actually, can only happen if the info was provided manually and is crypted
+<b class="nc"><i>137</i>&nbsp;            throw new IOException(ex);</b>
+<b class="nc"><i>138</i>&nbsp;        }</b>
+<b class="nc"><i>139</i>&nbsp;        return new Table(tableName, columns, idGenerator, dataFile);</b>
+<i>140</i>&nbsp;    }
+<i>141</i>&nbsp;
+<i>142</i>&nbsp;    /**
+<i>143</i>&nbsp;     * Loads the table. All the necessary information are (supposedly) stored in
+<i>144</i>&nbsp;     * the info file (either provided are automatically stored in the
+<i>145</i>&nbsp;     * directory).
+<i>146</i>&nbsp;     *
+<i>147</i>&nbsp;     *
+<i>148</i>&nbsp;     * @return The loaded table
+<i>149</i>&nbsp;     *
+<i>150</i>&nbsp;     * @throws FileNotFoundException If a file is missing
+<i>151</i>&nbsp;     * @throws IOException
+<i>152</i>&nbsp;     */
+<i>153</i>&nbsp;    public Table loadTable() throws FileNotFoundException, IOException {
+<b class="nc"><i>154</i>&nbsp;        checkInfoPage(true);</b>
+<i>155</i>&nbsp;        try {
+<b class="nc"><i>156</i>&nbsp;            IdGeneratorStrategies idGeneratorStrategy</b>
+<b class="nc"><i>157</i>&nbsp;                    = info.getValue(InfoKeys.idGeneratorStrategy,</b>
+<b class="nc"><i>158</i>&nbsp;                            new EnumCaster&lt;&gt;(IdGeneratorStrategies.values()));</b>
+<b class="nc"><i>159</i>&nbsp;            RegisterStrategies registerStrategy</b>
+<b class="nc"><i>160</i>&nbsp;                    = info.getValue(InfoKeys.registerStrategy,</b>
+<b class="nc"><i>161</i>&nbsp;                            new EnumCaster&lt;&gt;(RegisterStrategies.values()));</b>
+<i>162</i>&nbsp;
+<b class="nc"><i>163</i>&nbsp;            DataPageStrategies pageStrategy = info.getValue(InfoKeys.pageStrategy,</b>
+<b class="nc"><i>164</i>&nbsp;                    new EnumCaster&lt;&gt;(DataPageStrategies.values()));</b>
+<i>165</i>&nbsp;
+<b class="nc"><i>166</i>&nbsp;            DataFileStrategies fileStrategy = info.getValue(InfoKeys.fileStrategy,</b>
+<b class="nc"><i>167</i>&nbsp;                    new EnumCaster&lt;&gt;(DataFileStrategies.values()));</b>
+<i>168</i>&nbsp;
+<i>169</i>&nbsp;            // Load columns
+<b class="nc"><i>170</i>&nbsp;            List&lt;RegisterColumn&gt; columnsList = info.getList(InfoKeys.cols,</b>
+<i>171</i>&nbsp;                    new ColumnCaster());
+<i>172</i>&nbsp;            // TODO Check columnsList ? And strategies ?            
+<b class="nc"><i>173</i>&nbsp;            checkNotNull(idGeneratorStrategy, registerStrategy, pageStrategy,</b>
+<i>174</i>&nbsp;                    fileStrategy, columnsList);
+<i>175</i>&nbsp;            
+<b class="nc"><i>176</i>&nbsp;            RegisterColumn[] columns = new RegisterColumn[columnsList.size()];</b>
+<b class="nc"><i>177</i>&nbsp;            columns = columnsList.toArray(columns);</b>
+<i>178</i>&nbsp;
+<b class="nc"><i>179</i>&nbsp;            IdGeneratorInterface idGenerator = initGenerator(idGeneratorStrategy);</b>
+<b class="nc"><i>180</i>&nbsp;            RegisterSaveStrategy registerSaver = initRegisterStrategy(registerStrategy, columns);</b>
+<b class="nc"><i>181</i>&nbsp;            DataPageFactory pageFactory = initPageFactory(pageStrategy, registerSaver, null);</b>
+<b class="nc"><i>182</i>&nbsp;            DataFile dataFile = initDataFile(fileStrategy, pageFactory, dataFileDirectory, null);</b>
+<i>183</i>&nbsp;
+<b class="nc"><i>184</i>&nbsp;            return new Table(tableName, columns, idGenerator, dataFile);</b>
+<b class="nc"><i>185</i>&nbsp;        } catch (ClassCastException ex) {</b>
+<b class="nc"><i>186</i>&nbsp;            throw new IOException(ex);</b>
+<i>187</i>&nbsp;        }
+<i>188</i>&nbsp;
+<i>189</i>&nbsp;    }
+<i>190</i>&nbsp;    
+<i>191</i>&nbsp;    private void checkNotNull(Object... obs) throws IOException {
+<b class="nc"><i>192</i>&nbsp;        for (Object ob : obs) {</b>
+<b class="nc"><i>193</i>&nbsp;            if (ob == null) {</b>
+<b class="nc"><i>194</i>&nbsp;                throw new IOException(&quot;Missing information&quot;);</b>
+<i>195</i>&nbsp;            }
+<i>196</i>&nbsp;        }
+<i>197</i>&nbsp;    }
+<i>198</i>&nbsp;
+<i>199</i>&nbsp;    private void checkInfoPage(boolean load) throws FileNotFoundException,
+<i>200</i>&nbsp;            IOException {
+<b class="nc"><i>201</i>&nbsp;        if (info == null) {</b>
+<b class="nc"><i>202</i>&nbsp;            String infoFileName = DEFAULT_INFO_FILE_PREFIX + tableName</b>
+<i>203</i>&nbsp;                    + DEFAULT_INFO_FILE_EXTENSION;
+<b class="nc"><i>204</i>&nbsp;            String path = new File(dataFileDirectory, infoFileName)</b>
+<b class="nc"><i>205</i>&nbsp;                    .getAbsolutePath();</b>
+<b class="nc"><i>206</i>&nbsp;            ResourcePage page = load</b>
+<b class="nc"><i>207</i>&nbsp;                    ? ResourcePage.loadExternalPage(path, DEFAULT_INFO_XML, null)</b>
+<b class="nc"><i>208</i>&nbsp;                    : ResourcePage.createExternalPage(path, DEFAULT_INFO_XML);</b>
+<b class="nc"><i>209</i>&nbsp;            info = new ResourceWrapper&lt;&gt;(page, new KeyCaster());</b>
+<i>210</i>&nbsp;        }
+<i>211</i>&nbsp;    }
+<i>212</i>&nbsp;
+<i>213</i>&nbsp;    private IdGeneratorInterface initGenerator(
+<i>214</i>&nbsp;            IdGeneratorStrategies idGeneratorStrategy) {
+<b class="nc"><i>215</i>&nbsp;        switch (idGeneratorStrategy) {</b>
+<i>216</i>&nbsp;            case incremental:
+<b class="nc"><i>217</i>&nbsp;                IntRepr repr = new IntRepr();</b>
+<b class="nc"><i>218</i>&nbsp;                return new IncrementalIdGenerator(</b>
+<b class="nc"><i>219</i>&nbsp;                        info.getProperty(InfoKeys.maxId, repr),</b>
+<b class="nc"><i>220</i>&nbsp;                        info.getProperty(InfoKeys.minId, repr));</b>
+<i>221</i>&nbsp;            default:
+<b class="nc"><i>222</i>&nbsp;                throw new UnsupportedOperationException(</b>
+<i>223</i>&nbsp;                        &quot;Unsupported strategy: &quot; + idGeneratorStrategy);
+<i>224</i>&nbsp;        }
+<i>225</i>&nbsp;    }
+<i>226</i>&nbsp;
+<i>227</i>&nbsp;    private RegisterSaveStrategy initRegisterStrategy(
+<i>228</i>&nbsp;            RegisterStrategies registerStrategy, RegisterColumn[] columns) {
+<b class="nc"><i>229</i>&nbsp;        switch (registerStrategy) {</b>
+<i>230</i>&nbsp;            case fixed_length:
+<b class="nc"><i>231</i>&nbsp;                return new FixedLengthRegister(columns);</b>
+<i>232</i>&nbsp;            case length_prefixed:
+<b class="nc"><i>233</i>&nbsp;                return new DynamicLengthRegister(columns);</b>
+<i>234</i>&nbsp;            default:
+<b class="nc"><i>235</i>&nbsp;                throw new AssertionError();</b>
+<i>236</i>&nbsp;        }
+<i>237</i>&nbsp;    }
+<i>238</i>&nbsp;
+<i>239</i>&nbsp;    private DataPageFactory initPageFactory(DataPageStrategies pageStrategy,
+<i>240</i>&nbsp;            RegisterSaveStrategy registerStrategy, Object[] options) throws IOException {
+<b class="nc"><i>241</i>&nbsp;        IntRepr intRepr = new IntRepr();</b>
+<b class="nc"><i>242</i>&nbsp;        switch (pageStrategy) {</b>
+<i>243</i>&nbsp;            case cached_only:
+<b class="nc"><i>244</i>&nbsp;                int maxSize = initOption(InfoKeys.maxSize, options, 0, intRepr);</b>
+<b class="nc"><i>245</i>&nbsp;                return CachedOnlyPage.getFactory(registerStrategy, maxSize);</b>
+<i>246</i>&nbsp;
+<i>247</i>&nbsp;            case fixlen_bitmap:
+<b class="nc"><i>248</i>&nbsp;                int registerLength = initOption(InfoKeys.registerLength, options,</b>
+<i>249</i>&nbsp;                        0, intRepr);
+<b class="nc"><i>250</i>&nbsp;                int pageCapacity = initOption(InfoKeys.pageCapacity, options,</b>
+<i>251</i>&nbsp;                        1, intRepr);
+<b class="nc"><i>252</i>&nbsp;                return BitMappedPage.getFactory(registerStrategy, registerLength,</b>
+<i>253</i>&nbsp;                        pageCapacity);
+<i>254</i>&nbsp;            default:
+<b class="nc"><i>255</i>&nbsp;                throw new UnsupportedOperationException(</b>
+<i>256</i>&nbsp;                        &quot;Unsupported strategy: &quot; + pageStrategy);
+<i>257</i>&nbsp;        }
+<i>258</i>&nbsp;    }
+<i>259</i>&nbsp;
+<i>260</i>&nbsp;    private DataFile initDataFile(DataFileStrategies fileStrategy,
+<i>261</i>&nbsp;            DataPageFactory pageFactory, File dataFileDirectory,
+<i>262</i>&nbsp;            Object[] options) throws IOException {
+<i>263</i>&nbsp;
+<b class="nc"><i>264</i>&nbsp;        StringRepr optionCaster = new StringRepr();</b>
+<i>265</i>&nbsp;
+<b class="nc"><i>266</i>&nbsp;        switch (fileStrategy) {</b>
+<i>267</i>&nbsp;            case multi_page:
+<b class="nc"><i>268</i>&nbsp;                ResourceProperty&lt;Integer&gt; pageCount = info.getIntProperty(InfoKeys.pageCount);</b>
+<b class="nc"><i>269</i>&nbsp;                String filesNamePrefix = initOption(InfoKeys.filesNamePrefix,</b>
+<i>270</i>&nbsp;                        options, 0, optionCaster, tableName);
+<b class="nc"><i>271</i>&nbsp;                String filesExtension = initOption(InfoKeys.filesExtension,</b>
+<i>272</i>&nbsp;                        options, 1, optionCaster);
+<b class="nc"><i>273</i>&nbsp;                return new MultiplePageFile(pageCount, filesNamePrefix, filesExtension, dataFileDirectory, pageFactory);</b>
+<i>274</i>&nbsp;            case single_page:
+<b class="nc"><i>275</i>&nbsp;                String fileName = initOption(InfoKeys.fileName,</b>
+<i>276</i>&nbsp;                        options, 0, optionCaster, tableName);
+<b class="nc"><i>277</i>&nbsp;                return new SinglePageFile(fileName, dataFileDirectory, pageFactory);</b>
+<i>278</i>&nbsp;            default:
+<b class="nc"><i>279</i>&nbsp;                throw new UnsupportedOperationException(</b>
+<i>280</i>&nbsp;                        &quot;Unsupported strategy: &quot; + fileStrategy);
+<i>281</i>&nbsp;        }
+<i>282</i>&nbsp;    }
+<i>283</i>&nbsp;
+<i>284</i>&nbsp;    @SuppressWarnings(&quot;unchecked&quot;)
+<i>285</i>&nbsp;    private &lt;Type&gt; Type initOption(InfoKeys key, Object[] options,
+<i>286</i>&nbsp;            int optionIndex, TypeCaster&lt;String, Type&gt; caster,
+<i>287</i>&nbsp;            Object... params) throws IOException {
+<b class="nc"><i>288</i>&nbsp;        if (options == null) { // No options provided, we want to read</b>
+<b class="nc"><i>289</i>&nbsp;            if (!info.containsKey(key)) {</b>
+<b class="nc"><i>290</i>&nbsp;                throw new IOException(&quot;Missing property in info file: &quot; + key);</b>
+<i>291</i>&nbsp;            }
+<b class="nc"><i>292</i>&nbsp;            return info.getActionValue(key, caster, params);</b>
+<i>293</i>&nbsp;        } else {
+<b class="nc"><i>294</i>&nbsp;            if (options.length &lt;= optionIndex) {</b>
+<b class="nc"><i>295</i>&nbsp;                throw new IllegalArgumentException(&quot;Unspecified property: &quot; + key);</b>
+<i>296</i>&nbsp;            }
+<b class="nc"><i>297</i>&nbsp;            info.setProperty(key, (Type) options[optionIndex], caster);</b>
+<b class="nc"><i>298</i>&nbsp;            return info.getActionValue(key, caster, params);</b>
+<i>299</i>&nbsp;        }
+<i>300</i>&nbsp;    }
+<i>301</i>&nbsp;
+<b class="nc"><i>302</i>&nbsp;    private enum InfoKeys {</b>
+<i>303</i>&nbsp;        // INCREMENTAL GENERATOR
+<i>304</i>&nbsp;
+<b class="nc"><i>305</i>&nbsp;        maxId, minId,</b>
+<i>306</i>&nbsp;        // CACHED PAGE
+<b class="nc"><i>307</i>&nbsp;        maxSize,</b>
+<i>308</i>&nbsp;        // BITMAP PAGE
+<b class="nc"><i>309</i>&nbsp;        pageCapacity, registerLength,</b>
+<i>310</i>&nbsp;        // MULTIPAGE FILE
+<b class="nc"><i>311</i>&nbsp;        filesNamePrefix, filesExtension, pageCount,</b>
+<i>312</i>&nbsp;        // SINGLE FILE
+<b class="nc"><i>313</i>&nbsp;        fileName,</b>
+<i>314</i>&nbsp;        // OTHERS
+<b class="nc"><i>315</i>&nbsp;        cols,</b>
+<b class="nc"><i>316</i>&nbsp;        fileStrategy,</b>
+<b class="nc"><i>317</i>&nbsp;        pageStrategy,</b>
+<b class="nc"><i>318</i>&nbsp;        registerStrategy,</b>
+<b class="nc"><i>319</i>&nbsp;        idGeneratorStrategy</b>
+<i>320</i>&nbsp;    }
+<i>321</i>&nbsp;
+<b class="nc"><i>322</i>&nbsp;    private class KeyCaster implements TypeCaster&lt;String, InfoKeys&gt; {</b>
+<i>323</i>&nbsp;
+<i>324</i>&nbsp;        @Override
+<i>325</i>&nbsp;        public String castIn(InfoKeys value) throws ClassCastException {
+<b class="nc"><i>326</i>&nbsp;            return tableName + &quot;.&quot; + value.name();</b>
+<i>327</i>&nbsp;        }
+<i>328</i>&nbsp;
+<i>329</i>&nbsp;        @Override
+<i>330</i>&nbsp;        public InfoKeys castOut(String value) throws ClassCastException {
+<b class="nc"><i>331</i>&nbsp;            throw new UnsupportedOperationException(&quot;Not supported.&quot;);</b>
+<i>332</i>&nbsp;        }
+<i>333</i>&nbsp;
+<i>334</i>&nbsp;    }
+<i>335</i>&nbsp;
+<b class="nc"><i>336</i>&nbsp;    private class ColumnCaster implements TypeCaster&lt;String, RegisterColumn&gt; {</b>
+<i>337</i>&nbsp;
+<i>338</i>&nbsp;        private final static String SEPARATOR = &quot;/&quot;; //Can be anything but a numerical value
+<i>339</i>&nbsp;
+<i>340</i>&nbsp;        @Override
+<i>341</i>&nbsp;        public String castIn(RegisterColumn col) throws ClassCastException {
+<b class="nc"><i>342</i>&nbsp;            int colLength = col.hasOptionalLength() ? col.getOptionalLength()</b>
+<i>343</i>&nbsp;                    : 0;
+<i>344</i>&nbsp;
+<b class="nc"><i>345</i>&nbsp;            return col.getType().ordinal() + SEPARATOR</b>
+<i>346</i>&nbsp;                    + colLength + SEPARATOR
+<b class="nc"><i>347</i>&nbsp;                    + col.getName();</b>
+<i>348</i>&nbsp;        }
+<i>349</i>&nbsp;
+<i>350</i>&nbsp;        @Override
+<i>351</i>&nbsp;        public RegisterColumn castOut(String value) throws ClassCastException {
+<b class="nc"><i>352</i>&nbsp;            int firstSeparator = value.indexOf(SEPARATOR);</b>
+<b class="nc"><i>353</i>&nbsp;            if (firstSeparator &lt; 0) {</b>
+<b class="nc"><i>354</i>&nbsp;                throw new ClassCastException();</b>
+<i>355</i>&nbsp;            }
+<b class="nc"><i>356</i>&nbsp;            int secondSeparator = value.indexOf(SEPARATOR, firstSeparator + 1);</b>
+<b class="nc"><i>357</i>&nbsp;            if (secondSeparator &lt; 0) {</b>
+<b class="nc"><i>358</i>&nbsp;                throw new ClassCastException();</b>
+<i>359</i>&nbsp;            }
+<i>360</i>&nbsp;
+<b class="nc"><i>361</i>&nbsp;            IntRepr caster = new IntRepr();</b>
+<b class="nc"><i>362</i>&nbsp;            int ordinal = caster.castOut(value.substring(0, firstSeparator));</b>
+<b class="nc"><i>363</i>&nbsp;            if (ordinal &lt; 0 || ordinal &gt;= RegisterColType.values().length) {</b>
+<b class="nc"><i>364</i>&nbsp;                throw new ClassCastException();</b>
+<i>365</i>&nbsp;            }
+<b class="nc"><i>366</i>&nbsp;            RegisterColType type = RegisterColType.values()[ordinal];</b>
+<i>367</i>&nbsp;
+<b class="nc"><i>368</i>&nbsp;            int length = caster.castOut(value.substring(firstSeparator + 1,</b>
+<i>369</i>&nbsp;                    secondSeparator));
+<i>370</i>&nbsp;
+<b class="nc"><i>371</i>&nbsp;            String name = value.substring(secondSeparator + 1);</b>
+<i>372</i>&nbsp;
+<b class="nc"><i>373</i>&nbsp;            if (length &gt; 0) {</b>
+<b class="nc"><i>374</i>&nbsp;                return new RegisterColumn(name, type, length);</b>
+<i>375</i>&nbsp;            } else {
+<b class="nc"><i>376</i>&nbsp;                return new RegisterColumn(name, type);</b>
+<i>377</i>&nbsp;            }
+<i>378</i>&nbsp;        }
+<i>379</i>&nbsp;
+<i>380</i>&nbsp;    }
+<i>381</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2014-11-07 23:06</div>
+</div>
+</body>
+</html>

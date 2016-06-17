@@ -1,0 +1,324 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: HelpLoaderGrammar</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.wx.action.container</a> ]
+</div>
+
+<h1>Coverage Summary for Class: HelpLoaderGrammar (com.wx.action.container)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">HelpLoaderGrammar</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 21)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 94)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.wx.action.container;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.wx.grammar.GrammarException;
+<i>4</i>&nbsp;import com.wx.grammar.cf.CFGrammar;
+<i>5</i>&nbsp;import com.wx.grammar.cf.CFTreeParser;
+<i>6</i>&nbsp;import static com.wx.grammar.cf.element.BuilderHelper.*;
+<i>7</i>&nbsp;import com.wx.grammar.cf.element.Element;
+<i>8</i>&nbsp;import com.wx.grammar.symbol.NamedSymbol;
+<i>9</i>&nbsp;import com.wx.grammar.symbol.Symbol;
+<i>10</i>&nbsp;import com.wx.lexer.Lexer;
+<i>11</i>&nbsp;import com.wx.lexer.LexerBuilder;
+<i>12</i>&nbsp;import com.wx.lexer.tokens.Token;
+<i>13</i>&nbsp;import com.wx.tree.Tree;
+<i>14</i>&nbsp;import java.io.FileInputStream;
+<i>15</i>&nbsp;import java.io.IOException;
+<i>16</i>&nbsp;import java.util.Arrays;
+<i>17</i>&nbsp;import java.util.Collection;
+<i>18</i>&nbsp;import java.util.HashSet;
+<i>19</i>&nbsp;import java.util.Set;
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;/**
+<i>22</i>&nbsp; *
+<i>23</i>&nbsp; * @author Raffaele Canale (raffaelecanale@gmail.com)
+<i>24</i>&nbsp; * @version 0.1
+<i>25</i>&nbsp; */
+<b class="nc"><i>26</i>&nbsp;public class HelpLoaderGrammar {</b>
+<i>27</i>&nbsp;    /*
+<i>28</i>&nbsp;     COMMAND: container
+<i>29</i>&nbsp;     help_text:
+<i>30</i>&nbsp;     This is the verbatim text...
+<i>31</i>&nbsp;     It can have multiple lines$$
+<i>32</i>&nbsp;     PROPERTY: arg
+<i>33</i>&nbsp;     id: 0
+<i>34</i>&nbsp;     count: 1 1
+<i>35</i>&nbsp;     markers: a b c def
+<i>36</i>&nbsp;     default: &quot;value 1&quot; value2 &quot; value 3 &quot;$$
+<i>37</i>&nbsp;     prop_help:
+<i>38</i>&nbsp;     As before, verbatim text...$$
+<i>39</i>&nbsp;     */
+<b class="nc"><i>40</i>&nbsp;    private static final Set&lt;String&gt; KEY_WORDS = new HashSet&lt;&gt;(</b>
+<b class="nc"><i>41</i>&nbsp;            Arrays.asList(&quot;command&quot;, &quot;help&quot;, &quot;property&quot;, &quot;id&quot;, &quot;count&quot;,</b>
+<i>42</i>&nbsp;                    &quot;markers&quot;, &quot;default&quot;, &quot;propertyHelp&quot;, &quot;type&quot;, &quot;String&quot;, &quot;int&quot;)
+<i>43</i>&nbsp;    );
+<b class="nc"><i>44</i>&nbsp;    private static final char[] SPECIALS = {&#39;\n&#39;, &#39;:&#39;, &#39;&quot;&#39;, &#39;$&#39;};</b>
+<i>45</i>&nbsp;    
+<i>46</i>&nbsp;    private static Element[] exLiteralElements() {
+<b class="nc"><i>47</i>&nbsp;        Element[] exLiteralElements = new Element[KEY_WORDS.size() + 2];</b>
+<i>48</i>&nbsp;
+<b class="nc"><i>49</i>&nbsp;        toArray(KEY_WORDS, exLiteralElements);</b>
+<b class="nc"><i>50</i>&nbsp;        exLiteralElements[exLiteralElements.length - 2] = number();</b>
+<b class="nc"><i>51</i>&nbsp;        exLiteralElements[exLiteralElements.length - 1] = litteral();</b>
+<i>52</i>&nbsp;
+<b class="nc"><i>53</i>&nbsp;        return exLiteralElements;</b>
+<i>54</i>&nbsp;    }
+<i>55</i>&nbsp;
+<i>56</i>&nbsp;    private static Element[] textElements() {
+<b class="nc"><i>57</i>&nbsp;        Element[] textElements = new Element[KEY_WORDS.size() + SPECIALS.length + 1];</b>
+<i>58</i>&nbsp;
+<b class="nc"><i>59</i>&nbsp;        toArray(KEY_WORDS, textElements);</b>
+<i>60</i>&nbsp;
+<b class="nc"><i>61</i>&nbsp;        int index = KEY_WORDS.size();</b>
+<b class="nc"><i>62</i>&nbsp;        for (char s : SPECIALS) {</b>
+<b class="nc"><i>63</i>&nbsp;            if (s != &#39;$&#39;) {</b>
+<b class="nc"><i>64</i>&nbsp;                textElements[index] = special(s);</b>
+<b class="nc"><i>65</i>&nbsp;                index++;</b>
+<i>66</i>&nbsp;            }
+<i>67</i>&nbsp;        }
+<i>68</i>&nbsp;
+<b class="nc"><i>69</i>&nbsp;        textElements[textElements.length - 2] = number();</b>
+<b class="nc"><i>70</i>&nbsp;        textElements[textElements.length - 1] = litteral();</b>
+<i>71</i>&nbsp;
+<b class="nc"><i>72</i>&nbsp;        return textElements;</b>
+<i>73</i>&nbsp;    }
+<i>74</i>&nbsp;
+<i>75</i>&nbsp;    private static void toArray(Collection&lt;String&gt; keywords, Element[] array) {
+<b class="nc"><i>76</i>&nbsp;        int i = 0;</b>
+<b class="nc"><i>77</i>&nbsp;        assert array.length &gt;= keywords.size();</b>
+<i>78</i>&nbsp;
+<b class="nc"><i>79</i>&nbsp;        for (String keyword : keywords) {</b>
+<b class="nc"><i>80</i>&nbsp;            array[i] = keyWord(keyword);</b>
+<b class="nc"><i>81</i>&nbsp;            i++;</b>
+<b class="nc"><i>82</i>&nbsp;        }</b>
+<i>83</i>&nbsp;    }
+<i>84</i>&nbsp;    
+<b class="nc"><i>85</i>&nbsp;    private final LexerBuilder lexerBuilder = new LexerBuilder()</b>
+<b class="nc"><i>86</i>&nbsp;            .lineCommentsMarker(&quot;//&quot;).separators(&quot; &quot;).specials(SPECIALS).keyWords(KEY_WORDS);</b>
+<i>87</i>&nbsp;    private final Symbol ex_literal, prop_help, def, defaults, markers,
+<i>88</i>&nbsp;            count, id, property, text, cmd_help, container, desc, type, types;
+<i>89</i>&nbsp;    private CFGrammar grammar;
+<i>90</i>&nbsp;    
+<i>91</i>&nbsp;   
+<b class="nc"><i>92</i>&nbsp;    public HelpLoaderGrammar() {</b>
+<i>93</i>&nbsp;        /*
+<i>94</i>&nbsp;         DESC := CMD (PROPERTY)*
+<i>95</i>&nbsp;         CMD := command: EXTENDED_LITERAL \n CMD_HELP
+<i>96</i>&nbsp;         CMD_HELP := help: \n TEXT $ \n
+<i>97</i>&nbsp;         TEXT := (LITERAL | NUMBER | {KEYWORDS} | {SPECIALS} \ {$})*
+<i>98</i>&nbsp;         PROPERTY := property: EXTENDED_LITERAL \n ID? COUNT TYPE MARKERS? DEFAULTS PROP_HELP
+<i>99</i>&nbsp;         ID := id: NUMBER \n
+<i>100</i>&nbsp;         COUNT := count: NUMBER NUMBER \n
+<i>101</i>&nbsp;         TYPE := type: TYPES \n
+<i>102</i>&nbsp;         TYPES := String | int
+<i>103</i>&nbsp;         MARKERS := markers: EXTENDED_LITERAL EXTENDED_LITERAL* \n
+<i>104</i>&nbsp;         DEFAULTS := default: DEFAULT*  \n
+<i>105</i>&nbsp;         DEFAULT := &quot; EXTENDED_LITERAL* &quot; | EXTENDED_LITERAL
+<i>106</i>&nbsp;         PROP_HELP := propertyHelp: \n TEXT $ \n
+<i>107</i>&nbsp;         EXTENDED_LITERAL := LITERAL | NUMBER | {KEYWORDS}
+<i>108</i>&nbsp;         */
+<b class="nc"><i>109</i>&nbsp;        desc = new NamedSymbol(&quot;DESC&quot;);</b>
+<b class="nc"><i>110</i>&nbsp;        container = new NamedSymbol(&quot;CMD&quot;);</b>
+<b class="nc"><i>111</i>&nbsp;        cmd_help = new NamedSymbol(&quot;CMD_HELP&quot;);</b>
+<b class="nc"><i>112</i>&nbsp;        text = new NamedSymbol(&quot;TEXT&quot;);</b>
+<b class="nc"><i>113</i>&nbsp;        property = new NamedSymbol(&quot;PROPERTY&quot;);</b>
+<b class="nc"><i>114</i>&nbsp;        id = new NamedSymbol(&quot;ID&quot;);</b>
+<b class="nc"><i>115</i>&nbsp;        count = new NamedSymbol(&quot;COUNT&quot;);</b>
+<b class="nc"><i>116</i>&nbsp;        markers = new NamedSymbol(&quot;MARKERS&quot;);</b>
+<b class="nc"><i>117</i>&nbsp;        defaults = new NamedSymbol(&quot;DEFAULTS&quot;);</b>
+<b class="nc"><i>118</i>&nbsp;        def = new NamedSymbol(&quot;DEFAULT&quot;);</b>
+<b class="nc"><i>119</i>&nbsp;        prop_help = new NamedSymbol(&quot;PROP_HELP&quot;);</b>
+<b class="nc"><i>120</i>&nbsp;        ex_literal = new NamedSymbol(&quot;EXTENDED_LITTERAL&quot;);</b>
+<b class="nc"><i>121</i>&nbsp;        type = new NamedSymbol(&quot;TYPE&quot;);</b>
+<b class="nc"><i>122</i>&nbsp;        types = new NamedSymbol(&quot;TYPES&quot;);</b>
+<i>123</i>&nbsp;        
+<i>124</i>&nbsp;
+<b class="nc"><i>125</i>&nbsp;        CFGrammar.Builder builder = new CFGrammar.Builder(desc);</b>
+<b class="nc"><i>126</i>&nbsp;        builder.declareRule(desc,</b>
+<b class="nc"><i>127</i>&nbsp;                container, kleene(property));</b>
+<b class="nc"><i>128</i>&nbsp;        builder.declareRule(container,</b>
+<b class="nc"><i>129</i>&nbsp;                keyWord(&quot;command&quot;), special(&#39;:&#39;), ex_literal, special(&#39;\n&#39;),</b>
+<i>130</i>&nbsp;                cmd_help);
+<i>131</i>&nbsp;        
+<b class="nc"><i>132</i>&nbsp;        builder.declareRule(cmd_help,</b>
+<b class="nc"><i>133</i>&nbsp;                keyWord(&quot;help&quot;), special(&#39;:&#39;), special(&#39;\n&#39;), text,</b>
+<b class="nc"><i>134</i>&nbsp;                special(&#39;$&#39;), special(&#39;\n&#39;));</b>
+<b class="nc"><i>135</i>&nbsp;        builder.declareRule(text,</b>
+<b class="nc"><i>136</i>&nbsp;                kleene(or(textElements())));</b>
+<b class="nc"><i>137</i>&nbsp;        builder.declareRule(property,</b>
+<b class="nc"><i>138</i>&nbsp;                keyWord(&quot;property&quot;), special(&#39;:&#39;), ex_literal, special(&#39;\n&#39;),</b>
+<b class="nc"><i>139</i>&nbsp;                optional(id), count, type, optional(markers), defaults, prop_help);</b>
+<b class="nc"><i>140</i>&nbsp;        builder.declareRule(id,</b>
+<b class="nc"><i>141</i>&nbsp;                keyWord(&quot;id&quot;), special(&#39;:&#39;), number(), special(&#39;\n&#39;));</b>
+<b class="nc"><i>142</i>&nbsp;        builder.declareRule(count,</b>
+<b class="nc"><i>143</i>&nbsp;                keyWord(&quot;count&quot;), special(&#39;:&#39;), number(), number(), special(&#39;\n&#39;));</b>
+<b class="nc"><i>144</i>&nbsp;        builder.declareRule(type, </b>
+<b class="nc"><i>145</i>&nbsp;                keyWord(&quot;type&quot;), special(&#39;:&#39;), types, special(&#39;\n&#39;));</b>
+<b class="nc"><i>146</i>&nbsp;        builder.declareRule(types, </b>
+<b class="nc"><i>147</i>&nbsp;                or(keyWord(&quot;String&quot;), keyWord(&quot;int&quot;)));</b>
+<b class="nc"><i>148</i>&nbsp;        builder.declareRule(markers,</b>
+<b class="nc"><i>149</i>&nbsp;                keyWord(&quot;markers&quot;), special(&#39;:&#39;), ex_literal,</b>
+<b class="nc"><i>150</i>&nbsp;                kleene(ex_literal), special(&#39;\n&#39;));</b>
+<b class="nc"><i>151</i>&nbsp;        builder.declareRule(defaults,</b>
+<b class="nc"><i>152</i>&nbsp;                keyWord(&quot;default&quot;), special(&#39;:&#39;), kleene(def),</b>
+<b class="nc"><i>153</i>&nbsp;                special(&#39;\n&#39;));</b>
+<b class="nc"><i>154</i>&nbsp;        builder.declareRule(def,</b>
+<b class="nc"><i>155</i>&nbsp;                or(concat(special(&#39;&quot;&#39;), kleene(ex_literal), special(&#39;&quot;&#39;)), ex_literal));</b>
+<b class="nc"><i>156</i>&nbsp;        builder.declareRule(prop_help,</b>
+<b class="nc"><i>157</i>&nbsp;                keyWord(&quot;propertyHelp&quot;), special(&#39;:&#39;), special(&#39;\n&#39;), text,</b>
+<b class="nc"><i>158</i>&nbsp;                special(&#39;$&#39;), special(&#39;\n&#39;));</b>
+<b class="nc"><i>159</i>&nbsp;        builder.declareRule(ex_literal,</b>
+<b class="nc"><i>160</i>&nbsp;                or(exLiteralElements()));</b>
+<i>161</i>&nbsp;//        try {
+<b class="nc"><i>162</i>&nbsp;            grammar = builder.build();</b>
+<i>163</i>&nbsp;//        } catch (GrammarException ex) {
+<i>164</i>&nbsp;//            throw new RuntimeException(ex);
+<i>165</i>&nbsp;//        }
+<i>166</i>&nbsp;    }
+<i>167</i>&nbsp;
+<i>168</i>&nbsp;    public CFGrammar getGrammar() {
+<b class="nc"><i>169</i>&nbsp;        return grammar;</b>
+<i>170</i>&nbsp;    }
+<i>171</i>&nbsp;    
+<i>172</i>&nbsp;    
+<i>173</i>&nbsp;    public Tree&lt;Symbol, Token&gt; parse(String file) throws IOException, GrammarException {
+<b class="nc"><i>174</i>&nbsp;        Lexer lexer = lexerBuilder.build(new FileInputStream(file));</b>
+<i>175</i>&nbsp;
+<b class="nc"><i>176</i>&nbsp;        return new CFTreeParser(grammar).parse(lexer);</b>
+<i>177</i>&nbsp;    }
+<i>178</i>&nbsp;
+<i>179</i>&nbsp;    //&lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;Getters&quot;&gt;
+<i>180</i>&nbsp;    public Symbol getSymbolExLitteral() {
+<b class="nc"><i>181</i>&nbsp;        return ex_literal;</b>
+<i>182</i>&nbsp;    }
+<i>183</i>&nbsp;    
+<i>184</i>&nbsp;    public Symbol getSymbolPropHelp() {
+<b class="nc"><i>185</i>&nbsp;        return prop_help;</b>
+<i>186</i>&nbsp;    }
+<i>187</i>&nbsp;    
+<i>188</i>&nbsp;    public Symbol getSymbolDef() {
+<b class="nc"><i>189</i>&nbsp;        return def;</b>
+<i>190</i>&nbsp;    }
+<i>191</i>&nbsp;    
+<i>192</i>&nbsp;    public Symbol getSymbolDefaults() {
+<b class="nc"><i>193</i>&nbsp;        return defaults;</b>
+<i>194</i>&nbsp;    }
+<i>195</i>&nbsp;    
+<i>196</i>&nbsp;    public Symbol getSymbolMarkers() {
+<b class="nc"><i>197</i>&nbsp;        return markers;</b>
+<i>198</i>&nbsp;    }
+<i>199</i>&nbsp;    
+<i>200</i>&nbsp;    public Symbol getSymbolCount() {
+<b class="nc"><i>201</i>&nbsp;        return count;</b>
+<i>202</i>&nbsp;    }
+<i>203</i>&nbsp;    
+<i>204</i>&nbsp;    public Symbol getSymbolId() {
+<b class="nc"><i>205</i>&nbsp;        return id;</b>
+<i>206</i>&nbsp;    }
+<i>207</i>&nbsp;    
+<i>208</i>&nbsp;    public Symbol getSymbolProperty() {
+<b class="nc"><i>209</i>&nbsp;        return property;</b>
+<i>210</i>&nbsp;    }
+<i>211</i>&nbsp;    
+<i>212</i>&nbsp;    public Symbol getSymbolText() {
+<b class="nc"><i>213</i>&nbsp;        return text;</b>
+<i>214</i>&nbsp;    }
+<i>215</i>&nbsp;    
+<i>216</i>&nbsp;    public Symbol getSymbolCmdHelp() {
+<b class="nc"><i>217</i>&nbsp;        return cmd_help;</b>
+<i>218</i>&nbsp;    }
+<i>219</i>&nbsp;    
+<i>220</i>&nbsp;    public Symbol getSymbolCmd() {
+<b class="nc"><i>221</i>&nbsp;        return container;</b>
+<i>222</i>&nbsp;    }
+<i>223</i>&nbsp;    
+<i>224</i>&nbsp;    public Symbol getSymbolDesc() {
+<b class="nc"><i>225</i>&nbsp;        return desc;</b>
+<i>226</i>&nbsp;    }
+<i>227</i>&nbsp;    
+<i>228</i>&nbsp;    public Symbol getSymbolType() {
+<b class="nc"><i>229</i>&nbsp;        return type;</b>
+<i>230</i>&nbsp;    }
+<i>231</i>&nbsp;    
+<i>232</i>&nbsp;    public Symbol getSymbolTypes() {
+<b class="nc"><i>233</i>&nbsp;        return types;</b>
+<i>234</i>&nbsp;    }
+<i>235</i>&nbsp;//&lt;/editor-fold&gt;
+<i>236</i>&nbsp;
+<i>237</i>&nbsp;    
+<i>238</i>&nbsp;
+<i>239</i>&nbsp;    
+<i>240</i>&nbsp;
+<i>241</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2014-11-07 23:06</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,368 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: WxDataManager</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.wx.io.datamanager</a> ]
+</div>
+
+<h1>Coverage Summary for Class: WxDataManager (com.wx.io.datamanager)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">WxDataManager</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 15)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 72)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">WxDataManager$InfoKey</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 16)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 74)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.wx.io.datamanager;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.wx.crypto.Crypter;
+<i>4</i>&nbsp;import com.wx.crypto.CryptoException;
+<i>5</i>&nbsp;import com.wx.io.AccessorUtil;
+<i>6</i>&nbsp;import com.wx.io.datafile.DataAccessException;
+<i>7</i>&nbsp;import com.wx.io.datafile.register.RegisterColumn;
+<i>8</i>&nbsp;import com.wx.io.datafile.table.ResourceTableBuilder;
+<i>9</i>&nbsp;import com.wx.io.datafile.table.Table;
+<i>10</i>&nbsp;import com.wx.io.datamanager.record.RecordHandler;
+<i>11</i>&nbsp;import com.wx.io.datamanager.record.descriptor.RecordDescriptor;
+<i>12</i>&nbsp;import com.wx.resource.manager.ResourcePage;
+<i>13</i>&nbsp;import com.wx.resource.manager.ResourceWrapper;
+<i>14</i>&nbsp;import com.wx.util.representables.string.EnumCaster;
+<i>15</i>&nbsp;import java.io.File;
+<i>16</i>&nbsp;import java.io.FileNotFoundException;
+<i>17</i>&nbsp;import java.io.IOException;
+<i>18</i>&nbsp;import java.util.HashMap;
+<i>19</i>&nbsp;import java.util.List;
+<i>20</i>&nbsp;import java.util.Map;
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;/**
+<i>23</i>&nbsp; *
+<i>24</i>&nbsp; * @author Raffaele Canale - raffaelecanale@gmail.com
+<i>25</i>&nbsp; * @version 0.1
+<i>26</i>&nbsp; *
+<i>27</i>&nbsp; * Project: Worx File: ResourceDatSetImpl.java (UTF-8) Date: May 9, 2013
+<i>28</i>&nbsp; */
+<b class="nc"><i>29</i>&nbsp;public class WxDataManager extends DataManager {</b>
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;    private static final String INFO_FILE = &quot;info.resource&quot;;
+<i>32</i>&nbsp;    private static final boolean USE_XML = true;
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;    //&lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;create &amp; load&quot;&gt;
+<i>35</i>&nbsp;    public static WxDataManager create(File dataSetDir, String dataSetName,
+<i>36</i>&nbsp;            String userName, Crypter crypter) throws DataAccessException,
+<i>37</i>&nbsp;            FileNotFoundException, IOException, CryptoException {
+<b class="nc"><i>38</i>&nbsp;        if (dataSetDir.exists()) {</b>
+<b class="nc"><i>39</i>&nbsp;            if (dataSetDir.listFiles().length != 0) {</b>
+<b class="nc"><i>40</i>&nbsp;                throw new DataAccessException(&quot;Directory must be empty&quot;);</b>
+<i>41</i>&nbsp;            }
+<i>42</i>&nbsp;        } else {
+<b class="nc"><i>43</i>&nbsp;            dataSetDir.mkdirs();</b>
+<i>44</i>&nbsp;        }
+<i>45</i>&nbsp;
+<b class="nc"><i>46</i>&nbsp;        File resourceInfoFile = new File(dataSetDir, INFO_FILE);</b>
+<b class="nc"><i>47</i>&nbsp;        ResourcePage infoPage = ResourcePage.createExternalPage(</b>
+<b class="nc"><i>48</i>&nbsp;                resourceInfoFile.getAbsolutePath(), USE_XML);</b>
+<b class="nc"><i>49</i>&nbsp;        if (crypter != null) {</b>
+<b class="nc"><i>50</i>&nbsp;            infoPage.cacheCrypter(crypter);</b>
+<i>51</i>&nbsp;        }
+<i>52</i>&nbsp;        
+<b class="nc"><i>53</i>&nbsp;        ResourceWrapper&lt;InfoKey&gt; wrapper = new ResourceWrapper&lt;&gt;(infoPage,</b>
+<b class="nc"><i>54</i>&nbsp;                new EnumCaster&lt;&gt;(InfoKey.values()));</b>
+<i>55</i>&nbsp;
+<b class="nc"><i>56</i>&nbsp;        userName = userName.toLowerCase();</b>
+<b class="nc"><i>57</i>&nbsp;        wrapper.setList(InfoKey.users, userName);</b>
+<b class="nc"><i>58</i>&nbsp;        wrapper.save();</b>
+<i>59</i>&nbsp;
+<b class="nc"><i>60</i>&nbsp;        return new WxDataManager(infoPage, dataSetDir, dataSetName);</b>
+<i>61</i>&nbsp;    }
+<i>62</i>&nbsp;
+<i>63</i>&nbsp;    public static WxDataManager load(File dataSetDir, String dataSetName,
+<i>64</i>&nbsp;            String userName, Crypter crypter) throws DataAccessException,
+<i>65</i>&nbsp;            FileNotFoundException, IOException, CryptoException {
+<b class="nc"><i>66</i>&nbsp;        if (!dataSetDir.exists()) {</b>
+<b class="nc"><i>67</i>&nbsp;            throw new FileNotFoundException(&quot;Directory not found: &quot;</b>
+<b class="nc"><i>68</i>&nbsp;                    + dataSetDir.getAbsolutePath());</b>
+<i>69</i>&nbsp;        }
+<b class="nc"><i>70</i>&nbsp;        String infoFilePath = new File(dataSetDir, INFO_FILE).getAbsolutePath();</b>
+<i>71</i>&nbsp;        
+<i>72</i>&nbsp;        ResourcePage infoPage;
+<b class="nc"><i>73</i>&nbsp;        if (crypter != null) {</b>
+<b class="nc"><i>74</i>&nbsp;            infoPage = ResourcePage.loadExternalCryptedPage(infoFilePath,</b>
+<i>75</i>&nbsp;                    crypter, true, USE_XML, null);
+<i>76</i>&nbsp;        } else {
+<b class="nc"><i>77</i>&nbsp;            infoPage = ResourcePage.loadExternalPage(infoFilePath, USE_XML,</b>
+<i>78</i>&nbsp;                    null);
+<i>79</i>&nbsp;        }
+<i>80</i>&nbsp;        
+<i>81</i>&nbsp;        
+<b class="nc"><i>82</i>&nbsp;        ResourceWrapper&lt;InfoKey&gt; wrapper = new ResourceWrapper&lt;&gt;(infoPage,</b>
+<b class="nc"><i>83</i>&nbsp;                new EnumCaster&lt;&gt;(InfoKey.values()));        </b>
+<b class="nc"><i>84</i>&nbsp;        List&lt;String&gt; users = wrapper.getList(InfoKey.users);</b>
+<b class="nc"><i>85</i>&nbsp;        if (users == null) {</b>
+<b class="nc"><i>86</i>&nbsp;            throw new DataAccessException(&quot;Missing field users list&quot;);</b>
+<i>87</i>&nbsp;        }
+<i>88</i>&nbsp;
+<b class="nc"><i>89</i>&nbsp;        if (!users.contains(userName.toLowerCase())) {</b>
+<b class="nc"><i>90</i>&nbsp;            throw new DataAccessException(&quot;Unauthorized&quot;);</b>
+<i>91</i>&nbsp;        }
+<i>92</i>&nbsp;
+<b class="nc"><i>93</i>&nbsp;        return new WxDataManager(infoPage, dataSetDir, dataSetName);</b>
+<i>94</i>&nbsp;    }
+<i>95</i>&nbsp;    //&lt;/editor-fold&gt;
+<i>96</i>&nbsp;
+<i>97</i>&nbsp;//    private static String infoKey(InfoKey key) {
+<i>98</i>&nbsp;//        return key.name();
+<i>99</i>&nbsp;//    }
+<i>100</i>&nbsp;    private ResourcePage infoPage;
+<i>101</i>&nbsp;    private final File dataSetDir;
+<i>102</i>&nbsp;    private final String dataSetName;
+<i>103</i>&nbsp;    private final Map&lt;String, Table&gt; loadedTables;
+<i>104</i>&nbsp;
+<i>105</i>&nbsp;    private WxDataManager(ResourcePage infoPage, File dataSetDir,
+<b class="nc"><i>106</i>&nbsp;            String dataSetName) {</b>
+<b class="nc"><i>107</i>&nbsp;        this.infoPage = infoPage;</b>
+<b class="nc"><i>108</i>&nbsp;        this.dataSetDir = dataSetDir;</b>
+<b class="nc"><i>109</i>&nbsp;        this.dataSetName = dataSetName;</b>
+<b class="nc"><i>110</i>&nbsp;        this.loadedTables = new HashMap&lt;&gt;();</b>
+<i>111</i>&nbsp;    }
+<i>112</i>&nbsp;
+<i>113</i>&nbsp;    @Override
+<i>114</i>&nbsp;    public boolean isConnected() throws IOException, DataAccessException {
+<b class="nc"><i>115</i>&nbsp;        return infoPage != null;</b>
+<i>116</i>&nbsp;    }
+<i>117</i>&nbsp;
+<i>118</i>&nbsp;    @Override
+<i>119</i>&nbsp;    public void close() throws IOException {
+<b class="nc"><i>120</i>&nbsp;        infoPage = null;</b>
+<b class="nc"><i>121</i>&nbsp;        for (Table table : loadedTables.values()) {</b>
+<b class="nc"><i>122</i>&nbsp;            table.close();</b>
+<b class="nc"><i>123</i>&nbsp;        }</b>
+<b class="nc"><i>124</i>&nbsp;        loadedTables.clear();</b>
+<i>125</i>&nbsp;    }
+<i>126</i>&nbsp;
+<i>127</i>&nbsp;    @Override
+<i>128</i>&nbsp;    public void delete() throws IOException, DataAccessException {
+<b class="nc"><i>129</i>&nbsp;        if (!dataSetDir.exists()) {</b>
+<i>130</i>&nbsp;            return;
+<i>131</i>&nbsp;        }
+<b class="nc"><i>132</i>&nbsp;        close();</b>
+<i>133</i>&nbsp;        // It implies that the info file is within that dir
+<b class="nc"><i>134</i>&nbsp;        AccessorUtil.deleteDir(dataSetDir);</b>
+<i>135</i>&nbsp;    }
+<i>136</i>&nbsp;
+<i>137</i>&nbsp;    @Override
+<i>138</i>&nbsp;    public RecordHandler getHandler(String name, RecordDescriptor descriptor)
+<i>139</i>&nbsp;            throws DataAccessException, IOException {
+<i>140</i>&nbsp;        try {
+<b class="nc"><i>141</i>&nbsp;            return new RecordHandler(this, name, descriptor);</b>
+<b class="nc"><i>142</i>&nbsp;        } catch (CryptoException ex) {</b>
+<b class="nc"><i>143</i>&nbsp;            throw new DataAccessException(ex);</b>
+<i>144</i>&nbsp;        }
+<i>145</i>&nbsp;    }
+<i>146</i>&nbsp;
+<i>147</i>&nbsp;    public void deleteUnreferencesFiles() {
+<i>148</i>&nbsp;        // TODO Can we do that? Think of way to actually delete sth
+<i>149</i>&nbsp;    }
+<i>150</i>&nbsp;
+<i>151</i>&nbsp;    @Override
+<i>152</i>&nbsp;    public String getName() {
+<b class="nc"><i>153</i>&nbsp;        return dataSetName;</b>
+<i>154</i>&nbsp;    }
+<i>155</i>&nbsp;
+<i>156</i>&nbsp;    public ResourcePage getInfoPage() {
+<b class="nc"><i>157</i>&nbsp;        return infoPage;</b>
+<i>158</i>&nbsp;    }
+<i>159</i>&nbsp;    
+<i>160</i>&nbsp;    @Override
+<i>161</i>&nbsp;    public String toString() {
+<b class="nc"><i>162</i>&nbsp;        return &quot;Data set name: &quot; + dataSetName</b>
+<b class="nc"><i>163</i>&nbsp;                + &quot;\nDirectory: &quot; + dataSetDir.getAbsolutePath()</b>
+<i>164</i>&nbsp;                + &quot;\n&quot; + infoPage;
+<i>165</i>&nbsp;//        return infoPage.toString();
+<i>166</i>&nbsp;    }
+<i>167</i>&nbsp;
+<i>168</i>&nbsp;    public Table createNewTable(String tableName, RegisterColumn... columns)
+<i>169</i>&nbsp;            throws IOException {
+<b class="nc"><i>170</i>&nbsp;        assert !loadedTables.containsKey(tableName);</b>
+<b class="nc"><i>171</i>&nbsp;        ResourceTableBuilder builder = new ResourceTableBuilder(tableName,</b>
+<i>172</i>&nbsp;                dataSetDir, infoPage);
+<b class="nc"><i>173</i>&nbsp;        Table table = builder.createTable(columns);</b>
+<b class="nc"><i>174</i>&nbsp;        loadedTables.put(tableName, table);</b>
+<b class="nc"><i>175</i>&nbsp;        return table;</b>
+<i>176</i>&nbsp;    }
+<i>177</i>&nbsp;
+<i>178</i>&nbsp;    public Table loadTable(String tableName) throws IOException {
+<b class="nc"><i>179</i>&nbsp;        assert !loadedTables.containsKey(tableName);</b>
+<b class="nc"><i>180</i>&nbsp;        ResourceTableBuilder builder = new ResourceTableBuilder(tableName,</b>
+<i>181</i>&nbsp;                dataSetDir, infoPage);
+<b class="nc"><i>182</i>&nbsp;        Table table = builder.loadTable();</b>
+<b class="nc"><i>183</i>&nbsp;        loadedTables.put(tableName, table);</b>
+<b class="nc"><i>184</i>&nbsp;        return table;</b>
+<i>185</i>&nbsp;    }
+<i>186</i>&nbsp;
+<i>187</i>&nbsp;    public Table getTable(String tableName, RegisterColumn... columns) throws IOException, CryptoException {
+<b class="nc"><i>188</i>&nbsp;        Table table = loadedTables.get(tableName);</b>
+<b class="nc"><i>189</i>&nbsp;        if (table == null) {</b>
+<i>190</i>&nbsp;            // TODO Check if exists or not
+<i>191</i>&nbsp;            try {
+<i>192</i>&nbsp;                // Very naive way, but should work
+<b class="nc"><i>193</i>&nbsp;                return loadTable(tableName);</b>
+<b class="nc"><i>194</i>&nbsp;            } catch (IOException iOException) {</b>
+<b class="nc"><i>195</i>&nbsp;                return createNewTable(tableName, columns);</b>
+<i>196</i>&nbsp;            }
+<i>197</i>&nbsp;            //            TableInfo info = new TableInfo(infoPage, tableName);
+<i>198</i>&nbsp;            //            DataFile dataFile;
+<i>199</i>&nbsp;            //
+<i>200</i>&nbsp;            //            DataFileStrategy strategy = info.getStrategy();
+<i>201</i>&nbsp;            //            if (strategy == null) {
+<i>202</i>&nbsp;            //
+<i>203</i>&nbsp;            //                strategy = StrategyHelper.getDefaultStrategy();
+<i>204</i>&nbsp;            //
+<i>205</i>&nbsp;            //                info.create(strategy, columns);
+<i>206</i>&nbsp;            //
+<i>207</i>&nbsp;            //                dataFile = StrategyHelper.createDataFile(
+<i>208</i>&nbsp;            //                        getDataFile(strategy, tableName), strategy, info);
+<i>209</i>&nbsp;            //            } else {
+<i>210</i>&nbsp;            //
+<i>211</i>&nbsp;            //                assert Arrays.equals(columns, info.getColumns());
+<i>212</i>&nbsp;            //
+<i>213</i>&nbsp;            //                dataFile = StrategyHelper.loadDataFile(
+<i>214</i>&nbsp;            //                        getDataFile(strategy, tableName), strategy, info);
+<i>215</i>&nbsp;            //
+<i>216</i>&nbsp;            //
+<i>217</i>&nbsp;            //            }
+<i>218</i>&nbsp;            //
+<i>219</i>&nbsp;            //            // TODO Leave it like that?
+<i>220</i>&nbsp;            //            IdGeneratorInterface idGenerator = new IncrementalIdGenerator(info);
+<i>221</i>&nbsp;            //
+<i>222</i>&nbsp;            //            table = new Table(info, idGenerator, dataFile);
+<i>223</i>&nbsp;            //            loadedTables.put(tableName, table);
+<i>224</i>&nbsp;            //            //saveAllOnDisk();
+<i>225</i>&nbsp;        }
+<i>226</i>&nbsp;
+<b class="nc"><i>227</i>&nbsp;        return table;</b>
+<i>228</i>&nbsp;    }
+<i>229</i>&nbsp;
+<i>230</i>&nbsp;//    @Override
+<i>231</i>&nbsp;//    public String getCustomProperty(String key, Object... params) {
+<i>232</i>&nbsp;//        return infoPage.getString(key, params);
+<i>233</i>&nbsp;//    }
+<i>234</i>&nbsp;//    
+<i>235</i>&nbsp;//    
+<i>236</i>&nbsp;//    @Override
+<i>237</i>&nbsp;//    public String setCustomProperty(String key, String value) {
+<i>238</i>&nbsp;//        return infoPage.setProperty(key, value);
+<i>239</i>&nbsp;//    }
+<i>240</i>&nbsp;//    @Override
+<i>241</i>&nbsp;//    public boolean propertyExists(String key) {
+<i>242</i>&nbsp;//        return infoPage.containsKey(key);
+<i>243</i>&nbsp;//    }
+<i>244</i>&nbsp;
+<i>245</i>&nbsp;    @Override
+<i>246</i>&nbsp;    protected void save0() throws IOException, CryptoException {
+<b class="nc"><i>247</i>&nbsp;        for (Table table : loadedTables.values()) {</b>
+<b class="nc"><i>248</i>&nbsp;            table.flushDataFile();</b>
+<b class="nc"><i>249</i>&nbsp;        }</b>
+<i>250</i>&nbsp;
+<b class="nc"><i>251</i>&nbsp;        infoPage.save();</b>
+<i>252</i>&nbsp;    }
+<i>253</i>&nbsp;    
+<b class="nc"><i>254</i>&nbsp;    private enum InfoKey {</b>
+<i>255</i>&nbsp;//        customProperty,
+<i>256</i>&nbsp;//        instancesType,
+<b class="nc"><i>257</i>&nbsp;        users</b>
+<i>258</i>&nbsp;    }
+<i>259</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2014-11-07 23:06</div>
+</div>
+</body>
+</html>

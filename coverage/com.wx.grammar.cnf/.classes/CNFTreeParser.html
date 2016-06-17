@@ -1,0 +1,181 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: CNFTreeParser</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.wx.grammar.cnf</a> ]
+</div>
+
+<h1>Coverage Summary for Class: CNFTreeParser (com.wx.grammar.cnf)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CNFTreeParser</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 29)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.wx.grammar.cnf;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.wx.grammar.GrammarException;
+<i>4</i>&nbsp;import com.wx.grammar.cnf.rule.ProductionRule;
+<i>5</i>&nbsp;import com.wx.grammar.cnf.rule.TerminalRule;
+<i>6</i>&nbsp;import com.wx.grammar.symbol.Symbol;
+<i>7</i>&nbsp;import com.wx.grammar.table.ParseTable;
+<i>8</i>&nbsp;import com.wx.lexer.tokens.Token;
+<i>9</i>&nbsp;import com.wx.tree.Tree;
+<i>10</i>&nbsp;import com.wx.tree.Tree.Leaf;
+<i>11</i>&nbsp;import com.wx.tree.Tree.Node;
+<i>12</i>&nbsp;import com.wx.util.PeekIterator;
+<i>13</i>&nbsp;import com.wx.util.futur.IoIterator;
+<i>14</i>&nbsp;import com.wx.util.futur.Future;
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;import java.io.IOException;
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;/**
+<i>19</i>&nbsp; *
+<i>20</i>&nbsp; * @author Raffaele Canale (raffaelecanale@gmail.com)
+<i>21</i>&nbsp; * @version 0.1
+<i>22</i>&nbsp; */
+<i>23</i>&nbsp;public class CNFTreeParser {
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;    public static Tree&lt;Symbol, Token&gt; parse(ParseTable table, CNFGrammar grammar,
+<i>26</i>&nbsp;            IoIterator&lt;Token&gt; lexer) throws GrammarException, IOException {
+<b class="nc"><i>27</i>&nbsp;        return new CNFTreeParser(table, grammar).parse(lexer);</b>
+<i>28</i>&nbsp;    }
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;    public static Tree&lt;Symbol, Token&gt; parse(CNFGrammar grammar, IoIterator&lt;Token&gt; lexer)
+<i>31</i>&nbsp;            throws GrammarException, IOException {
+<b class="nc"><i>32</i>&nbsp;        return new CNFTreeParser(grammar).parse(lexer);</b>
+<i>33</i>&nbsp;    }
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;    private final ParseTable table;
+<i>36</i>&nbsp;    private final CNFGrammar grammar;
+<i>37</i>&nbsp;//    private final TokenIterator parser;
+<i>38</i>&nbsp;
+<b class="nc"><i>39</i>&nbsp;    public CNFTreeParser(ParseTable table, CNFGrammar grammar) {</b>
+<b class="nc"><i>40</i>&nbsp;        this.table = table;</b>
+<b class="nc"><i>41</i>&nbsp;        this.grammar = grammar;</b>
+<i>42</i>&nbsp;//        this.parser = parser;
+<i>43</i>&nbsp;    }
+<i>44</i>&nbsp;
+<i>45</i>&nbsp;    public CNFTreeParser(CNFGrammar grammar) throws GrammarException {
+<b class="nc"><i>46</i>&nbsp;        this(new ParseTable.Builder(grammar).build(), grammar);</b>
+<i>47</i>&nbsp;    }
+<i>48</i>&nbsp;
+<i>49</i>&nbsp;    public Tree&lt;Symbol, Token&gt; parse(IoIterator&lt;Token&gt; lexer)
+<i>50</i>&nbsp;            throws GrammarException, IOException {
+<b class="nc"><i>51</i>&nbsp;        return parse0(table.getFirstSymbol(), new PeekIterator&lt;&gt;(lexer.iterator()));</b>
+<i>52</i>&nbsp;    }
+<i>53</i>&nbsp;
+<i>54</i>&nbsp;    private Tree&lt;Symbol, Token&gt; parse0(Symbol sym, PeekIterator&lt;Future&lt;Token&gt;&gt; lexer)
+<i>55</i>&nbsp;            throws GrammarException, IOException {
+<b class="nc"><i>56</i>&nbsp;        TerminalRule terminal = grammar.getTerminalRule(sym);</b>
+<i>57</i>&nbsp;
+<b class="nc"><i>58</i>&nbsp;        Token current = lexer.peek().get();</b>
+<b class="nc"><i>59</i>&nbsp;        if (terminal != null) {</b>
+<b class="nc"><i>60</i>&nbsp;            if (!terminal.getExpectedToken().compareTokenType(current)) {</b>
+<b class="nc"><i>61</i>&nbsp;                throw new GrammarException(&quot;Expected token &quot;</b>
+<b class="nc"><i>62</i>&nbsp;                        + terminal.getExpectedToken() + &quot; but got &quot; + lexer.peek());</b>
+<i>63</i>&nbsp;            }
+<i>64</i>&nbsp;
+<b class="nc"><i>65</i>&nbsp;            Token ret = current;</b>
+<i>66</i>&nbsp;
+<b class="nc"><i>67</i>&nbsp;            next(lexer);</b>
+<b class="nc"><i>68</i>&nbsp;            return new Leaf&lt;&gt;(ret);</b>
+<i>69</i>&nbsp;
+<i>70</i>&nbsp;        } else {
+<i>71</i>&nbsp;
+<b class="nc"><i>72</i>&nbsp;            ProductionRule rule = table.getRule(sym, current);</b>
+<b class="nc"><i>73</i>&nbsp;            if (rule == null) {</b>
+<b class="nc"><i>74</i>&nbsp;                throw new GrammarException(&quot;No rule found for &quot; + sym + &quot; and &quot; + current);</b>
+<i>75</i>&nbsp;            }
+<b class="nc"><i>76</i>&nbsp;            Tree&lt;Symbol, Token&gt;[] nodes = new Tree[rule.getElements().size()];</b>
+<i>77</i>&nbsp;
+<b class="nc"><i>78</i>&nbsp;            int i = 0;</b>
+<b class="nc"><i>79</i>&nbsp;            for (Symbol s : rule) {</b>
+<b class="nc"><i>80</i>&nbsp;                nodes[i] = parse0(s, lexer);</b>
+<b class="nc"><i>81</i>&nbsp;                i++;</b>
+<b class="nc"><i>82</i>&nbsp;            }</b>
+<i>83</i>&nbsp;
+<b class="nc"><i>84</i>&nbsp;            return new Node(sym, nodes);</b>
+<i>85</i>&nbsp;
+<i>86</i>&nbsp;        }
+<i>87</i>&nbsp;    }
+<i>88</i>&nbsp;
+<i>89</i>&nbsp;    private void next(PeekIterator&lt;Future&lt;Token&gt;&gt; lexer) throws GrammarException, IOException {
+<b class="nc"><i>90</i>&nbsp;        if (!lexer.hasNext()) {</b>
+<b class="nc"><i>91</i>&nbsp;            throw new GrammarException(&quot;More input expected after &quot; + lexer.peek().get());</b>
+<i>92</i>&nbsp;        }
+<b class="nc"><i>93</i>&nbsp;        lexer.next();</b>
+<i>94</i>&nbsp;    }
+<i>95</i>&nbsp;
+<i>96</i>&nbsp;
+<i>97</i>&nbsp;
+<i>98</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2014-11-07 23:06</div>
+</div>
+</body>
+</html>

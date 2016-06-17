@@ -1,0 +1,259 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: RecordDescriptor</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.wx.io.datamanager.record.descriptor</a> ]
+</div>
+
+<h1>Coverage Summary for Class: RecordDescriptor (com.wx.io.datamanager.record.descriptor)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">RecordDescriptor</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 15)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 69)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.wx.io.datamanager.record.descriptor;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.wx.io.datamanager.record.RecordObject;
+<i>4</i>&nbsp;import com.wx.util.ArrayConcatenator;
+<i>5</i>&nbsp;import java.util.ArrayList;
+<i>6</i>&nbsp;import java.util.Arrays;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;/**
+<i>9</i>&nbsp; *
+<i>10</i>&nbsp; * @author Raffaele Canale - raffaelecanale@gmail.com
+<i>11</i>&nbsp; * @version 0.1
+<i>12</i>&nbsp; *
+<i>13</i>&nbsp; * Project: Worx.ANT File: RecordDescriptor.java (UTF-8) Date: Aug 18, 2013
+<i>14</i>&nbsp; */
+<b class="nc"><i>15</i>&nbsp;public class RecordDescriptor {</b>
+<i>16</i>&nbsp;    
+<i>17</i>&nbsp;    public static RecordDescriptor join(RecordDescriptor... descriptors) {
+<b class="nc"><i>18</i>&nbsp;        assert descriptors.length &gt; 1;</b>
+<b class="nc"><i>19</i>&nbsp;        int fieldsCount = 0;</b>
+<b class="nc"><i>20</i>&nbsp;        for (RecordDescriptor descriptor : descriptors) {</b>
+<b class="nc"><i>21</i>&nbsp;            fieldsCount += descriptor.fields.length;</b>
+<i>22</i>&nbsp;        }
+<i>23</i>&nbsp;        
+<b class="nc"><i>24</i>&nbsp;        RecordField[] fields = new RecordField[fieldsCount];</b>
+<b class="nc"><i>25</i>&nbsp;        int fieldsPos = 0;</b>
+<b class="nc"><i>26</i>&nbsp;        for (RecordDescriptor descriptor : descriptors) {</b>
+<b class="nc"><i>27</i>&nbsp;            System.arraycopy(descriptor.fields, 0, fields, fieldsPos, </b>
+<i>28</i>&nbsp;                    descriptor.fields.length);
+<b class="nc"><i>29</i>&nbsp;            fieldsPos+= descriptor.fields.length;</b>
+<i>30</i>&nbsp;        }
+<i>31</i>&nbsp;        
+<b class="nc"><i>32</i>&nbsp;        return new RecordDescriptor(descriptors[0].defaultField, fields);</b>
+<i>33</i>&nbsp;    }
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;    private final RecordField[] fields;
+<i>36</i>&nbsp;    private final int defaultField;
+<i>37</i>&nbsp;
+<b class="nc"><i>38</i>&nbsp;    public RecordDescriptor(int defaultField, RecordField... fields) {</b>
+<b class="nc"><i>39</i>&nbsp;        assert fields != null;</b>
+<b class="nc"><i>40</i>&nbsp;        assert fields.length &gt; 0;</b>
+<b class="nc"><i>41</i>&nbsp;        this.fields = fields;</b>
+<b class="nc"><i>42</i>&nbsp;        this.defaultField = defaultField;</b>
+<i>43</i>&nbsp;    }
+<i>44</i>&nbsp;
+<i>45</i>&nbsp;    public int count() {
+<b class="nc"><i>46</i>&nbsp;        return fields.length;</b>
+<i>47</i>&nbsp;    }
+<i>48</i>&nbsp;
+<i>49</i>&nbsp;    public RecordField getField(int index) {
+<b class="nc"><i>50</i>&nbsp;        return fields[index];</b>
+<i>51</i>&nbsp;    }
+<i>52</i>&nbsp;
+<i>53</i>&nbsp;    public RecordField getField(String name) {
+<b class="nc"><i>54</i>&nbsp;        return getField(getValidFieldIndex(name));</b>
+<i>55</i>&nbsp;    }
+<i>56</i>&nbsp;
+<i>57</i>&nbsp;    public int getFieldIndex(String name) {
+<b class="nc"><i>58</i>&nbsp;        for (int i = 0; i &lt; fields.length; i++) {</b>
+<b class="nc"><i>59</i>&nbsp;            RecordField field = getField(i);</b>
+<b class="nc"><i>60</i>&nbsp;            if (field.getName().equals(name)) {</b>
+<b class="nc"><i>61</i>&nbsp;                return i;</b>
+<i>62</i>&nbsp;            }
+<i>63</i>&nbsp;        }
+<b class="nc"><i>64</i>&nbsp;        return -1;</b>
+<i>65</i>&nbsp;    }
+<i>66</i>&nbsp;
+<i>67</i>&nbsp;    public int getDefaultFieldIndex() {
+<b class="nc"><i>68</i>&nbsp;        return defaultField;</b>
+<i>69</i>&nbsp;    }
+<i>70</i>&nbsp;
+<i>71</i>&nbsp;    public RecordField getDefaultField() {
+<b class="nc"><i>72</i>&nbsp;        return getField(defaultField);</b>
+<i>73</i>&nbsp;    }
+<i>74</i>&nbsp;        
+<i>75</i>&nbsp;    public RecordDescriptor flatten(int index) {
+<b class="nc"><i>76</i>&nbsp;        assert getField(index).isListType();</b>
+<b class="nc"><i>77</i>&nbsp;        RecordDescriptor subDescriptor = getField(index).getSubDescriptor();</b>
+<i>78</i>&nbsp;        
+<b class="nc"><i>79</i>&nbsp;        String fieldName = fields[index].getName();</b>
+<b class="nc"><i>80</i>&nbsp;        ArrayConcatenator&lt;RecordField&gt; conc = new ArrayConcatenator&lt;&gt;(</b>
+<b class="nc"><i>81</i>&nbsp;                new RecordField[count() + subDescriptor.count()]);</b>
+<b class="nc"><i>82</i>&nbsp;        conc.add(0, index, fields);</b>
+<b class="nc"><i>83</i>&nbsp;        conc.add(RecordField.simpleField(fieldName, RecordFieldType.integer));</b>
+<b class="nc"><i>84</i>&nbsp;        for (RecordField field : subDescriptor.fields) {</b>
+<b class="nc"><i>85</i>&nbsp;            conc.add(field.updateName(fieldName + &quot;.&quot; + field.getName()));</b>
+<i>86</i>&nbsp;        }
+<b class="nc"><i>87</i>&nbsp;        conc.add(index + 1, fields.length, fields);</b>
+<i>88</i>&nbsp;        
+<b class="nc"><i>89</i>&nbsp;        int newDefault = defaultField &lt;= index ? </b>
+<i>90</i>&nbsp;                defaultField :
+<b class="nc"><i>91</i>&nbsp;                defaultField + subDescriptor.count();</b>
+<b class="nc"><i>92</i>&nbsp;        return new RecordDescriptor(newDefault, conc.getResult());</b>
+<i>93</i>&nbsp;    }
+<i>94</i>&nbsp;    
+<i>95</i>&nbsp;    public RecordObject createEmptyRecord() {
+<b class="nc"><i>96</i>&nbsp;        Object[] record = new Object[fields.length];</b>
+<b class="nc"><i>97</i>&nbsp;        for (int i = 0; i &lt; record.length; i++) {</b>
+<b class="nc"><i>98</i>&nbsp;            if (getField(i).isListType()) {</b>
+<b class="nc"><i>99</i>&nbsp;                record[i] = new ArrayList&lt;RecordObject&gt;();</b>
+<i>100</i>&nbsp;            } else {
+<b class="nc"><i>101</i>&nbsp;                record[i] = null;</b>
+<i>102</i>&nbsp;            }
+<i>103</i>&nbsp;//            RecordFieldType type = getField(i).getType();
+<i>104</i>&nbsp;//            if (type == null) {  // is a list
+<i>105</i>&nbsp;//                record[i] = new ArrayList&lt;RecordObject&gt;();
+<i>106</i>&nbsp;//            } else {
+<i>107</i>&nbsp;//                record[i] = null;
+<i>108</i>&nbsp;////                switch (getField(i).getType()) {
+<i>109</i>&nbsp;////                    case integer:
+<i>110</i>&nbsp;////                        record[i] = null;
+<i>111</i>&nbsp;////                        break;
+<i>112</i>&nbsp;////                    case real:
+<i>113</i>&nbsp;////                        record[i] = null;
+<i>114</i>&nbsp;////                        break;
+<i>115</i>&nbsp;////                    case string:
+<i>116</i>&nbsp;////                        record[i] = null;
+<i>117</i>&nbsp;////                        break;
+<i>118</i>&nbsp;////                    default:
+<i>119</i>&nbsp;////                        throw new AssertionError();
+<i>120</i>&nbsp;////                }
+<i>121</i>&nbsp;//            }
+<i>122</i>&nbsp;        }
+<i>123</i>&nbsp;
+<b class="nc"><i>124</i>&nbsp;        return new RecordObject(null, record);</b>
+<i>125</i>&nbsp;    }
+<i>126</i>&nbsp;
+<i>127</i>&nbsp;    @Override
+<i>128</i>&nbsp;    public String toString() {
+<b class="nc"><i>129</i>&nbsp;        String result = &quot;&quot;;</b>
+<b class="nc"><i>130</i>&nbsp;        for (RecordField recordField : fields) {</b>
+<b class="nc"><i>131</i>&nbsp;            if (recordField.isListType()) {</b>
+<b class="nc"><i>132</i>&nbsp;                result += recordField.getName() + &quot;(List{&quot; + recordField.getSubDescriptor() + &quot;})&quot;;</b>
+<i>133</i>&nbsp;            } else {
+<b class="nc"><i>134</i>&nbsp;                result += recordField.getName() + &quot; (&quot; + recordField.getType() + &quot;) &quot;;</b>
+<i>135</i>&nbsp;            }
+<i>136</i>&nbsp;        }
+<b class="nc"><i>137</i>&nbsp;        return result;</b>
+<i>138</i>&nbsp;    }
+<i>139</i>&nbsp;
+<i>140</i>&nbsp;    @Override
+<i>141</i>&nbsp;    public int hashCode() {
+<b class="nc"><i>142</i>&nbsp;        int hash = 3;</b>
+<b class="nc"><i>143</i>&nbsp;        hash = 31 * hash + Arrays.deepHashCode(this.fields);</b>
+<b class="nc"><i>144</i>&nbsp;        hash = 31 * hash + this.defaultField;</b>
+<b class="nc"><i>145</i>&nbsp;        return hash;</b>
+<i>146</i>&nbsp;    }
+<i>147</i>&nbsp;
+<i>148</i>&nbsp;    @Override
+<i>149</i>&nbsp;    public boolean equals(Object obj) {
+<b class="nc"><i>150</i>&nbsp;        if (obj == null) {</b>
+<b class="nc"><i>151</i>&nbsp;            return false;</b>
+<i>152</i>&nbsp;        }
+<b class="nc"><i>153</i>&nbsp;        if (getClass() != obj.getClass()) {</b>
+<b class="nc"><i>154</i>&nbsp;            return false;</b>
+<i>155</i>&nbsp;        }
+<b class="nc"><i>156</i>&nbsp;        final RecordDescriptor other = (RecordDescriptor) obj;</b>
+<b class="nc"><i>157</i>&nbsp;        if (!Arrays.deepEquals(this.fields, other.fields)) {</b>
+<b class="nc"><i>158</i>&nbsp;            return false;</b>
+<i>159</i>&nbsp;        }
+<b class="nc"><i>160</i>&nbsp;        if (this.defaultField != other.defaultField) {</b>
+<b class="nc"><i>161</i>&nbsp;            return false;</b>
+<i>162</i>&nbsp;        }
+<b class="nc"><i>163</i>&nbsp;        return true;</b>
+<i>164</i>&nbsp;    }
+<i>165</i>&nbsp;    
+<i>166</i>&nbsp;        
+<i>167</i>&nbsp;    
+<i>168</i>&nbsp;    private int getValidFieldIndex(String name) {
+<b class="nc"><i>169</i>&nbsp;        int index = getFieldIndex(name);</b>
+<b class="nc"><i>170</i>&nbsp;        if (index &lt; 0) {</b>
+<b class="nc"><i>171</i>&nbsp;            throw new IllegalArgumentException(&quot;No field called &#39;&quot; + name + &quot;&#39;&quot;);</b>
+<i>172</i>&nbsp;        }
+<b class="nc"><i>173</i>&nbsp;        return index;        </b>
+<i>174</i>&nbsp;    }
+<i>175</i>&nbsp;    
+<i>176</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2014-11-07 23:06</div>
+</div>
+</body>
+</html>

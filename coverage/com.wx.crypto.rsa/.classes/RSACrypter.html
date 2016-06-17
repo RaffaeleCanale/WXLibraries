@@ -1,0 +1,201 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: RSACrypter</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.wx.crypto.rsa</a> ]
+</div>
+
+<h1>Coverage Summary for Class: RSACrypter (com.wx.crypto.rsa)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">RSACrypter</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 32)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.wx.crypto.rsa;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.wx.crypto.Crypter;
+<i>4</i>&nbsp;import com.wx.crypto.CryptoException;
+<i>5</i>&nbsp;import com.wx.io.Accessor;
+<i>6</i>&nbsp;import java.io.ByteArrayInputStream;
+<i>7</i>&nbsp;import java.io.ByteArrayOutputStream;
+<i>8</i>&nbsp;import java.io.IOException;
+<i>9</i>&nbsp;import java.io.InputStream;
+<i>10</i>&nbsp;import java.io.OutputStream;
+<i>11</i>&nbsp;import java.math.BigInteger;
+<i>12</i>&nbsp;import java.security.SecureRandom;
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;/**
+<i>15</i>&nbsp; *
+<i>16</i>&nbsp; * @author Raffaele Canale - raffaelecanale@gmail.com
+<i>17</i>&nbsp; * @version 0.1
+<i>18</i>&nbsp; *
+<i>19</i>&nbsp; * Project: WXLibraries
+<i>20</i>&nbsp; * File: RSACrypter.java (UTF-8)
+<i>21</i>&nbsp; * Date: 29 déc. 2012 
+<i>22</i>&nbsp; */
+<i>23</i>&nbsp;public class RSACrypter extends Crypter {
+<i>24</i>&nbsp;    
+<i>25</i>&nbsp;    private static final int DEFAULT_KEY_LENGTH = 128;
+<i>26</i>&nbsp;    private static final String ALGORITHM_NAME = &quot;RSA&quot;;
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;    private KeyPair mKeyPair;
+<i>29</i>&nbsp;        
+<i>30</i>&nbsp;    public RSACrypter() {
+<b class="nc"><i>31</i>&nbsp;        super(DEFAULT_KEY_LENGTH);</b>
+<i>32</i>&nbsp;    }
+<i>33</i>&nbsp;    
+<i>34</i>&nbsp;    @Override
+<i>35</i>&nbsp;    public void initKey(byte[] hash, int size) throws CryptoException {   
+<b class="nc"><i>36</i>&nbsp;        throw new UnsupportedOperationException(&quot;Not supported yet.&quot;);</b>
+<i>37</i>&nbsp;    }
+<i>38</i>&nbsp;
+<i>39</i>&nbsp;    @Override
+<i>40</i>&nbsp;    protected void generateKey(char[] password, byte[] salt, int keySize, int iterationsCount, String hashAlgorithm) throws CryptoException {
+<b class="nc"><i>41</i>&nbsp;        throw new UnsupportedOperationException(&quot;Not supported yet.&quot;);</b>
+<i>42</i>&nbsp;    }
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;    @Override
+<i>45</i>&nbsp;    public void generateRandomKey(int size) throws CryptoException {
+<i>46</i>&nbsp;        //Generate random primes p and q
+<b class="nc"><i>47</i>&nbsp;        BigInteger p = BigInteger.probablePrime(size / 2, new SecureRandom());</b>
+<b class="nc"><i>48</i>&nbsp;        BigInteger q = BigInteger.probablePrime(size / 2, new SecureRandom());</b>
+<i>49</i>&nbsp;
+<i>50</i>&nbsp;        //Compute n = pq
+<b class="nc"><i>51</i>&nbsp;        BigInteger n = p.multiply(q);</b>
+<i>52</i>&nbsp;
+<i>53</i>&nbsp;        //Compute phi = (p-1)(q-1)
+<b class="nc"><i>54</i>&nbsp;        BigInteger phi = p.subtract(BigInteger.ONE).multiply(</b>
+<b class="nc"><i>55</i>&nbsp;                q.subtract(BigInteger.ONE));</b>
+<i>56</i>&nbsp;
+<i>57</i>&nbsp;        //Choose any integer 1 &lt; e &lt; phi so that gcd(e, phi) = 1, 
+<i>58</i>&nbsp;        //here we pick 65537
+<b class="nc"><i>59</i>&nbsp;        BigInteger e = new BigInteger(&quot;65537&quot;);</b>
+<i>60</i>&nbsp;        //As said, gcd(e, phi) = 1, if not the case, we should find others 
+<i>61</i>&nbsp;        //p and q.
+<b class="nc"><i>62</i>&nbsp;        if (!e.gcd(phi).equals(BigInteger.ONE)) {</b>
+<b class="nc"><i>63</i>&nbsp;            generateRandomKey();</b>
+<i>64</i>&nbsp;        } else {
+<i>65</i>&nbsp;
+<i>66</i>&nbsp;            //Find d such that ed = 1 mod phi (modular inverse of e mod phi)
+<b class="nc"><i>67</i>&nbsp;            BigInteger d = e.modInverse(phi);</b>
+<i>68</i>&nbsp;
+<b class="nc"><i>69</i>&nbsp;            mKeyPair = new KeyPair(n, e, d, size);</b>
+<i>70</i>&nbsp;        }
+<i>71</i>&nbsp;    }
+<i>72</i>&nbsp;
+<i>73</i>&nbsp;    @Override
+<i>74</i>&nbsp;    public String getAlgorithmName() {
+<b class="nc"><i>75</i>&nbsp;        return ALGORITHM_NAME;</b>
+<i>76</i>&nbsp;    }
+<i>77</i>&nbsp;
+<i>78</i>&nbsp;    @Override
+<i>79</i>&nbsp;    public byte[] getKey() {
+<b class="nc"><i>80</i>&nbsp;        throw new UnsupportedOperationException(&quot;Not supported yet.&quot;);</b>
+<i>81</i>&nbsp;    }    
+<i>82</i>&nbsp;    
+<i>83</i>&nbsp;    @Override
+<i>84</i>&nbsp;    protected InputStream getInputStream0(InputStream in, byte[] iv, 
+<i>85</i>&nbsp;            boolean encrypt) throws CryptoException {
+<b class="nc"><i>86</i>&nbsp;        return new RSAInputStream(mKeyPair, in, encrypt);</b>
+<i>87</i>&nbsp;    }
+<i>88</i>&nbsp;
+<i>89</i>&nbsp;    @Override
+<i>90</i>&nbsp;    protected OutputStream getOutputStream0(OutputStream out, byte[] iv,
+<i>91</i>&nbsp;            boolean encrypt) throws CryptoException {
+<b class="nc"><i>92</i>&nbsp;        return new RSAOutputStream(mKeyPair, out, encrypt);</b>
+<i>93</i>&nbsp;    }
+<i>94</i>&nbsp;
+<i>95</i>&nbsp;    @Override
+<i>96</i>&nbsp;    protected byte[] doFinal(byte[] data, byte[] iv, boolean encrypt) throws CryptoException {
+<b class="nc"><i>97</i>&nbsp;        if (encrypt) {</b>
+<b class="nc"><i>98</i>&nbsp;            ByteArrayOutputStream buffer = new ByteArrayOutputStream();</b>
+<b class="nc"><i>99</i>&nbsp;            try (OutputStream out = getOutputStream(buffer, true)) {</b>
+<b class="nc"><i>100</i>&nbsp;                out.write(data);</b>
+<b class="nc"><i>101</i>&nbsp;                return buffer.toByteArray();</b>
+<b class="nc"><i>102</i>&nbsp;            } catch (IOException ex) {</b>
+<b class="nc"><i>103</i>&nbsp;                throw new CryptoException(null, ex, this);</b>
+<i>104</i>&nbsp;            }
+<i>105</i>&nbsp;        
+<i>106</i>&nbsp;        } else {
+<b class="nc"><i>107</i>&nbsp;            ByteArrayInputStream source = new ByteArrayInputStream(data);</b>
+<b class="nc"><i>108</i>&nbsp;            InputStream in = getInputStream(source, false);</b>
+<b class="nc"><i>109</i>&nbsp;            ByteArrayOutputStream buffer = new ByteArrayOutputStream();</b>
+<b class="nc"><i>110</i>&nbsp;            try (Accessor accessor = new Accessor().setIn(in).setOut(buffer)) {</b>
+<b class="nc"><i>111</i>&nbsp;                accessor.pourInOut();</b>
+<b class="nc"><i>112</i>&nbsp;                return buffer.toByteArray();</b>
+<b class="nc"><i>113</i>&nbsp;            } catch (IOException ex) {</b>
+<b class="nc"><i>114</i>&nbsp;                throw new CryptoException(null, ex, this);</b>
+<i>115</i>&nbsp;            }
+<i>116</i>&nbsp;        }
+<i>117</i>&nbsp;    }
+<i>118</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2014-11-07 23:06</div>
+</div>
+</body>
+</html>

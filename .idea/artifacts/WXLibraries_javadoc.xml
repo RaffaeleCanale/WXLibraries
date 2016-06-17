@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="WXLibraries-javadoc">
+    <output-path>$PROJECT_DIR$/build</output-path>
+    <root id="archive" name="WXLibraries-javadoc.jar">
+      <element id="dir-copy" path="$PROJECT_DIR$/doc" />
+    </root>
+  </artifact>
+</component>

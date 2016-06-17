@@ -1,0 +1,113 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Variable</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.wx.grammar.cf.element</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Variable (com.wx.grammar.cf.element)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Variable</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 5)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.wx.grammar.cf.element;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.wx.grammar.cnf.CNFGrammar;
+<i>4</i>&nbsp;import com.wx.grammar.symbol.Symbol;
+<i>5</i>&nbsp;import com.wx.grammar.symbol.GeneratedSymbol;
+<i>6</i>&nbsp;import com.wx.lexer.tokens.KeyWordToken;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;/**
+<i>9</i>&nbsp; *
+<i>10</i>&nbsp; * @author Raffaele Canale (raffaelecanale@gmail.com)
+<i>11</i>&nbsp; * @version 0.1
+<i>12</i>&nbsp; */
+<i>13</i>&nbsp;public class Variable implements Element {
+<i>14</i>&nbsp;    
+<i>15</i>&nbsp;    private final String value;
+<i>16</i>&nbsp;
+<b class="nc"><i>17</i>&nbsp;    public Variable(String value) {</b>
+<b class="nc"><i>18</i>&nbsp;        this.value = value;</b>
+<i>19</i>&nbsp;    }
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;    @Override
+<i>22</i>&nbsp;    public Symbol[] normalize(CNFGrammar.Builder builder) {
+<b class="nc"><i>23</i>&nbsp;        Symbol symbol = new GeneratedSymbol(&quot;&quot; + value);</b>
+<i>24</i>&nbsp;//        System.out.println(&quot;AH&quot;);
+<b class="nc"><i>25</i>&nbsp;        builder.addTerminalRule(symbol, new KeyWordToken(value, null));</b>
+<i>26</i>&nbsp;//        System.out.println(&quot;HA&quot;);
+<b class="nc"><i>27</i>&nbsp;        return new Symbol[]{symbol};</b>
+<i>28</i>&nbsp;    }
+<i>29</i>&nbsp;
+<i>30</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2014-11-07 23:06</div>
+</div>
+</body>
+</html>

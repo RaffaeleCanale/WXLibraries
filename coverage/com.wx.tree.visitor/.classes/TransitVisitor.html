@@ -1,0 +1,180 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: TransitVisitor</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.wx.tree.visitor</a> ]
+</div>
+
+<h1>Coverage Summary for Class: TransitVisitor (com.wx.tree.visitor)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">TransitVisitor</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 9)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">TransitVisitor$TransitNodeFoundVisitor</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 5)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 14)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.wx.tree.visitor;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.wx.grammar.symbol.Symbol;
+<i>4</i>&nbsp;import com.wx.tree.Tree;
+<i>5</i>&nbsp;import com.wx.tree.Tree.Leaf;
+<i>6</i>&nbsp;import com.wx.tree.Tree.Node;
+<i>7</i>&nbsp;import com.wx.tree.TreeVisitor;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;/**
+<i>10</i>&nbsp; *
+<i>11</i>&nbsp; * @author Raffaele Canale (raffaelecanale@gmail.com)
+<i>12</i>&nbsp; * @version 0.1
+<i>13</i>&nbsp; */
+<i>14</i>&nbsp;public class TransitVisitor&lt;N, L&gt; implements TreeVisitor.VoidVisitor&lt;N, L&gt; {
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;    private final Node&lt;Symbol, TreeVisitor.VoidVisitor&lt;N, L&gt;&gt; transitTree;
+<i>17</i>&nbsp;    private final Symbol nextExpectedElement;
+<i>18</i>&nbsp;
+<b class="nc"><i>19</i>&nbsp;    public TransitVisitor(Node&lt;Symbol, TreeVisitor.VoidVisitor&lt;N, L&gt;&gt; nextTransitTree) {</b>
+<b class="nc"><i>20</i>&nbsp;        this.transitTree = nextTransitTree;</b>
+<b class="nc"><i>21</i>&nbsp;        this.nextExpectedElement = transitTree.getElement();</b>
+<i>22</i>&nbsp;    }
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;    @Override
+<i>25</i>&nbsp;    public void visitV(Leaf&lt;N, L&gt; leaf) {
+<i>26</i>&nbsp;    }
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;    @Override
+<i>29</i>&nbsp;    public void visitV(Node&lt;N, L&gt; node) {
+<b class="nc"><i>30</i>&nbsp;        if (nextExpectedElement == null || node.getElement().equals(nextExpectedElement)) {</b>
+<b class="nc"><i>31</i>&nbsp;            for (Tree&lt;Symbol, TreeVisitor.VoidVisitor&lt;N, L&gt;&gt; transit : transitTree.getNodes()) {</b>
+<b class="nc"><i>32</i>&nbsp;                transit.accept(new TransitNodeFoundVisitor(node));</b>
+<i>33</i>&nbsp;            }
+<i>34</i>&nbsp;            return;
+<i>35</i>&nbsp;        }
+<i>36</i>&nbsp;
+<b class="nc"><i>37</i>&nbsp;        Tree&lt;N, L&gt;[] nodes = node.getNodes();</b>
+<b class="nc"><i>38</i>&nbsp;        for (Tree&lt;N, L&gt; n : nodes) {</b>
+<b class="nc"><i>39</i>&nbsp;            n.accept(this);</b>
+<i>40</i>&nbsp;        }
+<i>41</i>&nbsp;    }
+<i>42</i>&nbsp;
+<i>43</i>&nbsp;    private class TransitNodeFoundVisitor implements TreeVisitor.VoidVisitor&lt;Symbol, TreeVisitor.VoidVisitor&lt;N, L&gt;&gt; {
+<i>44</i>&nbsp;
+<i>45</i>&nbsp;        private final Node&lt;N, L&gt; tree;
+<i>46</i>&nbsp;
+<b class="nc"><i>47</i>&nbsp;        public TransitNodeFoundVisitor(Node&lt;N, L&gt; tree) {</b>
+<b class="nc"><i>48</i>&nbsp;            this.tree = tree;</b>
+<i>49</i>&nbsp;        }
+<i>50</i>&nbsp;
+<i>51</i>&nbsp;        @Override
+<i>52</i>&nbsp;        public void visitV(Leaf&lt;Symbol, TreeVisitor.VoidVisitor&lt;N, L&gt;&gt; leaf) {
+<i>53</i>&nbsp;            // Is a visitor
+<b class="nc"><i>54</i>&nbsp;            tree.accept(leaf.getElement());</b>
+<i>55</i>&nbsp;        }
+<i>56</i>&nbsp;
+<i>57</i>&nbsp;        @Override
+<i>58</i>&nbsp;        public void visitV(Node&lt;Symbol, TreeVisitor.VoidVisitor&lt;N, L&gt;&gt; node) {
+<i>59</i>&nbsp;//            System.out.println(&quot;Ok, let&#39;s go on with that tree: &quot;);
+<i>60</i>&nbsp;//            new PrintTree().print(node);
+<i>61</i>&nbsp;//            for (Tree&lt;Object&gt; n : node.getNodes()) {
+<i>62</i>&nbsp;//                tree.accept(new TransitVisitor(n));
+<i>63</i>&nbsp;//            }
+<i>64</i>&nbsp;
+<b class="nc"><i>65</i>&nbsp;            for (Tree&lt;N, L&gt; t : tree.getNodes()) {</b>
+<b class="nc"><i>66</i>&nbsp;                t.accept(new TransitVisitor&lt;&gt;(node));</b>
+<i>67</i>&nbsp;            }
+<i>68</i>&nbsp;        }
+<i>69</i>&nbsp;    }
+<i>70</i>&nbsp;
+<i>71</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2014-11-07 23:06</div>
+</div>
+</body>
+</html>

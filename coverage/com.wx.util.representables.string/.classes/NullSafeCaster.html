@@ -1,0 +1,120 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: NullSafeCaster</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.wx.util.representables.string</a> ]
+</div>
+
+<h1>Coverage Summary for Class: NullSafeCaster (com.wx.util.representables.string)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">NullSafeCaster</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 4)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.wx.util.representables.string;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.wx.util.representables.TypeCaster;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;/**
+<i>6</i>&nbsp; *  This is class wraps another caster ensuring that no {@code null} value
+<i>7</i>&nbsp; * is ever passed to the sub caster (but directly returns null instead).
+<i>8</i>&nbsp; * 
+<i>9</i>&nbsp; * This can be useful if you want to enforce a caster that does not support null
+<i>10</i>&nbsp; * values to support them.
+<i>11</i>&nbsp; * 
+<i>12</i>&nbsp; * @author Raffaele Canale - raffaelecanale@gmail.com
+<i>13</i>&nbsp; * @version 1.0
+<i>14</i>&nbsp; *
+<i>15</i>&nbsp; * Project: WXLibraries.ANT
+<i>16</i>&nbsp; * File: NullSafeCaster.java (UTF-8)
+<i>17</i>&nbsp; * Date: Oct 8, 2013 
+<i>18</i>&nbsp; */
+<i>19</i>&nbsp;public class NullSafeCaster&lt;InType, OutType&gt; implements TypeCaster&lt;InType, OutType&gt; {
+<i>20</i>&nbsp;    
+<i>21</i>&nbsp;    private final TypeCaster&lt;InType, OutType&gt; subCaster;
+<i>22</i>&nbsp;
+<b class="nc"><i>23</i>&nbsp;    public NullSafeCaster(TypeCaster&lt;InType, OutType&gt; subCaster) {</b>
+<b class="nc"><i>24</i>&nbsp;        this.subCaster = subCaster;</b>
+<i>25</i>&nbsp;    }
+<i>26</i>&nbsp;
+<i>27</i>&nbsp;    @Override
+<i>28</i>&nbsp;    public InType castIn(OutType value) throws ClassCastException {
+<b class="nc"><i>29</i>&nbsp;        return value == null ? null : subCaster.castIn(value);</b>
+<i>30</i>&nbsp;    }
+<i>31</i>&nbsp;
+<i>32</i>&nbsp;    @Override
+<i>33</i>&nbsp;    public OutType castOut(InType value) throws ClassCastException {
+<b class="nc"><i>34</i>&nbsp;        return value == null ? null : subCaster.castOut(value);</b>
+<i>35</i>&nbsp;    }
+<i>36</i>&nbsp;
+<i>37</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2014-11-07 23:06</div>
+</div>
+</body>
+</html>

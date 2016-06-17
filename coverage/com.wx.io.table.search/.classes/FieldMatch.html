@@ -1,0 +1,120 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: FieldMatch</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.wx.io.table.search</a> ]
+</div>
+
+<h1>Coverage Summary for Class: FieldMatch (com.wx.io.table.search)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">FieldMatch</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 6)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.wx.io.table.search;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;/**
+<i>4</i>&nbsp; * A simple implementation of a {@link Condition} that will try to match only a
+<i>5</i>&nbsp; * specific value from the value.
+<i>6</i>&nbsp; *
+<i>7</i>&nbsp; * @author Raffaele Canale - raffaelecanale@gmail.com
+<i>8</i>&nbsp; * @version 0.9
+<i>9</i>&nbsp; *
+<i>10</i>&nbsp; * Project: Worx.ANT File: FieldMatch.java (UTF-8) Date: Jul 12, 2013
+<i>11</i>&nbsp; */
+<i>12</i>&nbsp;public class FieldMatch implements Condition {
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;    private final Object searchObject;
+<i>15</i>&nbsp;    private final int fieldIndex;
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;    /**
+<i>18</i>&nbsp;     * Constructs a new field match.
+<i>19</i>&nbsp;     *
+<i>20</i>&nbsp;     * @param searchObject Object that needs to be matched
+<i>21</i>&nbsp;     * @param columnIndex   Column index of that value
+<i>22</i>&nbsp;     */
+<b class="nc"><i>23</i>&nbsp;    public FieldMatch(Object searchObject, int columnIndex) {</b>
+<b class="nc"><i>24</i>&nbsp;        this.searchObject = searchObject;</b>
+<b class="nc"><i>25</i>&nbsp;        this.fieldIndex = columnIndex;</b>
+<i>26</i>&nbsp;    }
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;    @Override
+<i>29</i>&nbsp;    public boolean matches(Object[] register) {
+<b class="nc"><i>30</i>&nbsp;        if (searchObject == null) {</b>
+<b class="nc"><i>31</i>&nbsp;            return register[fieldIndex] == null;</b>
+<i>32</i>&nbsp;        }
+<i>33</i>&nbsp;        
+<b class="nc"><i>34</i>&nbsp;        return searchObject.equals(register[fieldIndex]);</b>
+<i>35</i>&nbsp;    }
+<i>36</i>&nbsp;
+<i>37</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2014-11-07 23:06</div>
+</div>
+</body>
+</html>

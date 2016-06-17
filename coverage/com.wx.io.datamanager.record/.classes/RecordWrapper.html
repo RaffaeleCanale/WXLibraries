@@ -1,0 +1,241 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: RecordWrapper</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.wx.io.datamanager.record</a> ]
+</div>
+
+<h1>Coverage Summary for Class: RecordWrapper (com.wx.io.datamanager.record)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">RecordWrapper</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 27)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 49)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;/*
+<i>2</i>&nbsp; * To change this template, choose Tools | Templates
+<i>3</i>&nbsp; * and open the template in the editor.
+<i>4</i>&nbsp; */
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;package com.wx.io.datamanager.record;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;import com.wx.io.datamanager.record.descriptor.RecordDescriptor;
+<i>9</i>&nbsp;import com.wx.io.datamanager.record.descriptor.RecordFieldType;
+<i>10</i>&nbsp;import java.util.ArrayList;
+<i>11</i>&nbsp;import java.util.List;
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;/**
+<i>14</i>&nbsp; *
+<i>15</i>&nbsp; * @author Raffaele Canale - raffaelecanale@gmail.com
+<i>16</i>&nbsp; * @version 0.1
+<i>17</i>&nbsp; *
+<i>18</i>&nbsp; * Project: Worx.ANT
+<i>19</i>&nbsp; * File: RecordWrapper.java (UTF-8)
+<i>20</i>&nbsp; * Date: Aug 20, 2013 
+<i>21</i>&nbsp; */
+<b class="nc"><i>22</i>&nbsp;public class RecordWrapper {</b>
+<i>23</i>&nbsp;    
+<i>24</i>&nbsp;    // TODO Add more assertions
+<i>25</i>&nbsp;    
+<i>26</i>&nbsp;    private final RecordObject record;
+<i>27</i>&nbsp;    private final RecordDescriptor descriptor;
+<i>28</i>&nbsp;
+<b class="nc"><i>29</i>&nbsp;    public RecordWrapper(RecordObject record, RecordDescriptor descriptor) {</b>
+<b class="nc"><i>30</i>&nbsp;        this.record = record;</b>
+<b class="nc"><i>31</i>&nbsp;        this.descriptor = descriptor;</b>
+<i>32</i>&nbsp;    }
+<i>33</i>&nbsp;
+<b class="nc"><i>34</i>&nbsp;    public RecordWrapper(RecordDescriptor descriptor) {</b>
+<b class="nc"><i>35</i>&nbsp;        this.record = descriptor.createEmptyRecord();</b>
+<b class="nc"><i>36</i>&nbsp;        this.descriptor = descriptor;</b>
+<i>37</i>&nbsp;    }
+<i>38</i>&nbsp;    
+<i>39</i>&nbsp;    public Integer getId() {
+<b class="nc"><i>40</i>&nbsp;        return record.getId();</b>
+<i>41</i>&nbsp;    }
+<i>42</i>&nbsp;
+<i>43</i>&nbsp;    public RecordObject getRecord() {
+<b class="nc"><i>44</i>&nbsp;        return record;</b>
+<i>45</i>&nbsp;    }
+<i>46</i>&nbsp;
+<i>47</i>&nbsp;    public RecordDescriptor getDescriptor() {
+<b class="nc"><i>48</i>&nbsp;        return descriptor;</b>
+<i>49</i>&nbsp;    }
+<i>50</i>&nbsp;    
+<i>51</i>&nbsp;    public void setString(int index, String value) {
+<i>52</i>&nbsp;//        assert RecordType.string.equals(descriptor.getField(index).getType());
+<b class="nc"><i>53</i>&nbsp;        record.setElement(index, value);</b>
+<i>54</i>&nbsp;    }
+<i>55</i>&nbsp;    
+<i>56</i>&nbsp;    public void setString(String fieldName, String value) {
+<b class="nc"><i>57</i>&nbsp;        setString(getFieldIndex(fieldName), value);</b>
+<i>58</i>&nbsp;    }
+<i>59</i>&nbsp;    
+<i>60</i>&nbsp;    public void setInteger(int index, Integer value) {
+<b class="nc"><i>61</i>&nbsp;        assert RecordFieldType.integer.equals(descriptor.getField(index).getType());</b>
+<b class="nc"><i>62</i>&nbsp;        record.setElement(index, value);</b>
+<i>63</i>&nbsp;    }
+<i>64</i>&nbsp;    
+<i>65</i>&nbsp;    public void setInteger(String fieldName, Integer value) {
+<b class="nc"><i>66</i>&nbsp;        setInteger(getFieldIndex(fieldName), value);</b>
+<i>67</i>&nbsp;    }
+<i>68</i>&nbsp;    
+<i>69</i>&nbsp;    public void setList(int index, List&lt;RecordObject&gt; list) {
+<b class="nc"><i>70</i>&nbsp;        assert descriptor.getField(index).isListType();</b>
+<b class="nc"><i>71</i>&nbsp;        record.setElement(index, list);</b>
+<i>72</i>&nbsp;    }
+<i>73</i>&nbsp;    
+<i>74</i>&nbsp;    public void setList(String fieldName, List&lt;RecordObject&gt; list) {
+<b class="nc"><i>75</i>&nbsp;        record.setElement(getFieldIndex(fieldName), list);</b>
+<i>76</i>&nbsp;    }
+<i>77</i>&nbsp;    
+<i>78</i>&nbsp;    public void setWrapperList(int index, List&lt;RecordWrapper&gt; wrappedList) {
+<b class="nc"><i>79</i>&nbsp;        List&lt;RecordObject&gt; list = new ArrayList&lt;&gt;();</b>
+<b class="nc"><i>80</i>&nbsp;        for (RecordWrapper wrapper : wrappedList) {</b>
+<b class="nc"><i>81</i>&nbsp;            list.add(wrapper.getRecord());</b>
+<b class="nc"><i>82</i>&nbsp;        }</b>
+<b class="nc"><i>83</i>&nbsp;        setList(index, list);</b>
+<i>84</i>&nbsp;    }
+<i>85</i>&nbsp;    
+<i>86</i>&nbsp;    public void setWrapperList(String fieldName, List&lt;RecordWrapper&gt; wrappedList) {
+<b class="nc"><i>87</i>&nbsp;        setWrapperList(getFieldIndex(fieldName), wrappedList);</b>
+<i>88</i>&nbsp;    }
+<i>89</i>&nbsp;    
+<i>90</i>&nbsp;    public List&lt;RecordWrapper&gt; getList(int index) {
+<b class="nc"><i>91</i>&nbsp;        assert descriptor.getField(index).isListType();</b>
+<b class="nc"><i>92</i>&nbsp;        List&lt;RecordObject&gt; list = record.getList(index);</b>
+<b class="nc"><i>93</i>&nbsp;        List&lt;RecordWrapper&gt; result = new ArrayList&lt;&gt;();</b>
+<b class="nc"><i>94</i>&nbsp;        RecordDescriptor subDescriptor = descriptor.getField(index).getSubDescriptor();</b>
+<b class="nc"><i>95</i>&nbsp;        for (RecordObject r : list) {</b>
+<b class="nc"><i>96</i>&nbsp;            result.add(new RecordWrapper(r, subDescriptor));</b>
+<b class="nc"><i>97</i>&nbsp;        }</b>
+<i>98</i>&nbsp;        
+<b class="nc"><i>99</i>&nbsp;        return result;</b>
+<i>100</i>&nbsp;    }
+<i>101</i>&nbsp;    
+<i>102</i>&nbsp;    public List&lt;RecordWrapper&gt; getList(String fieldName) {
+<b class="nc"><i>103</i>&nbsp;        return getList(getFieldIndex(fieldName));</b>
+<i>104</i>&nbsp;    }
+<i>105</i>&nbsp;    
+<i>106</i>&nbsp;    public Object getObject(int index) {
+<b class="nc"><i>107</i>&nbsp;        return record.getElement(index);</b>
+<i>108</i>&nbsp;    }
+<i>109</i>&nbsp;    
+<i>110</i>&nbsp;    public Object getObject(String fieldName) {
+<b class="nc"><i>111</i>&nbsp;        return getObject(getFieldIndex(fieldName));</b>
+<i>112</i>&nbsp;    }
+<i>113</i>&nbsp;    
+<i>114</i>&nbsp;    public String getString(int index) {
+<i>115</i>&nbsp;//        assert RecordType.string.equals(descriptor.getField(index).getType());
+<b class="nc"><i>116</i>&nbsp;        return (String) record.getElement(index);</b>
+<i>117</i>&nbsp;    }
+<i>118</i>&nbsp;    
+<i>119</i>&nbsp;    public String getString(String fieldName) {
+<b class="nc"><i>120</i>&nbsp;        return getString(getFieldIndex(fieldName));</b>
+<i>121</i>&nbsp;    }
+<i>122</i>&nbsp;    
+<i>123</i>&nbsp;    public Integer getInteger(int index) {
+<b class="nc"><i>124</i>&nbsp;        assert RecordFieldType.integer.equals(descriptor.getField(index).getType());</b>
+<b class="nc"><i>125</i>&nbsp;        return (Integer) record.getElement(index);</b>
+<i>126</i>&nbsp;    }
+<i>127</i>&nbsp;    
+<i>128</i>&nbsp;    public Integer getInteger(String fieldName) {
+<b class="nc"><i>129</i>&nbsp;        return getInteger(getFieldIndex(fieldName));</b>
+<i>130</i>&nbsp;    }
+<i>131</i>&nbsp;    
+<i>132</i>&nbsp;    public Float getFloat(int index) {
+<b class="nc"><i>133</i>&nbsp;        assert RecordFieldType.real.equals(descriptor.getField(index).getType());</b>
+<b class="nc"><i>134</i>&nbsp;        return (Float) record.getElement(index);</b>
+<i>135</i>&nbsp;    }
+<i>136</i>&nbsp;    
+<i>137</i>&nbsp;    public Float getFloat(String fieldName) {
+<b class="nc"><i>138</i>&nbsp;        return getFloat(getFieldIndex(fieldName));</b>
+<i>139</i>&nbsp;    }
+<i>140</i>&nbsp;    
+<i>141</i>&nbsp;    public int count() {
+<b class="nc"><i>142</i>&nbsp;        return record.getCount();</b>
+<i>143</i>&nbsp;    }
+<i>144</i>&nbsp;    
+<i>145</i>&nbsp;    private int getFieldIndex(String fieldName) {
+<b class="nc"><i>146</i>&nbsp;        int fieldIndex = descriptor.getFieldIndex(fieldName);</b>
+<b class="nc"><i>147</i>&nbsp;        if (fieldIndex &lt; 0) {</b>
+<b class="nc"><i>148</i>&nbsp;            throw new IllegalArgumentException(&quot;Unexisting field: &quot; + fieldName);</b>
+<i>149</i>&nbsp;        } else {
+<b class="nc"><i>150</i>&nbsp;            return fieldIndex;</b>
+<i>151</i>&nbsp;        }
+<i>152</i>&nbsp;    }
+<i>153</i>&nbsp;
+<i>154</i>&nbsp;    @Override
+<i>155</i>&nbsp;    public String toString() {
+<b class="nc"><i>156</i>&nbsp;        return record.toFormattedString(descriptor);</b>
+<i>157</i>&nbsp;    }
+<i>158</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2014-11-07 23:06</div>
+</div>
+</body>
+</html>

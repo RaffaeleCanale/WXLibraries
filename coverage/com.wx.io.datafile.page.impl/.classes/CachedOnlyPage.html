@@ -1,0 +1,366 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: CachedOnlyPage</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.wx.io.datafile.page.impl</a> ]
+</div>
+
+<h1>Coverage Summary for Class: CachedOnlyPage (com.wx.io.datafile.page.impl)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CachedOnlyPage</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 64)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">CachedOnlyPage$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 5)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">CachedOnlyPage$RecordIterator</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 15)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 20)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 84)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.wx.io.datafile.page.impl;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.wx.io.Accessor;
+<i>4</i>&nbsp;import com.wx.io.CounterInputStream;
+<i>5</i>&nbsp;import com.wx.io.CounterOutputStream;
+<i>6</i>&nbsp;import com.wx.io.datafile.page.DataPage;
+<i>7</i>&nbsp;import com.wx.io.datafile.page.DataPageFactory;
+<i>8</i>&nbsp;import com.wx.io.datafile.page.RegisterSetIterator;
+<i>9</i>&nbsp;import com.wx.io.datafile.register.RegisterSaveStrategy;
+<i>10</i>&nbsp;import com.wx.io.table.search.Condition;
+<i>11</i>&nbsp;import com.wx.util.AuditMessage;
+<i>12</i>&nbsp;import java.io.File;
+<i>13</i>&nbsp;import java.io.FileInputStream;
+<i>14</i>&nbsp;import java.io.IOException;
+<i>15</i>&nbsp;import java.util.ArrayList;
+<i>16</i>&nbsp;import java.util.List;
+<i>17</i>&nbsp;import java.util.ListIterator;
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;/**
+<i>20</i>&nbsp; * Implementation of the {@link DataPage} fully based on caching.
+<i>21</i>&nbsp; * &lt;br&gt;&lt;br&gt;
+<i>22</i>&nbsp; * This implementation basically loads all the registers into memory and does
+<i>23</i>&nbsp; * all the processes on memory and, eventually, saves all back to file when
+<i>24</i>&nbsp; * needed.
+<i>25</i>&nbsp; * &lt;br&gt;&lt;br&gt;
+<i>26</i>&nbsp; * This implementation is powerful for a few and little data pages because it
+<i>27</i>&nbsp; * will be very fast and IO&#39;s will be minimal.
+<i>28</i>&nbsp; * &lt;br&gt;&lt;br&gt;
+<i>29</i>&nbsp; * &lt;b&gt;Note:&lt;/b&gt; This file size is stored using an integer, in other words, the
+<i>30</i>&nbsp; * largest possible page is a 4 GB page.
+<i>31</i>&nbsp; * 
+<i>32</i>&nbsp; * @author Raffaele Canale - raffaelecanale@gmail.com
+<i>33</i>&nbsp; * @version 0.9
+<i>34</i>&nbsp; *
+<i>35</i>&nbsp; * Project: Worx.ANT File: CacheOnlyPage.java (UTF-8) Date: Jul 15, 2013
+<i>36</i>&nbsp; */
+<b class="nc"><i>37</i>&nbsp;public class CachedOnlyPage extends DataPage {</b>
+<i>38</i>&nbsp;
+<i>39</i>&nbsp;    /**
+<i>40</i>&nbsp;     * Get a factory for this implementation.
+<i>41</i>&nbsp;     * &lt;br&gt;&lt;br&gt;
+<i>42</i>&nbsp;     * &lt;b&gt;Note:&lt;/b&gt; The max size is used only for newly created pages. If an
+<i>43</i>&nbsp;     * already existing page is loaded, the max size will be derived from the
+<i>44</i>&nbsp;     * file meta data.
+<i>45</i>&nbsp;     *
+<i>46</i>&nbsp;     * @param rs      The register strategy. This page is compatible with any
+<i>47</i>&nbsp;     *                register strategy.
+<i>48</i>&nbsp;     * @param maxSize Limit size (in bytes) for this page. This will guarantee
+<i>49</i>&nbsp;     *                that this file never exceeds that capacity.
+<i>50</i>&nbsp;     *
+<i>51</i>&nbsp;     * @return A {@code CachedOnlyPage} factory
+<i>52</i>&nbsp;     */
+<i>53</i>&nbsp;    public static DataPageFactory getFactory(final RegisterSaveStrategy rs,
+<i>54</i>&nbsp;            final int maxSize) {
+<b class="nc"><i>55</i>&nbsp;        assert maxSize &gt; 0 : &quot;Max size must be positive&quot;;</b>
+<b class="nc"><i>56</i>&nbsp;        return new DataPageFactory() {</b>
+<i>57</i>&nbsp;            @Override
+<i>58</i>&nbsp;            public DataPage getNewPage(File dataFile) throws IOException {
+<b class="nc"><i>59</i>&nbsp;                CachedOnlyPage page = new CachedOnlyPage(rs, dataFile);</b>
+<b class="nc"><i>60</i>&nbsp;                if (!dataFile.exists() || dataFile.length() &lt; 4) {</b>
+<b class="nc"><i>61</i>&nbsp;                    page.create(maxSize);</b>
+<i>62</i>&nbsp;                }
+<i>63</i>&nbsp;
+<b class="nc"><i>64</i>&nbsp;                return page;</b>
+<i>65</i>&nbsp;            }
+<i>66</i>&nbsp;        };
+<i>67</i>&nbsp;    }
+<i>68</i>&nbsp;
+<i>69</i>&nbsp;    private List&lt;Object[]&gt; records;
+<i>70</i>&nbsp;    private int maxSize;
+<i>71</i>&nbsp;    private int currentSize;
+<i>72</i>&nbsp;    private boolean isUpToDate;
+<i>73</i>&nbsp;
+<i>74</i>&nbsp;    private CachedOnlyPage(RegisterSaveStrategy rs, File dataFile) {
+<b class="nc"><i>75</i>&nbsp;        super(rs, dataFile);</b>
+<b class="nc"><i>76</i>&nbsp;        this.records = new ArrayList&lt;&gt;();</b>
+<b class="nc"><i>77</i>&nbsp;        this.currentSize = -1;</b>
+<b class="nc"><i>78</i>&nbsp;        this.maxSize = -1;</b>
+<i>79</i>&nbsp;    }
+<i>80</i>&nbsp;
+<i>81</i>&nbsp;    @Override
+<i>82</i>&nbsp;    public boolean add(Object[] record) throws IOException {
+<b class="nc"><i>83</i>&nbsp;        if (!isLoaded()) {</b>
+<b class="nc"><i>84</i>&nbsp;            load();</b>
+<i>85</i>&nbsp;        }
+<i>86</i>&nbsp;
+<b class="nc"><i>87</i>&nbsp;        CounterOutputStream cos = new CounterOutputStream();</b>
+<b class="nc"><i>88</i>&nbsp;        try (Accessor accessor = new Accessor().setOut(cos)) {</b>
+<b class="nc"><i>89</i>&nbsp;            rs.write(record, accessor);</b>
+<b class="nc"><i>90</i>&nbsp;        }</b>
+<i>91</i>&nbsp;        
+<b class="nc"><i>92</i>&nbsp;        int recordSize = (int) cos.getCount();</b>
+<i>93</i>&nbsp;
+<b class="nc"><i>94</i>&nbsp;        if (currentSize + recordSize &lt;= maxSize) {</b>
+<b class="nc"><i>95</i>&nbsp;            records.add(record);</b>
+<b class="nc"><i>96</i>&nbsp;            isUpToDate = false;</b>
+<b class="nc"><i>97</i>&nbsp;            currentSize+= recordSize;</b>
+<b class="nc"><i>98</i>&nbsp;            return true;</b>
+<i>99</i>&nbsp;        }
+<i>100</i>&nbsp;
+<b class="nc"><i>101</i>&nbsp;        return false;</b>
+<i>102</i>&nbsp;    }
+<i>103</i>&nbsp;
+<i>104</i>&nbsp;    @Override
+<i>105</i>&nbsp;    public RegisterSetIterator getIterator(Condition condition) throws IOException {
+<b class="nc"><i>106</i>&nbsp;        if (!isLoaded()) {</b>
+<b class="nc"><i>107</i>&nbsp;            load();</b>
+<i>108</i>&nbsp;        }
+<b class="nc"><i>109</i>&nbsp;        return new RecordIterator(records.listIterator(), condition);</b>
+<i>110</i>&nbsp;    }
+<i>111</i>&nbsp;
+<i>112</i>&nbsp;    @Override
+<i>113</i>&nbsp;    public void flush() throws IOException {
+<b class="nc"><i>114</i>&nbsp;        if (isLoaded() &amp;&amp; !isUpToDate) {</b>
+<b class="nc"><i>115</i>&nbsp;            try (Accessor accessor = new Accessor().setOut(dataFile, false)) {</b>
+<b class="nc"><i>116</i>&nbsp;                accessor.writeInt(maxSize);</b>
+<i>117</i>&nbsp;
+<b class="nc"><i>118</i>&nbsp;                for (Object[] record : records) {</b>
+<b class="nc"><i>119</i>&nbsp;                    rs.write(record, accessor);</b>
+<b class="nc"><i>120</i>&nbsp;                }</b>
+<b class="nc"><i>121</i>&nbsp;            }</b>
+<i>122</i>&nbsp;        }
+<i>123</i>&nbsp;    }
+<i>124</i>&nbsp;
+<i>125</i>&nbsp;    @Override
+<i>126</i>&nbsp;    public void clearBuffers() throws IOException {
+<b class="nc"><i>127</i>&nbsp;        records.clear();</b>
+<b class="nc"><i>128</i>&nbsp;        currentSize = -1;</b>
+<b class="nc"><i>129</i>&nbsp;        maxSize = -1;</b>
+<i>130</i>&nbsp;    }
+<i>131</i>&nbsp;
+<i>132</i>&nbsp;    @Override
+<i>133</i>&nbsp;    public void auditErrors(int depth, AuditMessage message) {
+<b class="nc"><i>134</i>&nbsp;        if (depth == 0) {</b>
+<b class="nc"><i>135</i>&nbsp;            message.stopped(this);</b>
+<i>136</i>&nbsp;            return;
+<i>137</i>&nbsp;        }
+<i>138</i>&nbsp;        
+<b class="nc"><i>139</i>&nbsp;        if (!dataFile.exists()) {</b>
+<b class="nc"><i>140</i>&nbsp;            message.warning(dataFile.getAbsolutePath() + &quot; does not exist&quot;);</b>
+<i>141</i>&nbsp;            return;
+<i>142</i>&nbsp;        }
+<b class="nc"><i>143</i>&nbsp;        if (dataFile.length() &lt; 4) {</b>
+<b class="nc"><i>144</i>&nbsp;            message.error(&quot;File too small (&quot; + dataFile.length() + &quot;)&quot;);</b>
+<i>145</i>&nbsp;            return;
+<i>146</i>&nbsp;        }
+<b class="nc"><i>147</i>&nbsp;        try (Accessor accessor = new Accessor().setIn(dataFile)) {</b>
+<b class="nc"><i>148</i>&nbsp;            int size = accessor.readInt();</b>
+<b class="nc"><i>149</i>&nbsp;            if (size &lt;= 0) {</b>
+<b class="nc"><i>150</i>&nbsp;                message.error(&quot;Invalid max size: &quot; + size);</b>
+<i>151</i>&nbsp;            }
+<i>152</i>&nbsp;            
+<i>153</i>&nbsp;            do {
+<b class="nc"><i>154</i>&nbsp;                depth--;</b>
+<b class="nc"><i>155</i>&nbsp;            } while (rs.audit(depth, message, accessor, dataFile));</b>
+<i>156</i>&nbsp;            
+<b class="nc"><i>157</i>&nbsp;        } catch (IOException ex) {</b>
+<b class="nc"><i>158</i>&nbsp;            message.error(&quot;Error while reading: &quot; + ex);</b>
+<b class="nc"><i>159</i>&nbsp;        }</b>
+<i>160</i>&nbsp;    }
+<i>161</i>&nbsp;
+<i>162</i>&nbsp;    @Override
+<i>163</i>&nbsp;    public void close() throws IOException {
+<b class="nc"><i>164</i>&nbsp;        flush();</b>
+<b class="nc"><i>165</i>&nbsp;        clearBuffers();</b>
+<i>166</i>&nbsp;    }
+<i>167</i>&nbsp;
+<i>168</i>&nbsp;    private boolean isLoaded() {
+<b class="nc"><i>169</i>&nbsp;        return currentSize &gt;= 0;</b>
+<i>170</i>&nbsp;    }
+<i>171</i>&nbsp;
+<i>172</i>&nbsp;    private void load() throws IOException {
+<b class="nc"><i>173</i>&nbsp;        records = new ArrayList&lt;&gt;();</b>
+<i>174</i>&nbsp;
+<b class="nc"><i>175</i>&nbsp;        CounterInputStream counter = new CounterInputStream(</b>
+<i>176</i>&nbsp;                new FileInputStream(dataFile));
+<b class="nc"><i>177</i>&nbsp;        try (Accessor accessor = new Accessor().setIn(counter)) {</b>
+<b class="nc"><i>178</i>&nbsp;            maxSize = accessor.readInt();</b>
+<i>179</i>&nbsp;
+<i>180</i>&nbsp;            Object[] record;
+<b class="nc"><i>181</i>&nbsp;            while ((record = rs.read(accessor)) != null) {</b>
+<b class="nc"><i>182</i>&nbsp;                records.add(record);</b>
+<i>183</i>&nbsp;            }
+<i>184</i>&nbsp;
+<b class="nc"><i>185</i>&nbsp;            currentSize = (int) (counter.getCount() - 4);</b>
+<b class="nc"><i>186</i>&nbsp;            isUpToDate = true;</b>
+<b class="nc"><i>187</i>&nbsp;        }</b>
+<i>188</i>&nbsp;    }
+<i>189</i>&nbsp;
+<i>190</i>&nbsp;    private void create(int maxSize) throws IOException {
+<b class="nc"><i>191</i>&nbsp;        records = new ArrayList&lt;&gt;();</b>
+<b class="nc"><i>192</i>&nbsp;        this.maxSize = maxSize;</b>
+<b class="nc"><i>193</i>&nbsp;        currentSize = 0;</b>
+<b class="nc"><i>194</i>&nbsp;        isUpToDate = false;</b>
+<i>195</i>&nbsp;    }
+<i>196</i>&nbsp;
+<b class="nc"><i>197</i>&nbsp;    private class RecordIterator implements RegisterSetIterator {</b>
+<i>198</i>&nbsp;
+<i>199</i>&nbsp;        private final ListIterator&lt;Object[]&gt; iterator;
+<i>200</i>&nbsp;        private final Condition condition;
+<i>201</i>&nbsp;
+<i>202</i>&nbsp;        private RecordIterator(ListIterator&lt;Object[]&gt; iterator,
+<b class="nc"><i>203</i>&nbsp;                Condition condition) {</b>
+<b class="nc"><i>204</i>&nbsp;            this.iterator = iterator;</b>
+<b class="nc"><i>205</i>&nbsp;            this.condition = condition;</b>
+<i>206</i>&nbsp;        }
+<i>207</i>&nbsp;
+<i>208</i>&nbsp;        @Override
+<i>209</i>&nbsp;        public Object[] readRegister() throws IOException {
+<b class="nc"><i>210</i>&nbsp;            while (iterator.hasNext()) {</b>
+<b class="nc"><i>211</i>&nbsp;                Object[] record = iterator.next();</b>
+<b class="nc"><i>212</i>&nbsp;                if (condition.matches(record)) {</b>
+<b class="nc"><i>213</i>&nbsp;                    return record;</b>
+<i>214</i>&nbsp;                }
+<b class="nc"><i>215</i>&nbsp;            }</b>
+<i>216</i>&nbsp;
+<b class="nc"><i>217</i>&nbsp;            return null;</b>
+<i>218</i>&nbsp;        }
+<i>219</i>&nbsp;
+<i>220</i>&nbsp;        @Override
+<i>221</i>&nbsp;        public void update(Object[] register) throws IOException {
+<b class="nc"><i>222</i>&nbsp;            iterator.set(register);</b>
+<b class="nc"><i>223</i>&nbsp;            isUpToDate = false;</b>
+<i>224</i>&nbsp;        }
+<i>225</i>&nbsp;
+<i>226</i>&nbsp;        @Override
+<i>227</i>&nbsp;        public void remove() throws IOException {
+<b class="nc"><i>228</i>&nbsp;            iterator.remove();</b>
+<b class="nc"><i>229</i>&nbsp;            isUpToDate = false;</b>
+<i>230</i>&nbsp;        }
+<i>231</i>&nbsp;
+<i>232</i>&nbsp;        @Override
+<i>233</i>&nbsp;        public void close() throws IOException {
+<b class="nc"><i>234</i>&nbsp;            flush();</b>
+<i>235</i>&nbsp;        }
+<i>236</i>&nbsp;
+<i>237</i>&nbsp;    }
+<i>238</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2014-11-07 23:06</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,419 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: DefaultCommandBuilder</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.wx.console.command</a> ]
+</div>
+
+<h1>Coverage Summary for Class: DefaultCommandBuilder (com.wx.console.command)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">DefaultCommandBuilder</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 80)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">DefaultCommandBuilder$TokenIterator</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 34)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 18)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 114)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.wx.console.command;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.wx.console.Console;
+<i>4</i>&nbsp;import com.wx.console.InputException;
+<i>5</i>&nbsp;import java.util.ArrayList;
+<i>6</i>&nbsp;import java.util.HashSet;
+<i>7</i>&nbsp;import java.util.LinkedList;
+<i>8</i>&nbsp;import java.util.List;
+<i>9</i>&nbsp;import java.util.Set;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;/**
+<i>13</i>&nbsp; * 
+<i>14</i>&nbsp; * @author Raffaele Canale
+<i>15</i>&nbsp; */
+<b class="nc"><i>16</i>&nbsp;public class DefaultCommandBuilder implements CommandBuilder {</b>
+<i>17</i>&nbsp;    
+<i>18</i>&nbsp;    private static final char DEFAULT_COMMAND_SEPARATOR = &#39;;&#39;;
+<i>19</i>&nbsp;    private static final char DEFAULT_PARAM_SEPARATOR = &#39;,&#39;;
+<i>20</i>&nbsp;    private static final char DEFAULT_WORD_SEPARATOR = &#39; &#39;;
+<i>21</i>&nbsp;    private static final char DEFAULT_TEXT_PROTECT_1 = &#39;&quot;&#39;;
+<i>22</i>&nbsp;    private static final char DEFAULT_TEXT_PROTECT_2 = &#39;\&#39;&#39;;
+<i>23</i>&nbsp;    
+<i>24</i>&nbsp;    
+<i>25</i>&nbsp;    private static void print(Command container, Console console, String prefix)
+<i>26</i>&nbsp;            throws InputException {
+<b class="nc"><i>27</i>&nbsp;        if (container == null) {</b>
+<b class="nc"><i>28</i>&nbsp;            console.println(&quot;None&quot;);</b>
+<i>29</i>&nbsp;            return;
+<i>30</i>&nbsp;        }
+<b class="nc"><i>31</i>&nbsp;        console.println(&quot;Name : &quot; + container.getName());</b>
+<b class="nc"><i>32</i>&nbsp;        console.print(prefix + &quot;Args: &quot;);</b>
+<b class="nc"><i>33</i>&nbsp;        for (int i = 0; i &lt; container.length(); i++) {</b>
+<b class="nc"><i>34</i>&nbsp;            console.print(container.param(i) + &quot;, &quot;);</b>
+<i>35</i>&nbsp;        }
+<b class="nc"><i>36</i>&nbsp;        console.println();</b>
+<b class="nc"><i>37</i>&nbsp;        console.print(prefix + &quot;Next : &quot;);</b>
+<b class="nc"><i>38</i>&nbsp;        print(container.getNext(), console, prefix + &quot;       &quot;);</b>
+<i>39</i>&nbsp;    }
+<i>40</i>&nbsp;    
+<i>41</i>&nbsp;    private final char commandSeparator;
+<i>42</i>&nbsp;    private final char paramSeparator;
+<i>43</i>&nbsp;    private final char wordSeparator; 
+<i>44</i>&nbsp;    private final char textProtect1; 
+<i>45</i>&nbsp;    private final char textProtect2;
+<i>46</i>&nbsp;
+<i>47</i>&nbsp;    public DefaultCommandBuilder(char commandSeparator, char paramSeparator,
+<b class="nc"><i>48</i>&nbsp;            char wordSeparator, char textProtect1, char textProtect2) {</b>
+<b class="nc"><i>49</i>&nbsp;        this.commandSeparator = commandSeparator;</b>
+<b class="nc"><i>50</i>&nbsp;        this.paramSeparator = paramSeparator;</b>
+<b class="nc"><i>51</i>&nbsp;        this.wordSeparator = wordSeparator;</b>
+<b class="nc"><i>52</i>&nbsp;        this.textProtect1 = textProtect1;</b>
+<b class="nc"><i>53</i>&nbsp;        this.textProtect2 = textProtect2;</b>
+<i>54</i>&nbsp;    }
+<i>55</i>&nbsp;
+<i>56</i>&nbsp;    public DefaultCommandBuilder() {
+<b class="nc"><i>57</i>&nbsp;        this(DEFAULT_COMMAND_SEPARATOR, DEFAULT_PARAM_SEPARATOR, </b>
+<i>58</i>&nbsp;                DEFAULT_WORD_SEPARATOR, DEFAULT_TEXT_PROTECT_1, 
+<i>59</i>&nbsp;                DEFAULT_TEXT_PROTECT_2);
+<i>60</i>&nbsp;    }
+<i>61</i>&nbsp;
+<i>62</i>&nbsp;    @Override
+<i>63</i>&nbsp;    public Command build(String cmdName, String[] args) {
+<b class="nc"><i>64</i>&nbsp;        assert cmdName != null;</b>
+<i>65</i>&nbsp;        
+<i>66</i>&nbsp;        String[] container;
+<b class="nc"><i>67</i>&nbsp;        if (args == null) {</b>
+<b class="nc"><i>68</i>&nbsp;            container = new String[]{cmdName};</b>
+<i>69</i>&nbsp;        } else {
+<b class="nc"><i>70</i>&nbsp;            container = new String[args.length + 1];</b>
+<b class="nc"><i>71</i>&nbsp;            container[0] = cmdName;</b>
+<b class="nc"><i>72</i>&nbsp;            System.arraycopy(args, 0, container, 1, args.length);</b>
+<i>73</i>&nbsp;        }
+<i>74</i>&nbsp;        
+<b class="nc"><i>75</i>&nbsp;        return build(container);</b>
+<i>76</i>&nbsp;    }
+<i>77</i>&nbsp;    
+<i>78</i>&nbsp;    @Override
+<i>79</i>&nbsp;    public Command build(String... input) {
+<i>80</i>&nbsp;        String name;
+<i>81</i>&nbsp;        List&lt;String&gt; params;
+<i>82</i>&nbsp;        Command next;
+<i>83</i>&nbsp;
+<b class="nc"><i>84</i>&nbsp;        if (input == null || input.length == 0) {</b>
+<b class="nc"><i>85</i>&nbsp;            name = Command.ACTION_CMD;</b>
+<b class="nc"><i>86</i>&nbsp;            params = new LinkedList&lt;&gt;();</b>
+<b class="nc"><i>87</i>&nbsp;            next = null;</b>
+<i>88</i>&nbsp;
+<i>89</i>&nbsp;        } else {
+<b class="nc"><i>90</i>&nbsp;            boolean stop = false;</b>
+<b class="nc"><i>91</i>&nbsp;            name = input[0];</b>
+<b class="nc"><i>92</i>&nbsp;            params = new ArrayList&lt;&gt;();</b>
+<b class="nc"><i>93</i>&nbsp;            next = null;</b>
+<i>94</i>&nbsp;
+<b class="nc"><i>95</i>&nbsp;            for (int i = 1; i &lt; input.length &amp;&amp; !stop; i++) {</b>
+<b class="nc"><i>96</i>&nbsp;                if (input[i].equals(&quot;&quot; + paramSeparator)) {</b>
+<b class="nc"><i>97</i>&nbsp;                    String[] nextCommandInput = new String[input.length - i];</b>
+<b class="nc"><i>98</i>&nbsp;                    System.arraycopy(input, i + 1, nextCommandInput, 1, nextCommandInput.length - 1);</b>
+<i>99</i>&nbsp;
+<b class="nc"><i>100</i>&nbsp;                    nextCommandInput[0] = name;</b>
+<b class="nc"><i>101</i>&nbsp;                    next = build(nextCommandInput);</b>
+<i>102</i>&nbsp;                    //next = new Command(nextCommandInput);
+<b class="nc"><i>103</i>&nbsp;                    stop = true;</b>
+<i>104</i>&nbsp;
+<b class="nc"><i>105</i>&nbsp;                } else if (input[i].equals(&quot;&quot; + commandSeparator)) {</b>
+<b class="nc"><i>106</i>&nbsp;                    String[] nextInput = new String[input.length - i - 1];</b>
+<b class="nc"><i>107</i>&nbsp;                    System.arraycopy(input, i + 1, nextInput, 0, nextInput.length);</b>
+<i>108</i>&nbsp;
+<b class="nc"><i>109</i>&nbsp;                    next = build(nextInput);</b>
+<i>110</i>&nbsp;                    //next = new Command(nextInput);
+<b class="nc"><i>111</i>&nbsp;                    stop = true;</b>
+<b class="nc"><i>112</i>&nbsp;                } else {</b>
+<b class="nc"><i>113</i>&nbsp;                    params.add(input[i]);</b>
+<i>114</i>&nbsp;                }
+<i>115</i>&nbsp;            }
+<i>116</i>&nbsp;        }
+<i>117</i>&nbsp;
+<b class="nc"><i>118</i>&nbsp;        return build(name, params, next);</b>
+<i>119</i>&nbsp;    }
+<i>120</i>&nbsp;
+<i>121</i>&nbsp;    @Override
+<i>122</i>&nbsp;    public Command build(final String input) throws InputException {
+<b class="nc"><i>123</i>&nbsp;        if (input != null) {</b>
+<b class="nc"><i>124</i>&nbsp;            String trimmedInput = input.trim();</b>
+<b class="nc"><i>125</i>&nbsp;            if (!trimmedInput.isEmpty()) {</b>
+<b class="nc"><i>126</i>&nbsp;                return build0(trimmedInput);</b>
+<i>127</i>&nbsp;            }
+<i>128</i>&nbsp;        }
+<b class="nc"><i>129</i>&nbsp;        return build(Command.ACTION_CMD, new LinkedList&lt;String&gt;(), null);</b>
+<i>130</i>&nbsp;    }
+<i>131</i>&nbsp;
+<i>132</i>&nbsp;    private Command build(String name, List&lt;String&gt; params, Command next) {
+<b class="nc"><i>133</i>&nbsp;        return new Command(name, params, next);</b>
+<i>134</i>&nbsp;    }
+<i>135</i>&nbsp;
+<i>136</i>&nbsp;    private Command build0(String input) throws InputException {
+<b class="nc"><i>137</i>&nbsp;        TokenIterator it = new TokenIterator(input, commandSeparator, </b>
+<i>138</i>&nbsp;                paramSeparator, textProtect1, textProtect2, wordSeparator);
+<i>139</i>&nbsp;
+<i>140</i>&nbsp;        String name;
+<b class="nc"><i>141</i>&nbsp;        List&lt;String&gt; params = new LinkedList&lt;&gt;();</b>
+<b class="nc"><i>142</i>&nbsp;        Command next = null;</b>
+<i>143</i>&nbsp;
+<i>144</i>&nbsp;
+<b class="nc"><i>145</i>&nbsp;        boolean hasMore = it.stepNext();</b>
+<b class="nc"><i>146</i>&nbsp;        name = it.getWord();</b>
+<i>147</i>&nbsp;
+<b class="nc"><i>148</i>&nbsp;        if (name.isEmpty()) {</b>
+<i>149</i>&nbsp;            // IT IS AN ACTION COMMAND 
+<b class="nc"><i>150</i>&nbsp;            name = Command.ACTION_CMD;</b>
+<b class="nc"><i>151</i>&nbsp;            if (hasMore) {</b>
+<i>152</i>&nbsp;                // IT HAS MORE CHARACTERS
+<b class="nc"><i>153</i>&nbsp;                if (it.getHop() == commandSeparator) {</b>
+<i>154</i>&nbsp;                    // WE HAVE A SEPARATOR
+<b class="nc"><i>155</i>&nbsp;                    next = build(it.rest());</b>
+<i>156</i>&nbsp;                } else {
+<i>157</i>&nbsp;                    // IT IS AN ACTION CMD BUT THEN WE HAVE SPECIAL CHAR
+<b class="nc"><i>158</i>&nbsp;                    throw new InputException(&quot;Invalid command construction&quot;);</b>
+<i>159</i>&nbsp;                }
+<i>160</i>&nbsp;            }
+<i>161</i>&nbsp;        } else {
+<i>162</i>&nbsp;            // NAME IS NOT EMPTY   
+<i>163</i>&nbsp;            do {
+<b class="nc"><i>164</i>&nbsp;                char hop = it.getHop();</b>
+<i>165</i>&nbsp;
+<b class="nc"><i>166</i>&nbsp;                addParam(it, params);</b>
+<i>167</i>&nbsp;
+<b class="nc"><i>168</i>&nbsp;                if (hop == commandSeparator) {</b>
+<b class="nc"><i>169</i>&nbsp;                    next = build(it.rest());</b>
+<b class="nc"><i>170</i>&nbsp;                } else if (hop == paramSeparator) {</b>
+<b class="nc"><i>171</i>&nbsp;                    next = build(name + &quot; &quot; + it.rest());</b>
+<b class="nc"><i>172</i>&nbsp;                } else if (hop == textProtect1 || hop == textProtect2) {</b>
+<b class="nc"><i>173</i>&nbsp;                    if (it.stepNext(hop)) {</b>
+<b class="nc"><i>174</i>&nbsp;                        params.add(it.getWord());</b>
+<i>175</i>&nbsp;                    } else {                      
+<b class="nc"><i>176</i>&nbsp;                        throw new InputException(&quot;Missing closing &quot; + hop);</b>
+<i>177</i>&nbsp;                    }
+<i>178</i>&nbsp;                }
+<b class="nc"><i>179</i>&nbsp;            } while (it.stepNext());</b>
+<b class="nc"><i>180</i>&nbsp;            addParam(it, params);</b>
+<i>181</i>&nbsp;        }
+<b class="nc"><i>182</i>&nbsp;        return build(name, params, next);</b>
+<i>183</i>&nbsp;    }
+<i>184</i>&nbsp;
+<i>185</i>&nbsp;    private void addParam(TokenIterator it, List&lt;String&gt; params) {
+<b class="nc"><i>186</i>&nbsp;        String word = it.getWord();</b>
+<i>187</i>&nbsp;
+<b class="nc"><i>188</i>&nbsp;        if (!word.isEmpty()) {</b>
+<b class="nc"><i>189</i>&nbsp;            params.add(word);</b>
+<i>190</i>&nbsp;        }
+<i>191</i>&nbsp;    }
+<i>192</i>&nbsp;    
+<b class="nc"><i>193</i>&nbsp;    private class TokenIterator {</b>
+<i>194</i>&nbsp;
+<i>195</i>&nbsp;        private final String value;
+<i>196</i>&nbsp;        private char nextHop;
+<i>197</i>&nbsp;        private int cursor;
+<i>198</i>&nbsp;        private String word;
+<i>199</i>&nbsp;        private final Set&lt;Character&gt; mHops;
+<i>200</i>&nbsp;
+<i>201</i>&nbsp;        /**
+<i>202</i>&nbsp;         * Build a new token iterator that will iterate through the given value.
+<i>203</i>&nbsp;         *
+<i>204</i>&nbsp;         * @param value Value to iterate
+<i>205</i>&nbsp;         */
+<b class="nc"><i>206</i>&nbsp;        private TokenIterator(String value, char... hops) {</b>
+<b class="nc"><i>207</i>&nbsp;            this.value = value;</b>
+<b class="nc"><i>208</i>&nbsp;            this.cursor = 0;</b>
+<b class="nc"><i>209</i>&nbsp;            this.mHops = new HashSet&lt;&gt;();</b>
+<b class="nc"><i>210</i>&nbsp;            for (char hop : hops) {</b>
+<b class="nc"><i>211</i>&nbsp;                mHops.add(hop);</b>
+<i>212</i>&nbsp;            }
+<i>213</i>&nbsp;        }
+<i>214</i>&nbsp;
+<i>215</i>&nbsp;        /**
+<i>216</i>&nbsp;         * Iterates until the next hop (ie. a space, separator, etc...).&lt;br&gt; The
+<i>217</i>&nbsp;         * iterated elements are buffered and can be accessed with
+<i>218</i>&nbsp;         *  {@link #getWord() }
+<i>219</i>&nbsp;         *
+<i>220</i>&nbsp;         * @return {@code true} if a hop has been found or {@code false} if the
+<i>221</i>&nbsp;         *         iterator reached the end of the string with no result
+<i>222</i>&nbsp;         */
+<i>223</i>&nbsp;        public boolean stepNext() {
+<b class="nc"><i>224</i>&nbsp;            word = &quot;&quot;;</b>
+<b class="nc"><i>225</i>&nbsp;            while (cursor &lt; value.length()) {</b>
+<b class="nc"><i>226</i>&nbsp;                char c = value.charAt(cursor);</b>
+<b class="nc"><i>227</i>&nbsp;                cursor++;</b>
+<i>228</i>&nbsp;
+<b class="nc"><i>229</i>&nbsp;                if (isHop(c)) {</b>
+<b class="nc"><i>230</i>&nbsp;                    nextHop = c;</b>
+<b class="nc"><i>231</i>&nbsp;                    return true;</b>
+<i>232</i>&nbsp;                } else {
+<b class="nc"><i>233</i>&nbsp;                    word += c;</b>
+<i>234</i>&nbsp;                }
+<b class="nc"><i>235</i>&nbsp;            }</b>
+<b class="nc"><i>236</i>&nbsp;            return false;</b>
+<i>237</i>&nbsp;        }
+<i>238</i>&nbsp;
+<i>239</i>&nbsp;        /**
+<i>240</i>&nbsp;         * Steps until the given hop. If the hop is not found, no iteration is
+<i>241</i>&nbsp;         * performed and this method returns {@code false}. Else, the iterated
+<i>242</i>&nbsp;         * elements are stored into a buffer and can be accessed with
+<i>243</i>&nbsp;         *  {@link #getWord() }.
+<i>244</i>&nbsp;         *
+<i>245</i>&nbsp;         * @param hop Hop to step to
+<i>246</i>&nbsp;         *
+<i>247</i>&nbsp;         * @return {@code true} if the hop has been found
+<i>248</i>&nbsp;         */
+<i>249</i>&nbsp;        public boolean stepNext(char hop) {
+<b class="nc"><i>250</i>&nbsp;            int n = value.indexOf(&quot;&quot; + hop, cursor);</b>
+<b class="nc"><i>251</i>&nbsp;            if (n &lt; 0) {</b>
+<b class="nc"><i>252</i>&nbsp;                return false;</b>
+<i>253</i>&nbsp;            }
+<i>254</i>&nbsp;
+<b class="nc"><i>255</i>&nbsp;            nextHop = hop;</b>
+<b class="nc"><i>256</i>&nbsp;            word = value.substring(cursor, n);</b>
+<b class="nc"><i>257</i>&nbsp;            cursor = n+1;</b>
+<b class="nc"><i>258</i>&nbsp;            return true;</b>
+<i>259</i>&nbsp;        }
+<i>260</i>&nbsp;
+<i>261</i>&nbsp;        /**
+<i>262</i>&nbsp;         * Get the substring starting from cursor to the end.
+<i>263</i>&nbsp;         *
+<i>264</i>&nbsp;         * @return the rest of the elements that have not been iterated
+<i>265</i>&nbsp;         */
+<i>266</i>&nbsp;        public String rest() {
+<b class="nc"><i>267</i>&nbsp;            if (cursor &lt; value.length()) {</b>
+<b class="nc"><i>268</i>&nbsp;                String rest = value.substring(cursor);</b>
+<b class="nc"><i>269</i>&nbsp;                cursor = value.length();</b>
+<b class="nc"><i>270</i>&nbsp;                return rest;</b>
+<i>271</i>&nbsp;            } else {
+<b class="nc"><i>272</i>&nbsp;                return &quot;&quot;;</b>
+<i>273</i>&nbsp;            }
+<i>274</i>&nbsp;        }
+<i>275</i>&nbsp;
+<i>276</i>&nbsp;        /**
+<i>277</i>&nbsp;         * Get the last hop found
+<i>278</i>&nbsp;         *
+<i>279</i>&nbsp;         * @return Last hop found
+<i>280</i>&nbsp;         */
+<i>281</i>&nbsp;        public char getHop() {
+<b class="nc"><i>282</i>&nbsp;            return nextHop;</b>
+<i>283</i>&nbsp;        }
+<i>284</i>&nbsp;
+<i>285</i>&nbsp;        /**
+<i>286</i>&nbsp;         * Get the buffered word and empty it
+<i>287</i>&nbsp;         *
+<i>288</i>&nbsp;         * @return Buffered word
+<i>289</i>&nbsp;         */
+<i>290</i>&nbsp;        public String getWord() {
+<b class="nc"><i>291</i>&nbsp;            String tmp = word;</b>
+<b class="nc"><i>292</i>&nbsp;            word = &quot;&quot;;</b>
+<b class="nc"><i>293</i>&nbsp;            return tmp;</b>
+<i>294</i>&nbsp;        }
+<i>295</i>&nbsp;
+<i>296</i>&nbsp;        /**
+<i>297</i>&nbsp;         * Tell if the given char is a hop or not
+<i>298</i>&nbsp;         *
+<i>299</i>&nbsp;         * @param c
+<i>300</i>&nbsp;         *
+<i>301</i>&nbsp;         * @return
+<i>302</i>&nbsp;         */
+<i>303</i>&nbsp;        private boolean isHop(char c) {
+<b class="nc"><i>304</i>&nbsp;            return mHops.contains(c);/*</b>
+<i>305</i>&nbsp;             return c == SEPARATOR || c == TEXT_MARKER_1
+<i>306</i>&nbsp;             || c == TEXT_MARKER_2 || c == CMD_SEPARATOR
+<i>307</i>&nbsp;             || c == PARAM_SEPARATOR;//*/
+<i>308</i>&nbsp;        }
+<i>309</i>&nbsp;    }
+<i>310</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2014-11-07 23:06</div>
+</div>
+</body>
+</html>

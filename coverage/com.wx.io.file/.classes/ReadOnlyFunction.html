@@ -1,0 +1,119 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ReadOnlyFunction</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.wx.io.file</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ReadOnlyFunction (com.wx.io.file)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ReadOnlyFunction</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 5)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.wx.io.file;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.io.IOException;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;/**
+<i>6</i>&nbsp; * Simple ReaderFunction that is read-only
+<i>7</i>&nbsp; *
+<i>8</i>&nbsp; * @author Canale
+<i>9</i>&nbsp; */
+<b class="nc"><i>10</i>&nbsp;public abstract class ReadOnlyFunction implements ReaderFunction {</b>
+<i>11</i>&nbsp;
+<b class="nc"><i>12</i>&nbsp;    private boolean interrupt = false;</b>
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;    @Override
+<i>15</i>&nbsp;    public final String process(String line, int lineno) throws IOException {
+<b class="nc"><i>16</i>&nbsp;        read(line, lineno);</b>
+<b class="nc"><i>17</i>&nbsp;        return interrupt ? null : line;</b>
+<i>18</i>&nbsp;    }
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;    /**
+<i>21</i>&nbsp;     * Interrupt reading, this will have effect the end of the read method.
+<i>22</i>&nbsp;     */
+<i>23</i>&nbsp;    public void interruptRead() {
+<b class="nc"><i>24</i>&nbsp;        interrupt = true;</b>
+<i>25</i>&nbsp;    }
+<i>26</i>&nbsp;
+<i>27</i>&nbsp;    /**
+<i>28</i>&nbsp;     * Process read line.
+<i>29</i>&nbsp;     *
+<i>30</i>&nbsp;     * @param line   Read line
+<i>31</i>&nbsp;     * @param lineno Line number
+<i>32</i>&nbsp;     *
+<i>33</i>&nbsp;     * @throws IOException
+<i>34</i>&nbsp;     */
+<i>35</i>&nbsp;    public abstract void read(String line, int lineno) throws IOException;
+<i>36</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2014-11-07 23:06</div>
+</div>
+</body>
+</html>

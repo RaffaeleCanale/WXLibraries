@@ -1,0 +1,1144 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ResourcePage</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.wx.resource.manager</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ResourcePage (com.wx.resource.manager)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ResourcePage</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 41)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 203)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ResourcePage$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 41)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">ResourcePage$2</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">ResourcePage$StructInfo</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 36)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 57)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 281)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;/*
+<i>2</i>&nbsp; * To change this template, choose Tools | Templates
+<i>3</i>&nbsp; * and open the template in the editor.
+<i>4</i>&nbsp; *//*
+<i>5</i>&nbsp; * To change this template, choose Tools | Templates
+<i>6</i>&nbsp; * and open the template in the editor.
+<i>7</i>&nbsp; *//*
+<i>8</i>&nbsp; * To change this template, choose Tools | Templates
+<i>9</i>&nbsp; * and open the template in the editor.
+<i>10</i>&nbsp; *//*
+<i>11</i>&nbsp; * To change this template, choose Tools | Templates
+<i>12</i>&nbsp; * and open the template in the editor.
+<i>13</i>&nbsp; *//*
+<i>14</i>&nbsp; * To change this template, choose Tools | Templates
+<i>15</i>&nbsp; * and open the template in the editor.
+<i>16</i>&nbsp; *//*
+<i>17</i>&nbsp; * To change this template, choose Tools | Templates
+<i>18</i>&nbsp; * and open the template in the editor.
+<i>19</i>&nbsp; *//*
+<i>20</i>&nbsp; * To change this template, choose Tools | Templates
+<i>21</i>&nbsp; * and open the template in the editor.
+<i>22</i>&nbsp; *//*
+<i>23</i>&nbsp; * To change this template, choose Tools | Templates
+<i>24</i>&nbsp; * and open the template in the editor.
+<i>25</i>&nbsp; */
+<i>26</i>&nbsp;package com.wx.resource.manager;
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;import com.wx.crypto.Crypter;
+<i>29</i>&nbsp;import com.wx.crypto.CryptoException;
+<i>30</i>&nbsp;import com.wx.resource.AbstractProperties;
+<i>31</i>&nbsp;import com.wx.resource.FileProperties;
+<i>32</i>&nbsp;import com.wx.resource.InputLink;
+<i>33</i>&nbsp;import com.wx.resource.OutputLink;
+<i>34</i>&nbsp;import com.wx.resource.ResourceProperties;
+<i>35</i>&nbsp;import static com.wx.resource.manager.Structure.list_indexed;
+<i>36</i>&nbsp;import static com.wx.resource.manager.Structure.list_single_line;
+<i>37</i>&nbsp;import static com.wx.resource.manager.Structure.map_ref_hash;
+<i>38</i>&nbsp;import com.wx.resource.manager.list.IndexedList;
+<i>39</i>&nbsp;import com.wx.resource.manager.list.ListResource;
+<i>40</i>&nbsp;import com.wx.resource.manager.list.SingleLineList;
+<i>41</i>&nbsp;import com.wx.resource.manager.map.MapResource;
+<i>42</i>&nbsp;import com.wx.resource.manager.map.RefHashMap;
+<i>43</i>&nbsp;import com.wx.resource.manager.set.RefSet;
+<i>44</i>&nbsp;import com.wx.resource.manager.set.SetResource;
+<i>45</i>&nbsp;import com.wx.util.representables.TypeCaster;
+<i>46</i>&nbsp;import java.io.ByteArrayInputStream;
+<i>47</i>&nbsp;import java.io.File;
+<i>48</i>&nbsp;import java.io.FileInputStream;
+<i>49</i>&nbsp;import java.io.FileNotFoundException;
+<i>50</i>&nbsp;import java.io.FileOutputStream;
+<i>51</i>&nbsp;import java.io.IOException;
+<i>52</i>&nbsp;import java.io.InputStream;
+<i>53</i>&nbsp;import java.io.OutputStream;
+<i>54</i>&nbsp;import java.util.ArrayList;
+<i>55</i>&nbsp;import java.util.Collection;
+<i>56</i>&nbsp;import java.util.HashSet;
+<i>57</i>&nbsp;import java.util.Iterator;
+<i>58</i>&nbsp;import java.util.List;
+<i>59</i>&nbsp;import java.util.Map;
+<i>60</i>&nbsp;import java.util.Properties;
+<i>61</i>&nbsp;import java.util.Set;
+<i>62</i>&nbsp;import java.util.TreeSet;
+<i>63</i>&nbsp;import java.util.logging.Level;
+<i>64</i>&nbsp;import java.util.logging.Logger;
+<i>65</i>&nbsp;import javax.annotation.Resource;
+<i>66</i>&nbsp;
+<i>67</i>&nbsp;/**
+<i>68</i>&nbsp; *
+<i>69</i>&nbsp; * This class wraps a {@link LocatedPropertiesOld} into a structure with the
+<i>70</i>&nbsp; * following features for a property file:
+<i>71</i>&nbsp; *
+<i>72</i>&nbsp; * &lt;ul&gt;
+<i>73</i>&nbsp; * &lt;li&gt; Access control (with reserved keys), used only for other features.
+<i>74</i>&nbsp; * &lt;li&gt; Advanced structure storage (as lists, maps or sets).
+<i>75</i>&nbsp; * &lt;li&gt; Possibility to store any type of objects (instead of just strings)
+<i>76</i>&nbsp; * thanks to the use of casters&lt;/li&gt;
+<i>77</i>&nbsp; * &lt;li&gt; {@code Crypter }caching for encrypted files (so no need to specify it
+<i>78</i>&nbsp; * when saving back).
+<i>79</i>&nbsp; * &lt;li&gt; Watches for any changes in the content and uses this information to
+<i>80</i>&nbsp; * minimize useless disk saves. If no change has been detected, the
+<i>81</i>&nbsp; * {@link #save() } method will not perform anything. This will allow the user
+<i>82</i>&nbsp; * to abuse the {@link #save()} with limited performance loss. However, note
+<i>83</i>&nbsp; * that this performs a soft watch, meaning, it will detect any activity on the
+<i>84</i>&nbsp; * properties but will not deeply check that a newly set property is strictly
+<i>85</i>&nbsp; * different from the previous one. In that specific case, saving will perform
+<i>86</i>&nbsp; * an unnecessary disk IO.&lt;br&gt;
+<i>87</i>&nbsp; * Also note that this feature can be by-passed using the {@link #forceSave()}
+<i>88</i>&nbsp; * method.&lt;/li&gt;
+<i>89</i>&nbsp; * &lt;/ul&gt;
+<i>90</i>&nbsp; *
+<i>91</i>&nbsp; * @see ResourceWrapper
+<i>92</i>&nbsp; *
+<i>93</i>&nbsp; * @author Raffaele Canale - raffaelecanale@gmail.com
+<i>94</i>&nbsp; * @version 2.0
+<i>95</i>&nbsp; *
+<i>96</i>&nbsp; * Project: WXLibraries File: ResourcePage.java (UTF-8) Date: Jul 2, 2013
+<i>97</i>&nbsp; */
+<b class="nc"><i>98</i>&nbsp;public class ResourcePage implements ResourceInterface&lt;String, String&gt; {</b>
+<i>99</i>&nbsp;
+<i>100</i>&nbsp;    private static final String RESERVED_KEY = &quot;rd.&quot;;
+<i>101</i>&nbsp;    private static final String STRUCT_HEADER_KEY = &quot;st.&quot;;
+<i>102</i>&nbsp;
+<i>103</i>&nbsp;    /**
+<i>104</i>&nbsp;     * Creates an empty runtime page. This page cannot be saved and all changes
+<i>105</i>&nbsp;     * will be lost at the end of its use.
+<i>106</i>&nbsp;     *
+<i>107</i>&nbsp;     * @return A runtime page
+<i>108</i>&nbsp;     */
+<i>109</i>&nbsp;    public static ResourcePage createRuntimePage() {
+<i>110</i>&nbsp;//        AbstractProperties props = new AbstractProperties(false, null) {
+<i>111</i>&nbsp;//            @Override
+<i>112</i>&nbsp;//            protected OutputStream getOutputStream(Crypter crypter) throws FileNotFoundException, IOException, CryptoException {
+<i>113</i>&nbsp;//                throw new IllegalArgumentException(&quot;Cannot save runtime properties&quot;);
+<i>114</i>&nbsp;//            }            
+<i>115</i>&nbsp;//            @Override
+<i>116</i>&nbsp;//            protected InputStream getInputStream(Crypter crypter, Class&lt;?&gt; source) throws FileNotFoundException, IOException, CryptoException {
+<i>117</i>&nbsp;//                throw new IllegalArgumentException(&quot;Cannot load runtime properties&quot;);
+<i>118</i>&nbsp;//            }
+<i>119</i>&nbsp;//        };
+<b class="nc"><i>120</i>&nbsp;        return new ResourcePage(null, null, null, false);</b>
+<i>121</i>&nbsp;    }
+<i>122</i>&nbsp;
+<i>123</i>&nbsp;    /**
+<i>124</i>&nbsp;     * Loads an internal page. An internal page is a page contained within the
+<i>125</i>&nbsp;     * file sources and is meant to be read-only. Eventually, this page will be
+<i>126</i>&nbsp;     * stored within the built jar file.
+<i>127</i>&nbsp;     * &lt;br&gt;&lt;br&gt;
+<i>128</i>&nbsp;     * Example of use:&lt;br&gt;
+<i>129</i>&nbsp;     * {@code loadInternalPage(new StringRepr(), &quot;com&quot;, &quot;wx&quot;, &quot;resource&quot;, &quot;manager&quot;, &quot;prop.property&quot;);}
+<i>130</i>&nbsp;     *
+<i>131</i>&nbsp;     * @param packagePath Package location of the property file (starting from
+<i>132</i>&nbsp;     *                    the root package).
+<i>133</i>&nbsp;     *
+<i>134</i>&nbsp;     * @return The loaded internal property
+<i>135</i>&nbsp;     *
+<i>136</i>&nbsp;     * @throws FileNotFoundException If this property does not exist
+<i>137</i>&nbsp;     * @throws IOException           If an error occurred while loading the file
+<i>138</i>&nbsp;     */
+<i>139</i>&nbsp;    public static ResourcePage loadInternalPage(String... packagePath)
+<i>140</i>&nbsp;            throws FileNotFoundException, IOException {
+<b class="nc"><i>141</i>&nbsp;        StringBuilder propPathBuilder = new StringBuilder();</b>
+<b class="nc"><i>142</i>&nbsp;        for (String s : packagePath) {</b>
+<b class="nc"><i>143</i>&nbsp;            propPathBuilder.append(&quot;/&quot;).append(s);</b>
+<i>144</i>&nbsp;        }
+<b class="nc"><i>145</i>&nbsp;        final String propPath = propPathBuilder.toString();</b>
+<i>146</i>&nbsp;        
+<b class="nc"><i>147</i>&nbsp;        ResourcePage page = new ResourcePage(null, </b>
+<b class="nc"><i>148</i>&nbsp;                () -&gt; ResourcePage.class.getResourceAsStream(propPath), </b>
+<i>149</i>&nbsp;                null, false);
+<i>150</i>&nbsp;        try {
+<b class="nc"><i>151</i>&nbsp;            page.load();</b>
+<b class="nc"><i>152</i>&nbsp;        } catch (CryptoException ex) {</b>
+<i>153</i>&nbsp;            // Can&#39;t happen
+<b class="nc"><i>154</i>&nbsp;        }</b>
+<i>155</i>&nbsp;        
+<b class="nc"><i>156</i>&nbsp;        return page;        </b>
+<i>157</i>&nbsp;    }
+<i>158</i>&nbsp;
+<i>159</i>&nbsp;    /**
+<i>160</i>&nbsp;     * Creates a new external page.
+<i>161</i>&nbsp;     * &lt;br&gt;&lt;br&gt;
+<i>162</i>&nbsp;     * Note that if the given file does not exist, it will only be created when
+<i>163</i>&nbsp;     * the {@link #save() } method is called.&lt;br&gt;
+<i>164</i>&nbsp;     * If the file already exists, calling the {@link #save() } method will
+<i>165</i>&nbsp;     * override it.
+<i>166</i>&nbsp;     *
+<i>167</i>&nbsp;     * @param path   File path of the property file
+<i>168</i>&nbsp;     * @param useXml {@code true} to use {@code XML} encoding
+<i>169</i>&nbsp;     *
+<i>170</i>&nbsp;     * @return An empty external {@code ResourcePage}
+<i>171</i>&nbsp;     */
+<i>172</i>&nbsp;    public static ResourcePage createExternalPage(final String path, boolean useXml) {
+<b class="nc"><i>173</i>&nbsp;        ResourcePage result = new ResourcePage(null, </b>
+<b class="nc"><i>174</i>&nbsp;                () -&gt; new FileInputStream(path), </b>
+<b class="nc"><i>175</i>&nbsp;                () -&gt; new FileOutputStream(path), useXml);</b>
+<b class="nc"><i>176</i>&nbsp;        result.fileUpToDate = false;</b>
+<b class="nc"><i>177</i>&nbsp;        return result;</b>
+<i>178</i>&nbsp;    }
+<i>179</i>&nbsp;
+<i>180</i>&nbsp;    /**
+<i>181</i>&nbsp;     * Loads an existing external page.
+<i>182</i>&nbsp;     *
+<i>183</i>&nbsp;     * @param path     File path of the property file
+<i>184</i>&nbsp;     * @param useXml   {@code true} to use {@code XML} encoding
+<i>185</i>&nbsp;     * @param defaults Default properties (optional)
+<i>186</i>&nbsp;     *
+<i>187</i>&nbsp;     * @return A loaded external {@code ResourcePage}
+<i>188</i>&nbsp;     *
+<i>189</i>&nbsp;     * @throws FileNotFoundException If the file does not exist
+<i>190</i>&nbsp;     * @throws IOException           If an error occurred while loading the file
+<i>191</i>&nbsp;     */
+<i>192</i>&nbsp;    public static ResourcePage loadExternalPage(String path,
+<i>193</i>&nbsp;            boolean useXml, ResourcePage defaults) throws FileNotFoundException, IOException {
+<i>194</i>&nbsp;        try {
+<b class="nc"><i>195</i>&nbsp;            return loadExternalCryptedPage(path, null, false, useXml,</b>
+<i>196</i>&nbsp;                    defaults);
+<b class="nc"><i>197</i>&nbsp;        } catch (CryptoException ex) {</b>
+<i>198</i>&nbsp;            // Can&#39;t happen
+<b class="nc"><i>199</i>&nbsp;            throw new IOException(ex);</b>
+<i>200</i>&nbsp;        }
+<i>201</i>&nbsp;    }
+<i>202</i>&nbsp;    
+<i>203</i>&nbsp;    public static ResourcePage loadOrCreate(String path, boolean useXml, ResourcePage defaults) throws IOException {
+<b class="nc"><i>204</i>&nbsp;        if (new File(path).exists()) {</b>
+<b class="nc"><i>205</i>&nbsp;            return loadExternalPage(path, useXml, defaults);</b>
+<i>206</i>&nbsp;        } else {
+<b class="nc"><i>207</i>&nbsp;            return createExternalPage(path, useXml);</b>
+<i>208</i>&nbsp;        }
+<i>209</i>&nbsp;    }
+<i>210</i>&nbsp;
+<i>211</i>&nbsp;    /**
+<i>212</i>&nbsp;     * Loads an existing external and encrypted page.
+<i>213</i>&nbsp;     *
+<i>214</i>&nbsp;     * @param path         File path of the property file
+<i>215</i>&nbsp;     * @param crypter      {@code Crypter} to decrypt page
+<i>216</i>&nbsp;     * @param cacheCrypter Set to {@code true} to cache the {@code Crypter}. If
+<i>217</i>&nbsp;     *                     the {@code Crypter} is cached, calling the {@link #save()
+<i>218</i>&nbsp;     *                     } method will automatically reuse it, else, saving will not encrypt back
+<i>219</i>&nbsp;     *                     the file.
+<i>220</i>&nbsp;     * @param useXml       {@code true} to use {@code XML} encoding
+<i>221</i>&nbsp;     * @param defaults     Default properties (optional)
+<i>222</i>&nbsp;     *
+<i>223</i>&nbsp;     * @return A loaded external {@code ResourcePage}
+<i>224</i>&nbsp;     *
+<i>225</i>&nbsp;     * @throws FileNotFoundException If the file does not exist
+<i>226</i>&nbsp;     * @throws IOException           If an error occurred while loading the file
+<i>227</i>&nbsp;     * @throws CryptoException
+<i>228</i>&nbsp;     */
+<i>229</i>&nbsp;    public static ResourcePage loadExternalCryptedPage(
+<i>230</i>&nbsp;            String path, Crypter crypter,
+<i>231</i>&nbsp;            boolean cacheCrypter, boolean useXml, ResourcePage defaults)
+<i>232</i>&nbsp;            throws CryptoException, FileNotFoundException, IOException {
+<b class="nc"><i>233</i>&nbsp;        Properties defaultProps = defaults == null ? null</b>
+<i>234</i>&nbsp;                : defaults.properties;
+<i>235</i>&nbsp;
+<b class="nc"><i>236</i>&nbsp;        ResourcePage page = new ResourcePage(crypter, </b>
+<b class="nc"><i>237</i>&nbsp;                () -&gt; new FileInputStream(path), </b>
+<b class="nc"><i>238</i>&nbsp;                () -&gt; new FileOutputStream(path), useXml);</b>
+<b class="nc"><i>239</i>&nbsp;        page.load();</b>
+<b class="nc"><i>240</i>&nbsp;        return page;</b>
+<i>241</i>&nbsp;    }
+<i>242</i>&nbsp;
+<i>243</i>&nbsp;//    public static ResourcePage loadCustomPage(Crypter crypter, 
+<i>244</i>&nbsp;//            InputLink ilink, OutputLink olink, boolean useXml) throws CryptoException, IOException {        
+<i>245</i>&nbsp;//        return new ResourcePage(crypter, ilink, olink, true);
+<i>246</i>&nbsp;//    }
+<i>247</i>&nbsp;
+<i>248</i>&nbsp;//    final AbstractProperties propertyFile; // Not private for testing sake
+<i>249</i>&nbsp;    private Crypter cachedCrypter;
+<i>250</i>&nbsp;    private boolean fileUpToDate;
+<i>251</i>&nbsp;    private final InputLink inputLink;
+<i>252</i>&nbsp;    private final OutputLink outputLink;
+<i>253</i>&nbsp;    private final Properties properties;
+<i>254</i>&nbsp;    private final boolean useXml;
+<i>255</i>&nbsp;
+<b class="nc"><i>256</i>&nbsp;    private ResourcePage(Crypter cachedCrypter, InputLink inputLink, OutputLink outputLink, boolean useXml) {</b>
+<b class="nc"><i>257</i>&nbsp;        this.cachedCrypter = cachedCrypter;</b>
+<b class="nc"><i>258</i>&nbsp;        this.inputLink = inputLink;</b>
+<b class="nc"><i>259</i>&nbsp;        this.outputLink = outputLink;</b>
+<b class="nc"><i>260</i>&nbsp;        this.properties = new Properties();</b>
+<b class="nc"><i>261</i>&nbsp;        this.useXml = useXml;</b>
+<b class="nc"><i>262</i>&nbsp;        this.fileUpToDate = true;</b>
+<i>263</i>&nbsp;    }
+<i>264</i>&nbsp;    
+<i>265</i>&nbsp;//    private ResourcePage(Crypter cachedCrypter, InputLink inputLink, OutputLink outputLink, Properties properties, boolean useXml) {
+<i>266</i>&nbsp;//        this.cachedCrypter = cachedCrypter;
+<i>267</i>&nbsp;//        this.inputLink = inputLink;
+<i>268</i>&nbsp;//        this.outputLink = outputLink;
+<i>269</i>&nbsp;//        this.properties = properties;
+<i>270</i>&nbsp;//        this.useXml = useXml;
+<i>271</i>&nbsp;//        this.fileUpToDate = true;
+<i>272</i>&nbsp;//    }
+<i>273</i>&nbsp;
+<i>274</i>&nbsp;    
+<i>275</i>&nbsp;    
+<i>276</i>&nbsp;//    
+<i>277</i>&nbsp;//    
+<i>278</i>&nbsp;//    private ResourcePage(AbstractProperties propertyFile, Crypter cachedCrypter, InputLink link) {
+<i>279</i>&nbsp;//        this.inputLink = link;
+<i>280</i>&nbsp;//        this.propertyFile = propertyFile;
+<i>281</i>&nbsp;//        this.cachedCrypter = cachedCrypter;
+<i>282</i>&nbsp;//        this.fileUpToDate = true;
+<i>283</i>&nbsp;//    }
+<i>284</i>&nbsp;
+<i>285</i>&nbsp;    /**
+<i>286</i>&nbsp;     * Tests if the specified key is in this {@code ResourcePage}.
+<i>287</i>&nbsp;     *
+<i>288</i>&nbsp;     * @param key possible key
+<i>289</i>&nbsp;     *
+<i>290</i>&nbsp;     * @return &lt;code&gt;true&lt;/code&gt; if the key is in this page
+<i>291</i>&nbsp;     */
+<i>292</i>&nbsp;    @Override
+<i>293</i>&nbsp;    public boolean containsKey(String key) {
+<b class="nc"><i>294</i>&nbsp;        return properties.containsKey(key);</b>
+<i>295</i>&nbsp;    }
+<i>296</i>&nbsp;
+<i>297</i>&nbsp;    /**
+<i>298</i>&nbsp;     * Tests if the specified value is in this {@code ResourcePage}.
+<i>299</i>&nbsp;     *
+<i>300</i>&nbsp;     * @param value  possible value
+<i>301</i>&nbsp;     * @param caster Caster used to cast the value
+<i>302</i>&nbsp;     * @param &lt;E&gt;    Type of the value to find
+<i>303</i>&nbsp;     *
+<i>304</i>&nbsp;     * @return {@code true} if the value is in this page
+<i>305</i>&nbsp;     */
+<i>306</i>&nbsp;    @Override
+<i>307</i>&nbsp;    public &lt;E&gt; boolean containsValue(E value, TypeCaster&lt;String, E&gt; caster) {
+<i>308</i>&nbsp;        // IMPROVE Possible leak to access reserved values?
+<b class="nc"><i>309</i>&nbsp;        return properties.containsValue(caster.castIn(value));</b>
+<i>310</i>&nbsp;    }
+<i>311</i>&nbsp;
+<i>312</i>&nbsp;    /**
+<i>313</i>&nbsp;     * Saves this page to the corresponding file.&lt;br&gt;
+<i>314</i>&nbsp;     * &lt;b&gt;This page must be external.&lt;/b&gt;&lt;br&gt;&lt;br&gt;
+<i>315</i>&nbsp;     *
+<i>316</i>&nbsp;     * This resource page watches for changes, and if no change has been
+<i>317</i>&nbsp;     * detected, this method will not do anything. See {@link ResourcePage} for
+<i>318</i>&nbsp;     * more info.&lt;br&gt;
+<i>319</i>&nbsp;     * If a cached {@code Crypter} was set, it will be used, else the file won&#39;t
+<i>320</i>&nbsp;     * be encrypted.
+<i>321</i>&nbsp;     *
+<i>322</i>&nbsp;     * @return {@code false} if this page did not change and was not saved, {@code
+<i>323</i>&nbsp;     *         true} if it was saved.
+<i>324</i>&nbsp;     *
+<i>325</i>&nbsp;     * @see #cacheCrypter(Crypter)
+<i>326</i>&nbsp;     *
+<i>327</i>&nbsp;     * @throws FileNotFoundException
+<i>328</i>&nbsp;     * @throws IOException
+<i>329</i>&nbsp;     * @throws CryptoException       Only if a cached {@code Crypter} is used
+<i>330</i>&nbsp;     */
+<i>331</i>&nbsp;    public boolean save(OutputStream out) throws IOException {
+<b class="nc"><i>332</i>&nbsp;        if (!fileUpToDate) {</b>
+<b class="nc"><i>333</i>&nbsp;            if (useXml) {</b>
+<b class="nc"><i>334</i>&nbsp;                properties.storeToXML(out, null);</b>
+<i>335</i>&nbsp;            } else {
+<b class="nc"><i>336</i>&nbsp;                properties.store(out, null);</b>
+<i>337</i>&nbsp;            }
+<i>338</i>&nbsp;            
+<b class="nc"><i>339</i>&nbsp;            fileUpToDate = true;</b>
+<b class="nc"><i>340</i>&nbsp;            return true;</b>
+<i>341</i>&nbsp;        }
+<b class="nc"><i>342</i>&nbsp;        return false;</b>
+<i>343</i>&nbsp;    }
+<i>344</i>&nbsp;    
+<i>345</i>&nbsp;    public boolean save() throws CryptoException, IOException {
+<b class="nc"><i>346</i>&nbsp;        try (OutputStream out = getOutput()) {</b>
+<b class="nc"><i>347</i>&nbsp;            return save(out);</b>
+<b class="nc"><i>348</i>&nbsp;        }</b>
+<i>349</i>&nbsp;    }
+<i>350</i>&nbsp;    
+<i>351</i>&nbsp;    public void load() throws CryptoException, IOException {
+<b class="nc"><i>352</i>&nbsp;        try (InputStream in = getInput()) {</b>
+<b class="nc"><i>353</i>&nbsp;            load(in);</b>
+<b class="nc"><i>354</i>&nbsp;        }</b>
+<i>355</i>&nbsp;    }
+<i>356</i>&nbsp;
+<i>357</i>&nbsp;    public void load(InputStream in) throws IOException {
+<b class="nc"><i>358</i>&nbsp;        if (useXml) {</b>
+<b class="nc"><i>359</i>&nbsp;            properties.loadFromXML(in);</b>
+<i>360</i>&nbsp;        } else {
+<b class="nc"><i>361</i>&nbsp;            properties.load(in);</b>
+<i>362</i>&nbsp;        }
+<i>363</i>&nbsp;    }
+<i>364</i>&nbsp;    
+<i>365</i>&nbsp;    /**
+<i>366</i>&nbsp;     * Saves this page to the corresponding file.&lt;br&gt;
+<i>367</i>&nbsp;     * This method will save this page into disk regardless to the fact that it
+<i>368</i>&nbsp;     * has been modified or not.
+<i>369</i>&nbsp;     *
+<i>370</i>&nbsp;     * @see #save()
+<i>371</i>&nbsp;     *
+<i>372</i>&nbsp;     * @throws FileNotFoundException
+<i>373</i>&nbsp;     * @throws IOException
+<i>374</i>&nbsp;     * @throws CryptoException
+<i>375</i>&nbsp;     */
+<i>376</i>&nbsp;    public void forceSave() throws FileNotFoundException, IOException, CryptoException {
+<b class="nc"><i>377</i>&nbsp;        fileUpToDate = false;</b>
+<b class="nc"><i>378</i>&nbsp;        save();</b>
+<i>379</i>&nbsp;    }
+<i>380</i>&nbsp;
+<i>381</i>&nbsp;    /**
+<i>382</i>&nbsp;     * Cache a {@code Crypter} that will be used when the {@link #save()} method
+<i>383</i>&nbsp;     * will be called.
+<i>384</i>&nbsp;     *
+<i>385</i>&nbsp;     * @param crypter {@code Crypter} to cache or {@code null} to ignore
+<i>386</i>&nbsp;     *                encryption
+<i>387</i>&nbsp;     */
+<i>388</i>&nbsp;    public void cacheCrypter(Crypter crypter) {
+<b class="nc"><i>389</i>&nbsp;        cachedCrypter = crypter;</b>
+<b class="nc"><i>390</i>&nbsp;        fileUpToDate = false;</b>
+<i>391</i>&nbsp;    }
+<i>392</i>&nbsp;
+<i>393</i>&nbsp;//    /**
+<i>394</i>&nbsp;//     * Get the file corresponding to this (external) property page.
+<i>395</i>&nbsp;//     *
+<i>396</i>&nbsp;//     * @return File corresponding to this page
+<i>397</i>&nbsp;//     */
+<i>398</i>&nbsp;//    public File getFile() {
+<i>399</i>&nbsp;//        if (!propertyFile.isExternal()) {
+<i>400</i>&nbsp;//            throw new IllegalArgumentException(&quot;This method can be used only for&quot;
+<i>401</i>&nbsp;//                    + &quot; external property files&quot;);
+<i>402</i>&nbsp;//        }
+<i>403</i>&nbsp;//        return new File(propertyFile.getFilePath());
+<i>404</i>&nbsp;//    }
+<i>405</i>&nbsp;
+<i>406</i>&nbsp;    //&lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;Interface override methods&quot;&gt;
+<i>407</i>&nbsp;    @Override
+<i>408</i>&nbsp;    public &lt;E&gt; E getValue(String key, TypeCaster&lt;String, E&gt; caster) {
+<b class="nc"><i>409</i>&nbsp;        checkKey(key);</b>
+<b class="nc"><i>410</i>&nbsp;        String property = properties.getProperty(key);</b>
+<b class="nc"><i>411</i>&nbsp;        if (property == null) {</b>
+<b class="nc"><i>412</i>&nbsp;            return null;</b>
+<i>413</i>&nbsp;        } else {
+<b class="nc"><i>414</i>&nbsp;            return caster.castOut(property);</b>
+<i>415</i>&nbsp;        }
+<i>416</i>&nbsp;    }
+<i>417</i>&nbsp;
+<i>418</i>&nbsp;    @Override
+<i>419</i>&nbsp;    public &lt;E&gt; String setValue(String key, E value,
+<i>420</i>&nbsp;            TypeCaster&lt;String, E&gt; caster) {
+<b class="nc"><i>421</i>&nbsp;        checkKey(key);</b>
+<b class="nc"><i>422</i>&nbsp;        fileUpToDate = false;</b>
+<b class="nc"><i>423</i>&nbsp;        return (String) properties.setProperty(key, caster.castIn(value));</b>
+<i>424</i>&nbsp;    }
+<i>425</i>&nbsp;
+<i>426</i>&nbsp;    @Override
+<i>427</i>&nbsp;    public &lt;E&gt; ListResource&lt;E&gt; getList(String key,
+<i>428</i>&nbsp;            TypeCaster&lt;String, E&gt; caster) {
+<b class="nc"><i>429</i>&nbsp;        String headerKey = getStructKey(key);</b>
+<b class="nc"><i>430</i>&nbsp;        String header = properties.getProperty(headerKey);</b>
+<i>431</i>&nbsp;
+<b class="nc"><i>432</i>&nbsp;        if (header == null) {</b>
+<b class="nc"><i>433</i>&nbsp;            return null;</b>
+<i>434</i>&nbsp;        }
+<i>435</i>&nbsp;
+<b class="nc"><i>436</i>&nbsp;        StructInfo structInfo = new StructInfo(header);</b>
+<b class="nc"><i>437</i>&nbsp;        PageDirectInterface page = getPageDirectInterface(key,</b>
+<b class="nc"><i>438</i>&nbsp;                structInfo.getMetaData());</b>
+<i>439</i>&nbsp;
+<b class="nc"><i>440</i>&nbsp;        switch (structInfo.struct) {</b>
+<i>441</i>&nbsp;            case list_single_line:
+<b class="nc"><i>442</i>&nbsp;                if (structInfo.buildOptions.length != 1) {</b>
+<b class="nc"><i>443</i>&nbsp;                    throw new ClassCastException(&quot;Missing option&quot;);</b>
+<i>444</i>&nbsp;                }
+<b class="nc"><i>445</i>&nbsp;                String separator = structInfo.buildOptions[0];</b>
+<b class="nc"><i>446</i>&nbsp;                assert !separator.isEmpty() : &quot;Options should always be &quot;</b>
+<i>447</i>&nbsp;                        + &quot;contained in metadata&quot;;
+<i>448</i>&nbsp;
+<b class="nc"><i>449</i>&nbsp;                return SingleLineList.loadExistingList(page, headerKey, header,</b>
+<i>450</i>&nbsp;                        separator, caster);
+<i>451</i>&nbsp;            case list_indexed:
+<b class="nc"><i>452</i>&nbsp;                return IndexedList.loadExistingList(page, structInfo.structHeader,</b>
+<i>453</i>&nbsp;                        caster);
+<i>454</i>&nbsp;            default:
+<b class="nc"><i>455</i>&nbsp;                throw new IllegalArgumentException(key + &quot; does not contain a list&quot;);</b>
+<i>456</i>&nbsp;        }
+<i>457</i>&nbsp;    }
+<i>458</i>&nbsp;
+<i>459</i>&nbsp;    @Override
+<i>460</i>&nbsp;    public &lt;E&gt; ListResource&lt;E&gt; setList(String key, List&lt;E&gt; list,
+<i>461</i>&nbsp;            TypeCaster&lt;String, E&gt; caster, Structure implementation,
+<i>462</i>&nbsp;            String... options) {
+<b class="nc"><i>463</i>&nbsp;        String structHeaderKey = getStructKey(key);</b>
+<b class="nc"><i>464</i>&nbsp;        StructInfo newStruct = new StructInfo(implementation, options);</b>
+<i>465</i>&nbsp;
+<b class="nc"><i>466</i>&nbsp;        String fullHeader = properties.getProperty(structHeaderKey);</b>
+<b class="nc"><i>467</i>&nbsp;        if (fullHeader != null) {</b>
+<b class="nc"><i>468</i>&nbsp;            removeStructure(structHeaderKey, fullHeader);</b>
+<i>469</i>&nbsp;        }
+<i>470</i>&nbsp;
+<b class="nc"><i>471</i>&nbsp;        PageDirectInterface page = getPageDirectInterface(key,</b>
+<b class="nc"><i>472</i>&nbsp;                newStruct.getMetaData());</b>
+<i>473</i>&nbsp;
+<b class="nc"><i>474</i>&nbsp;        fileUpToDate = false;</b>
+<b class="nc"><i>475</i>&nbsp;        switch (implementation) {</b>
+<i>476</i>&nbsp;            case list_single_line:
+<b class="nc"><i>477</i>&nbsp;                if (options.length != 1) {</b>
+<b class="nc"><i>478</i>&nbsp;                    throw new IllegalArgumentException(&quot;Missing argument&quot;);</b>
+<i>479</i>&nbsp;                }
+<b class="nc"><i>480</i>&nbsp;                return SingleLineList.createNewList(page, list, options[0],</b>
+<i>481</i>&nbsp;                        caster);
+<i>482</i>&nbsp;
+<i>483</i>&nbsp;            case list_indexed:
+<b class="nc"><i>484</i>&nbsp;                return IndexedList.createNewList(page, list, caster);</b>
+<i>485</i>&nbsp;
+<i>486</i>&nbsp;            default:
+<b class="nc"><i>487</i>&nbsp;                throw new IllegalArgumentException(&quot;Struct is not a list&quot;);</b>
+<i>488</i>&nbsp;        }
+<i>489</i>&nbsp;    }
+<i>490</i>&nbsp;
+<i>491</i>&nbsp;    @Override
+<i>492</i>&nbsp;    public &lt;K, V&gt; MapResource&lt;K, V&gt; getMap(String key,
+<i>493</i>&nbsp;            TypeCaster&lt;String, K&gt; kCaster, TypeCaster&lt;String, V&gt; vCaster) {
+<b class="nc"><i>494</i>&nbsp;        String headerKey = getStructKey(key);</b>
+<b class="nc"><i>495</i>&nbsp;        String header = properties.getProperty(headerKey);</b>
+<i>496</i>&nbsp;
+<b class="nc"><i>497</i>&nbsp;        if (header == null) {</b>
+<b class="nc"><i>498</i>&nbsp;            return null;</b>
+<i>499</i>&nbsp;        }
+<i>500</i>&nbsp;
+<b class="nc"><i>501</i>&nbsp;        StructInfo structInfo = new StructInfo(header);</b>
+<b class="nc"><i>502</i>&nbsp;        PageDirectInterface page = getPageDirectInterface(key,</b>
+<b class="nc"><i>503</i>&nbsp;                structInfo.getMetaData());</b>
+<i>504</i>&nbsp;
+<b class="nc"><i>505</i>&nbsp;        switch (structInfo.struct) {</b>
+<i>506</i>&nbsp;            case map_ref_hash:
+<b class="nc"><i>507</i>&nbsp;                if (structInfo.buildOptions.length != 1) {</b>
+<b class="nc"><i>508</i>&nbsp;                    throw new ClassCastException(&quot;Missing option&quot;);</b>
+<i>509</i>&nbsp;                }
+<b class="nc"><i>510</i>&nbsp;                return RefHashMap.loadExistingMap(page, structInfo.buildOptions[0],</b>
+<b class="nc"><i>511</i>&nbsp;                        kCaster, vCaster, structInfo.structHeader);</b>
+<i>512</i>&nbsp;            default:
+<b class="nc"><i>513</i>&nbsp;                throw new IllegalAccessError(&quot;Not a map&quot;);</b>
+<i>514</i>&nbsp;        }
+<i>515</i>&nbsp;    }
+<i>516</i>&nbsp;
+<i>517</i>&nbsp;    @Override
+<i>518</i>&nbsp;    public &lt;K, V&gt; MapResource&lt;K, V&gt; setMap(String key, Map&lt;K, V&gt; map,
+<i>519</i>&nbsp;            TypeCaster&lt;String, K&gt; kCaster, TypeCaster&lt;String, V&gt; vCaster,
+<i>520</i>&nbsp;            Structure implementation, String... options) {
+<b class="nc"><i>521</i>&nbsp;        String structHeaderKey = getStructKey(key);</b>
+<b class="nc"><i>522</i>&nbsp;        StructInfo newStruct = new StructInfo(implementation, options);</b>
+<i>523</i>&nbsp;
+<b class="nc"><i>524</i>&nbsp;        String lastHeader = properties.getProperty(structHeaderKey);</b>
+<b class="nc"><i>525</i>&nbsp;        if (lastHeader != null) {</b>
+<b class="nc"><i>526</i>&nbsp;            removeStructure(structHeaderKey, lastHeader);</b>
+<i>527</i>&nbsp;        }
+<i>528</i>&nbsp;
+<b class="nc"><i>529</i>&nbsp;        PageDirectInterface page = getPageDirectInterface(key,</b>
+<b class="nc"><i>530</i>&nbsp;                newStruct.getMetaData());</b>
+<i>531</i>&nbsp;
+<b class="nc"><i>532</i>&nbsp;        fileUpToDate = false;</b>
+<b class="nc"><i>533</i>&nbsp;        switch (implementation) {</b>
+<i>534</i>&nbsp;            case map_ref_hash:
+<b class="nc"><i>535</i>&nbsp;                if (options.length != 1) {</b>
+<b class="nc"><i>536</i>&nbsp;                    throw new IllegalArgumentException(&quot;Not a map&quot;);</b>
+<i>537</i>&nbsp;                }
+<i>538</i>&nbsp;
+<b class="nc"><i>539</i>&nbsp;                return RefHashMap.createNewMap(page, options[0], kCaster,</b>
+<i>540</i>&nbsp;                        vCaster, map);
+<i>541</i>&nbsp;            default:
+<b class="nc"><i>542</i>&nbsp;                throw new IllegalArgumentException(&quot;Not a map&quot;);</b>
+<i>543</i>&nbsp;        }
+<i>544</i>&nbsp;    }
+<i>545</i>&nbsp;
+<i>546</i>&nbsp;    @Override
+<i>547</i>&nbsp;    public &lt;E&gt; SetResource&lt;E&gt; getSet(String key, TypeCaster&lt;String, E&gt; repr) {
+<b class="nc"><i>548</i>&nbsp;        String structHeaderKey = getStructKey(key);</b>
+<b class="nc"><i>549</i>&nbsp;        String fullHeader = properties.getProperty(structHeaderKey);</b>
+<i>550</i>&nbsp;
+<b class="nc"><i>551</i>&nbsp;        if (fullHeader == null) {</b>
+<b class="nc"><i>552</i>&nbsp;            return null;</b>
+<i>553</i>&nbsp;        }
+<i>554</i>&nbsp;
+<b class="nc"><i>555</i>&nbsp;        StructInfo sinfo = new StructInfo(fullHeader);</b>
+<b class="nc"><i>556</i>&nbsp;        PageDirectInterface page = getPageDirectInterface(key,</b>
+<b class="nc"><i>557</i>&nbsp;                sinfo.getMetaData());</b>
+<b class="nc"><i>558</i>&nbsp;        switch (sinfo.struct) {</b>
+<i>559</i>&nbsp;            case set_ref:
+<b class="nc"><i>560</i>&nbsp;                if (sinfo.buildOptions.length != 1) {</b>
+<i>561</i>&nbsp;                    // TODO Message here
+<b class="nc"><i>562</i>&nbsp;                    throw new ClassCastException();</b>
+<i>563</i>&nbsp;                }
+<b class="nc"><i>564</i>&nbsp;                String separator = sinfo.buildOptions[0];</b>
+<b class="nc"><i>565</i>&nbsp;                return RefSet.loadExistingSet(page, sinfo.structHeader, repr,</b>
+<i>566</i>&nbsp;                        separator);
+<i>567</i>&nbsp;            default:
+<b class="nc"><i>568</i>&nbsp;                throw new IllegalAccessError(&quot;This key does not contain a set but&quot;</b>
+<b class="nc"><i>569</i>&nbsp;                        + &quot; a &quot; + sinfo.struct.name());</b>
+<i>570</i>&nbsp;        }
+<i>571</i>&nbsp;    }
+<i>572</i>&nbsp;
+<i>573</i>&nbsp;    @Override
+<i>574</i>&nbsp;    public &lt;E&gt; SetResource&lt;E&gt; setSet(String key, Set&lt;E&gt; set,
+<i>575</i>&nbsp;            TypeCaster&lt;String, E&gt; repr, Structure implementation,
+<i>576</i>&nbsp;            String... options) {
+<b class="nc"><i>577</i>&nbsp;        String structHeaderKey = getStructKey(key);</b>
+<b class="nc"><i>578</i>&nbsp;        StructInfo newStruct = new StructInfo(implementation, options);</b>
+<i>579</i>&nbsp;
+<b class="nc"><i>580</i>&nbsp;        String lastHeader = properties.getProperty(structHeaderKey);</b>
+<b class="nc"><i>581</i>&nbsp;        if (lastHeader != null) {</b>
+<b class="nc"><i>582</i>&nbsp;            removeStructure(structHeaderKey, lastHeader);</b>
+<i>583</i>&nbsp;        }
+<i>584</i>&nbsp;
+<b class="nc"><i>585</i>&nbsp;        PageDirectInterface page = getPageDirectInterface(key,</b>
+<b class="nc"><i>586</i>&nbsp;                newStruct.getMetaData());</b>
+<i>587</i>&nbsp;
+<b class="nc"><i>588</i>&nbsp;        fileUpToDate = false;</b>
+<b class="nc"><i>589</i>&nbsp;        switch (implementation) {</b>
+<i>590</i>&nbsp;            case set_ref:
+<b class="nc"><i>591</i>&nbsp;                if (options.length != 1) {</b>
+<b class="nc"><i>592</i>&nbsp;                    throw new IllegalArgumentException(&quot;Missing option&quot;);</b>
+<i>593</i>&nbsp;                }
+<i>594</i>&nbsp;
+<b class="nc"><i>595</i>&nbsp;                return RefSet.createNewSet(page, set, repr, options[0]);</b>
+<i>596</i>&nbsp;            default:
+<b class="nc"><i>597</i>&nbsp;                throw new IllegalArgumentException(&quot;Not a set&quot;);</b>
+<i>598</i>&nbsp;        }
+<i>599</i>&nbsp;    }
+<i>600</i>&nbsp;
+<i>601</i>&nbsp;    @Override
+<i>602</i>&nbsp;    public String removeProperty(String key) {
+<b class="nc"><i>603</i>&nbsp;        checkKey(key);</b>
+<b class="nc"><i>604</i>&nbsp;        fileUpToDate = false;</b>
+<b class="nc"><i>605</i>&nbsp;        return (String) properties.remove(key);</b>
+<i>606</i>&nbsp;    }
+<i>607</i>&nbsp;    //&lt;/editor-fold&gt;
+<i>608</i>&nbsp;
+<i>609</i>&nbsp;    /**
+<i>610</i>&nbsp;     * Searches all the keys that match the given pattern, then replace them
+<i>611</i>&nbsp;     * with the given replacement pattern and add them the result
+<i>612</i>&nbsp;     * collection.&lt;br&gt;&lt;br&gt;
+<i>613</i>&nbsp;     *
+<i>614</i>&nbsp;     * Note that the replacement will be performed only on the result set, the
+<i>615</i>&nbsp;     * actual keys of this page are &lt;b&gt;not&lt;/b&gt; modified.&lt;br&gt;&lt;br&gt;
+<i>616</i>&nbsp;     * All found keys that result into an empty string after replacement will be
+<i>617</i>&nbsp;     * omitted.
+<i>618</i>&nbsp;     *
+<i>619</i>&nbsp;     * @param pattern     Regex that matches the wanted keys
+<i>620</i>&nbsp;     * @param replacement Replacement to apply on the result keys
+<i>621</i>&nbsp;     * @param result      Collection where all replaced keys will be added
+<i>622</i>&nbsp;     */
+<i>623</i>&nbsp;    public void matchAndReplaceKeys(String pattern, String replacement,
+<i>624</i>&nbsp;            Collection&lt;String&gt; result) {
+<b class="nc"><i>625</i>&nbsp;        if (pattern.isEmpty()) {</b>
+<i>626</i>&nbsp;            return;
+<i>627</i>&nbsp;        }
+<i>628</i>&nbsp;
+<b class="nc"><i>629</i>&nbsp;        for (String key : properties.stringPropertyNames()) {</b>
+<b class="nc"><i>630</i>&nbsp;            if (isKeyAccessible(key) &amp;&amp; key.matches(pattern)) {</b>
+<b class="nc"><i>631</i>&nbsp;                String res = key.replaceAll(pattern, replacement);</b>
+<b class="nc"><i>632</i>&nbsp;                if (!res.isEmpty()) {</b>
+<b class="nc"><i>633</i>&nbsp;                    result.add(res);</b>
+<i>634</i>&nbsp;                }
+<i>635</i>&nbsp;            }
+<b class="nc"><i>636</i>&nbsp;        }</b>
+<i>637</i>&nbsp;    }
+<i>638</i>&nbsp;
+<i>639</i>&nbsp;    /**
+<i>640</i>&nbsp;     * Searches all the keys that match the given result and add them the given
+<i>641</i>&nbsp;     * collection.
+<i>642</i>&nbsp;     *
+<i>643</i>&nbsp;     * @param pattern Regex that matches the wanted keys
+<i>644</i>&nbsp;     * @param result  Collection where all result keys will be added
+<i>645</i>&nbsp;     */
+<i>646</i>&nbsp;    public void matchKeys(String pattern, Collection&lt;String&gt; result) {
+<b class="nc"><i>647</i>&nbsp;        if (pattern.isEmpty()) {</b>
+<i>648</i>&nbsp;            return;
+<i>649</i>&nbsp;        }
+<i>650</i>&nbsp;
+<b class="nc"><i>651</i>&nbsp;        for (String key : properties.stringPropertyNames()) {</b>
+<i>652</i>&nbsp;//            String key = (String) objKey;
+<b class="nc"><i>653</i>&nbsp;            if (isKeyAccessible(key) &amp;&amp; key.matches(pattern)) {</b>
+<b class="nc"><i>654</i>&nbsp;                result.add(key);</b>
+<i>655</i>&nbsp;            }
+<b class="nc"><i>656</i>&nbsp;        }</b>
+<i>657</i>&nbsp;    }
+<i>658</i>&nbsp;    
+<i>659</i>&nbsp;    @Override
+<i>660</i>&nbsp;    public String toString() {
+<b class="nc"><i>661</i>&nbsp;        StringBuilder desc = new StringBuilder();</b>
+<i>662</i>&nbsp;//        if (mPropertyFilePath == null) {
+<i>663</i>&nbsp;//            desc.append(&quot;  Temporary runtime properties bundle\n&quot;);
+<i>664</i>&nbsp;//        } else {
+<i>665</i>&nbsp;//            desc.append(&quot;  Status: &quot;);
+<i>666</i>&nbsp;//            desc.append(isExternal() ? &quot;external\n&quot; : &quot;internal\n&quot;);
+<i>667</i>&nbsp;//            
+<i>668</i>&nbsp;//            desc.append(&quot;  Use XML: &quot;).append(isXML() ? &quot;Yes\n&quot; : &quot;No\n&quot;);
+<i>669</i>&nbsp;//            
+<i>670</i>&nbsp;//            desc.append(&quot;  Path: &quot;).append(mPropertyFilePath).append(&quot;\n&quot;);
+<i>671</i>&nbsp;//        }
+<i>672</i>&nbsp;        
+<b class="nc"><i>673</i>&nbsp;        desc.append(&quot;  Cached crypter: &quot;).append(cachedCrypter == null ? &quot;No\n&quot; : &quot;Yes\n&quot;);</b>
+<i>674</i>&nbsp;        
+<b class="nc"><i>675</i>&nbsp;        if (properties.isEmpty()) {</b>
+<b class="nc"><i>676</i>&nbsp;            desc.append(&quot;  Empty, no properties stored\n&quot;);</b>
+<i>677</i>&nbsp;        } else {
+<b class="nc"><i>678</i>&nbsp;            desc.append(&quot;  Properties:\n&quot;);</b>
+<b class="nc"><i>679</i>&nbsp;            TreeSet&lt;Object&gt; sortedKeys = new TreeSet&lt;&gt;(properties.keySet());</b>
+<b class="nc"><i>680</i>&nbsp;            for (Object key : sortedKeys) {</b>
+<b class="nc"><i>681</i>&nbsp;                desc.append(&quot;    &quot;).append(key).append(&quot; = &quot;)</b>
+<b class="nc"><i>682</i>&nbsp;                        .append(properties.get(key))</b>
+<b class="nc"><i>683</i>&nbsp;                        .append(&quot;\n&quot;);</b>
+<b class="nc"><i>684</i>&nbsp;            }</b>
+<i>685</i>&nbsp;        }
+<i>686</i>&nbsp;        
+<b class="nc"><i>687</i>&nbsp;        return desc.toString();</b>
+<i>688</i>&nbsp;    }
+<i>689</i>&nbsp;
+<i>690</i>&nbsp;//    private void load(Class&lt;?&gt; source) throws FileNotFoundException, IOException {
+<i>691</i>&nbsp;//        propertyFile.load(source);
+<i>692</i>&nbsp;//    }
+<i>693</i>&nbsp;//
+<i>694</i>&nbsp;//    private void load(Crypter crypter, Class&lt;?&gt; source, boolean cacheCrypter)
+<i>695</i>&nbsp;//            throws CryptoException, FileNotFoundException, IOException {
+<i>696</i>&nbsp;//        propertyFile.load(crypter, source);
+<i>697</i>&nbsp;//
+<i>698</i>&nbsp;//        if (cacheCrypter) {
+<i>699</i>&nbsp;//            assert crypter != null;
+<i>700</i>&nbsp;//            cachedCrypter = crypter;
+<i>701</i>&nbsp;//        }
+<i>702</i>&nbsp;//    }
+<i>703</i>&nbsp;    // TODO Deal with this, ??
+<i>704</i>&nbsp;//    void externalize(String prefix, String newPrefix,
+<i>705</i>&nbsp;//            boolean createFolders) throws FileNotFoundException, IOException {
+<i>706</i>&nbsp;//        propertyFile.externalize(prefix, newPrefix, createFolders);
+<i>707</i>&nbsp;//    }
+<i>708</i>&nbsp;    private void removeStructure(String key, String fullHeader) {
+<b class="nc"><i>709</i>&nbsp;        assert fullHeader != null;</b>
+<b class="nc"><i>710</i>&nbsp;        StructInfo stInfo = new StructInfo(fullHeader);</b>
+<i>711</i>&nbsp;
+<b class="nc"><i>712</i>&nbsp;        PageDirectInterface page = getPageDirectInterface(key, stInfo.getMetaData());</b>
+<b class="nc"><i>713</i>&nbsp;        switch (stInfo.struct) {</b>
+<i>714</i>&nbsp;            case list_indexed:
+<b class="nc"><i>715</i>&nbsp;                IndexedList.removeStructure(page, stInfo.structHeader);</b>
+<b class="nc"><i>716</i>&nbsp;                break;</b>
+<i>717</i>&nbsp;
+<i>718</i>&nbsp;            case list_single_line:
+<b class="nc"><i>719</i>&nbsp;                SingleLineList.removeStructure(page);</b>
+<b class="nc"><i>720</i>&nbsp;                break;</b>
+<i>721</i>&nbsp;
+<i>722</i>&nbsp;            case map_ref_hash:
+<b class="nc"><i>723</i>&nbsp;                RefHashMap.removeStructure(page);</b>
+<b class="nc"><i>724</i>&nbsp;                break;</b>
+<i>725</i>&nbsp;
+<i>726</i>&nbsp;            case set_ref:
+<b class="nc"><i>727</i>&nbsp;                RefSet.removeStructure(page);</b>
+<b class="nc"><i>728</i>&nbsp;                break;</b>
+<i>729</i>&nbsp;
+<i>730</i>&nbsp;            default:
+<b class="nc"><i>731</i>&nbsp;                throw new AssertionError();</b>
+<i>732</i>&nbsp;        }
+<i>733</i>&nbsp;
+<b class="nc"><i>734</i>&nbsp;        fileUpToDate = false;</b>
+<i>735</i>&nbsp;    }
+<i>736</i>&nbsp;
+<i>737</i>&nbsp;//    /**
+<i>738</i>&nbsp;//     * Compares a key with a pattern
+<i>739</i>&nbsp;//     *
+<i>740</i>&nbsp;//     * @param fields Pattern to match
+<i>741</i>&nbsp;//     * @param key    Key to check
+<i>742</i>&nbsp;//     *
+<i>743</i>&nbsp;//     * @return {@code true} if the key matches the pattern TODO Improve this
+<i>744</i>&nbsp;//     *         method and introduce more powerful patterns (example OR)
+<i>745</i>&nbsp;//     */
+<i>746</i>&nbsp;//    private boolean checkKey(List&lt;String&gt; fields, String key) {
+<i>747</i>&nbsp;//        if (key.startsWith(RESERVED_KEY)) {
+<i>748</i>&nbsp;//            return false;
+<i>749</i>&nbsp;//        }
+<i>750</i>&nbsp;//
+<i>751</i>&nbsp;//        boolean match = true;
+<i>752</i>&nbsp;//        boolean first = true;
+<i>753</i>&nbsp;//        int lastIndex = -1;
+<i>754</i>&nbsp;//        Iterator&lt;String&gt; iterator = fields.iterator();
+<i>755</i>&nbsp;//
+<i>756</i>&nbsp;//        while (match &amp;&amp; iterator.hasNext()) {
+<i>757</i>&nbsp;//            String searchField = iterator.next();
+<i>758</i>&nbsp;//
+<i>759</i>&nbsp;//            if (!searchField.equals(&quot;*&quot;)) {
+<i>760</i>&nbsp;//                if (first || !iterator.hasNext()) {
+<i>761</i>&nbsp;//                    if (first) {  //First
+<i>762</i>&nbsp;//                        if (!key.startsWith(searchField)) {
+<i>763</i>&nbsp;//                            match = false;
+<i>764</i>&nbsp;//                        }
+<i>765</i>&nbsp;//                    }
+<i>766</i>&nbsp;//                    if (!iterator.hasNext()) {  //Last
+<i>767</i>&nbsp;//                        if (!key.endsWith(searchField)) {
+<i>768</i>&nbsp;//                            match = false;
+<i>769</i>&nbsp;//                        }
+<i>770</i>&nbsp;//                    }
+<i>771</i>&nbsp;//                } else {  //Middle
+<i>772</i>&nbsp;//                    int index = key.indexOf(searchField);
+<i>773</i>&nbsp;//                    match = index != -1 &amp;&amp; index &gt; lastIndex;
+<i>774</i>&nbsp;//
+<i>775</i>&nbsp;//                    lastIndex = index;
+<i>776</i>&nbsp;//                }
+<i>777</i>&nbsp;//            }
+<i>778</i>&nbsp;//
+<i>779</i>&nbsp;//            first = false;
+<i>780</i>&nbsp;//        }
+<i>781</i>&nbsp;//
+<i>782</i>&nbsp;//        return match;
+<i>783</i>&nbsp;//    }
+<i>784</i>&nbsp;    String getReservedKey(String key) {
+<b class="nc"><i>785</i>&nbsp;        return RESERVED_KEY + key;</b>
+<i>786</i>&nbsp;    }
+<i>787</i>&nbsp;
+<i>788</i>&nbsp;    String getStructKey(String key) {
+<b class="nc"><i>789</i>&nbsp;        return STRUCT_HEADER_KEY + key;</b>
+<i>790</i>&nbsp;    }
+<i>791</i>&nbsp;
+<i>792</i>&nbsp;    private boolean isKeyAccessible(String key) {
+<b class="nc"><i>793</i>&nbsp;        return !key.startsWith(RESERVED_KEY) &amp;&amp; !key.startsWith(STRUCT_HEADER_KEY);</b>
+<i>794</i>&nbsp;    }
+<i>795</i>&nbsp;
+<i>796</i>&nbsp;    private void checkKey(String key) {
+<b class="nc"><i>797</i>&nbsp;        if (!isKeyAccessible(key)) {</b>
+<b class="nc"><i>798</i>&nbsp;            throw new IllegalAccessError(&quot;Can&#39;t access that key&quot;);</b>
+<i>799</i>&nbsp;        }
+<i>800</i>&nbsp;    }
+<i>801</i>&nbsp;    
+<i>802</i>&nbsp;    private OutputStream getOutput() throws CryptoException, IOException {
+<b class="nc"><i>803</i>&nbsp;        if (outputLink == null) {</b>
+<b class="nc"><i>804</i>&nbsp;            throw new IllegalArgumentException(&quot;Properties are not writeable&quot;);</b>
+<i>805</i>&nbsp;        }
+<b class="nc"><i>806</i>&nbsp;        return outputLink.getOutputStream(cachedCrypter);</b>
+<i>807</i>&nbsp;    }
+<i>808</i>&nbsp;    
+<i>809</i>&nbsp;    private InputStream getInput() throws CryptoException, IOException {
+<b class="nc"><i>810</i>&nbsp;        if (inputLink == null) {</b>
+<b class="nc"><i>811</i>&nbsp;            throw new IllegalArgumentException(&quot;Properties are not readable&quot;);</b>
+<i>812</i>&nbsp;        }
+<b class="nc"><i>813</i>&nbsp;        return inputLink.getInputStream(cachedCrypter);</b>
+<i>814</i>&nbsp;    }
+<i>815</i>&nbsp;
+<i>816</i>&nbsp;    private PageDirectInterface getPageDirectInterface(final String userKey,
+<i>817</i>&nbsp;            final String metadata) {
+<i>818</i>&nbsp;
+<b class="nc"><i>819</i>&nbsp;        final String headerKey = getStructKey(userKey);</b>
+<b class="nc"><i>820</i>&nbsp;        final String structKeyPrefix = getReservedKey(userKey) + &quot;.&quot;;</b>
+<i>821</i>&nbsp;
+<b class="nc"><i>822</i>&nbsp;        return new PageDirectInterface() {</b>
+<i>823</i>&nbsp;            @Override
+<i>824</i>&nbsp;            public String getHeader() {
+<b class="nc"><i>825</i>&nbsp;                return properties.getProperty(headerKey)</b>
+<b class="nc"><i>826</i>&nbsp;                        .substring(metadata.length());</b>
+<i>827</i>&nbsp;            }
+<i>828</i>&nbsp;
+<i>829</i>&nbsp;            @Override
+<i>830</i>&nbsp;            public void setHeader(String value) {
+<b class="nc"><i>831</i>&nbsp;                properties.setProperty(headerKey, metadata + value);</b>
+<b class="nc"><i>832</i>&nbsp;                fileUpToDate = false;</b>
+<i>833</i>&nbsp;            }
+<i>834</i>&nbsp;
+<i>835</i>&nbsp;            @Override
+<i>836</i>&nbsp;            public void removeHeader() {
+<b class="nc"><i>837</i>&nbsp;                properties.remove(headerKey);</b>
+<i>838</i>&nbsp;            }
+<i>839</i>&nbsp;
+<i>840</i>&nbsp;            @Override
+<i>841</i>&nbsp;            public String getProperty(String key) {
+<b class="nc"><i>842</i>&nbsp;                return properties.getProperty(structKeyPrefix + key);</b>
+<i>843</i>&nbsp;            }
+<i>844</i>&nbsp;
+<i>845</i>&nbsp;            @Override
+<i>846</i>&nbsp;            public String setProperty(String key, String property) {
+<b class="nc"><i>847</i>&nbsp;                fileUpToDate = false;</b>
+<b class="nc"><i>848</i>&nbsp;                return (String) properties.setProperty(structKeyPrefix + key,</b>
+<i>849</i>&nbsp;                        property);
+<i>850</i>&nbsp;            }
+<i>851</i>&nbsp;
+<i>852</i>&nbsp;            @Override
+<i>853</i>&nbsp;            public String removeProperty(String key) {
+<b class="nc"><i>854</i>&nbsp;                fileUpToDate = false;</b>
+<b class="nc"><i>855</i>&nbsp;                return (String) properties.remove(structKeyPrefix + key);</b>
+<i>856</i>&nbsp;            }
+<i>857</i>&nbsp;
+<i>858</i>&nbsp;            @Override
+<i>859</i>&nbsp;            public Set&lt;String&gt; getAllKeys() {
+<b class="nc"><i>860</i>&nbsp;                Set&lt;String&gt; result = new HashSet&lt;&gt;();</b>
+<i>861</i>&nbsp;
+<b class="nc"><i>862</i>&nbsp;                for (String key : properties.stringPropertyNames()) {</b>
+<i>863</i>&nbsp;//                    String key = (String) objKey;
+<i>864</i>&nbsp;
+<b class="nc"><i>865</i>&nbsp;                    int lastPointIndex = key.lastIndexOf(&#39;.&#39;);</b>
+<b class="nc"><i>866</i>&nbsp;                    if (key.startsWith(structKeyPrefix)</b>
+<b class="nc"><i>867</i>&nbsp;                            &amp;&amp; lastPointIndex == structKeyPrefix.length() - 1) {</b>
+<b class="nc"><i>868</i>&nbsp;                        result.add(key);</b>
+<i>869</i>&nbsp;                    }
+<b class="nc"><i>870</i>&nbsp;                }</b>
+<i>871</i>&nbsp;
+<b class="nc"><i>872</i>&nbsp;                return result;</b>
+<i>873</i>&nbsp;            }
+<i>874</i>&nbsp;
+<i>875</i>&nbsp;            private boolean checkKey(List&lt;String&gt; fields, String key) {
+<b class="nc"><i>876</i>&nbsp;                if (key.endsWith(&quot;.reserved&quot;)) {</b>
+<b class="nc"><i>877</i>&nbsp;                    return false;</b>
+<i>878</i>&nbsp;                }
+<i>879</i>&nbsp;
+<b class="nc"><i>880</i>&nbsp;                boolean match = true;</b>
+<b class="nc"><i>881</i>&nbsp;                boolean first = true;</b>
+<b class="nc"><i>882</i>&nbsp;                int lastIndex = -1;</b>
+<b class="nc"><i>883</i>&nbsp;                Iterator&lt;String&gt; iterator = fields.iterator();</b>
+<i>884</i>&nbsp;
+<b class="nc"><i>885</i>&nbsp;                while (match &amp;&amp; iterator.hasNext()) {</b>
+<b class="nc"><i>886</i>&nbsp;                    String searchField = iterator.next();</b>
+<i>887</i>&nbsp;
+<b class="nc"><i>888</i>&nbsp;                    if (!searchField.equals(&quot;*&quot;)) {</b>
+<b class="nc"><i>889</i>&nbsp;                        if (first || !iterator.hasNext()) {</b>
+<b class="nc"><i>890</i>&nbsp;                            if (first) {  //First</b>
+<b class="nc"><i>891</i>&nbsp;                                if (!key.startsWith(searchField)) {</b>
+<b class="nc"><i>892</i>&nbsp;                                    match = false;</b>
+<i>893</i>&nbsp;                                }
+<i>894</i>&nbsp;                            }
+<b class="nc"><i>895</i>&nbsp;                            if (!iterator.hasNext()) {  //Last</b>
+<b class="nc"><i>896</i>&nbsp;                                if (!key.endsWith(searchField)) {</b>
+<b class="nc"><i>897</i>&nbsp;                                    match = false;</b>
+<i>898</i>&nbsp;                                }
+<i>899</i>&nbsp;                            }
+<i>900</i>&nbsp;                        } else {  //Middle
+<b class="nc"><i>901</i>&nbsp;                            int index = key.indexOf(searchField);</b>
+<b class="nc"><i>902</i>&nbsp;                            match = index != -1 &amp;&amp; index &gt; lastIndex;</b>
+<i>903</i>&nbsp;
+<b class="nc"><i>904</i>&nbsp;                            lastIndex = index;</b>
+<i>905</i>&nbsp;                        }
+<i>906</i>&nbsp;                    }
+<i>907</i>&nbsp;
+<b class="nc"><i>908</i>&nbsp;                    first = false;</b>
+<b class="nc"><i>909</i>&nbsp;                }</b>
+<i>910</i>&nbsp;
+<b class="nc"><i>911</i>&nbsp;                return match;</b>
+<i>912</i>&nbsp;            }
+<i>913</i>&nbsp;
+<i>914</i>&nbsp;        };
+<i>915</i>&nbsp;    }
+<i>916</i>&nbsp;
+<i>917</i>&nbsp;    /**
+<i>918</i>&nbsp;     * Simple wrapper class to contain a structure&#39;s implementation and options.
+<i>919</i>&nbsp;     */
+<b class="nc"><i>920</i>&nbsp;    private class StructInfo {</b>
+<i>921</i>&nbsp;
+<i>922</i>&nbsp;        private final Structure struct;
+<i>923</i>&nbsp;        private final String[] buildOptions;
+<i>924</i>&nbsp;        private final String structHeader;
+<i>925</i>&nbsp;
+<b class="nc"><i>926</i>&nbsp;        private StructInfo(String fullHeader) {</b>
+<b class="nc"><i>927</i>&nbsp;            testValid(fullHeader.length() &gt;= 3, &quot;Invalid meta data: &quot; + fullHeader);</b>
+<b class="nc"><i>928</i>&nbsp;            testValid(fullHeader.startsWith(&quot;{&quot;), &quot;No meta data found&quot;);</b>
+<i>929</i>&nbsp;
+<b class="nc"><i>930</i>&nbsp;            int structOrdinal = castCharToIn(fullHeader.charAt(1));</b>
+<b class="nc"><i>931</i>&nbsp;            testValid(structOrdinal &gt;= 0 &amp;&amp; structOrdinal &lt; Structure.values().length,</b>
+<i>932</i>&nbsp;                    &quot;Unknown structure code: &quot; + structOrdinal);
+<i>933</i>&nbsp;
+<b class="nc"><i>934</i>&nbsp;            struct = Structure.values()[structOrdinal];</b>
+<i>935</i>&nbsp;
+<b class="nc"><i>936</i>&nbsp;            List&lt;String&gt; optionsList = new ArrayList&lt;&gt;();</b>
+<b class="nc"><i>937</i>&nbsp;            int nextIndex = 2;</b>
+<i>938</i>&nbsp;
+<i>939</i>&nbsp;            do {
+<b class="nc"><i>940</i>&nbsp;                char next = fullHeader.charAt(nextIndex);</b>
+<i>941</i>&nbsp;
+<b class="nc"><i>942</i>&nbsp;                if (next == &#39;}&#39;) {</b>
+<b class="nc"><i>943</i>&nbsp;                    buildOptions = optionsList.toArray(new String[optionsList.size()]);</b>
+<b class="nc"><i>944</i>&nbsp;                    structHeader = fullHeader.substring(nextIndex + 1);</b>
+<i>945</i>&nbsp;                    return;
+<i>946</i>&nbsp;                } else {
+<i>947</i>&nbsp;
+<b class="nc"><i>948</i>&nbsp;                    int length = castCharToIn(next);</b>
+<b class="nc"><i>949</i>&nbsp;                    if (nextIndex + 1 + length &gt;= fullHeader.length()) {</b>
+<b class="nc"><i>950</i>&nbsp;                        throw new ClassCastException(&quot;Invalid option encoding&quot;);</b>
+<i>951</i>&nbsp;                    }
+<i>952</i>&nbsp;
+<b class="nc"><i>953</i>&nbsp;                    optionsList.add(fullHeader.substring(nextIndex + 1, nextIndex + 1 + length));</b>
+<i>954</i>&nbsp;
+<b class="nc"><i>955</i>&nbsp;                    nextIndex = nextIndex + 1 + length;</b>
+<i>956</i>&nbsp;                }
+<b class="nc"><i>957</i>&nbsp;            } while (nextIndex &lt; fullHeader.length());</b>
+<i>958</i>&nbsp;
+<i>959</i>&nbsp;            // If reached here, } is missing
+<b class="nc"><i>960</i>&nbsp;            throw new ClassCastException(&quot;Missing }&quot;);</b>
+<i>961</i>&nbsp;        }
+<i>962</i>&nbsp;
+<i>963</i>&nbsp;        private StructInfo(Structure struct,
+<b class="nc"><i>964</i>&nbsp;                String... buildOptions) {</b>
+<b class="nc"><i>965</i>&nbsp;            this.struct = struct;</b>
+<b class="nc"><i>966</i>&nbsp;            this.buildOptions = buildOptions == null ? new String[0] : buildOptions;</b>
+<b class="nc"><i>967</i>&nbsp;            this.structHeader = null;</b>
+<i>968</i>&nbsp;        }
+<i>969</i>&nbsp;
+<i>970</i>&nbsp;        private int castCharToIn(char value) {
+<b class="nc"><i>971</i>&nbsp;            return value - &#39;0&#39;;</b>
+<i>972</i>&nbsp;        }
+<i>973</i>&nbsp;
+<i>974</i>&nbsp;        private void testValid(boolean condition, String message) {
+<b class="nc"><i>975</i>&nbsp;            if (!condition) {</b>
+<b class="nc"><i>976</i>&nbsp;                throw new ClassCastException(message);</b>
+<i>977</i>&nbsp;            }
+<i>978</i>&nbsp;        }
+<i>979</i>&nbsp;
+<i>980</i>&nbsp;        private String getMetaData() {
+<b class="nc"><i>981</i>&nbsp;            int ordinal = struct.ordinal();</b>
+<b class="nc"><i>982</i>&nbsp;            assert ordinal &lt; 10;</b>
+<i>983</i>&nbsp;
+<b class="nc"><i>984</i>&nbsp;            String metaData = &quot;{&quot; + ordinal;</b>
+<b class="nc"><i>985</i>&nbsp;            for (String option : buildOptions) {</b>
+<b class="nc"><i>986</i>&nbsp;                int length = option.length();</b>
+<b class="nc"><i>987</i>&nbsp;                if (length &gt; 9) {</b>
+<b class="nc"><i>988</i>&nbsp;                    throw new ClassCastException(&quot;Option is too long: &quot; + option);</b>
+<i>989</i>&nbsp;                }
+<b class="nc"><i>990</i>&nbsp;                metaData += option.length() + option;</b>
+<i>991</i>&nbsp;            }
+<i>992</i>&nbsp;
+<b class="nc"><i>993</i>&nbsp;            return metaData + &quot;}&quot;;</b>
+<i>994</i>&nbsp;        }
+<i>995</i>&nbsp;
+<i>996</i>&nbsp;    }
+<i>997</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2014-11-07 23:06</div>
+</div>
+</body>
+</html>

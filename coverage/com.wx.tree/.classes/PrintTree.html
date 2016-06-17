@@ -1,0 +1,348 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: PrintTree</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.wx.tree</a> ]
+</div>
+
+<h1>Coverage Summary for Class: PrintTree (com.wx.tree)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PrintTree</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 40)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">PrintTree$Visitor0</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 28)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 68)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.wx.tree;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.wx.console.Console;
+<i>4</i>&nbsp;import com.wx.console.SystemConsole;
+<i>5</i>&nbsp;import static com.wx.tree.Tree.*;
+<i>6</i>&nbsp;import java.util.HashMap;
+<i>7</i>&nbsp;import java.util.Map;
+<i>8</i>&nbsp;import java.util.TreeSet;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;/**
+<i>11</i>&nbsp; * TODO
+<i>12</i>&nbsp; * __________
+<i>13</i>&nbsp; * |example |
+<i>14</i>&nbsp; * |
+<i>15</i>&nbsp; * |
+<i>16</i>&nbsp; * ____|_____
+<i>17</i>&nbsp; * | second |-------
+<i>18</i>&nbsp; *
+<i>19</i>&nbsp; *
+<i>20</i>&nbsp; * @author Raffaele Canale (raffaelecanale@gmail.com)
+<i>21</i>&nbsp; * @version 0.1
+<i>22</i>&nbsp; */
+<b class="nc"><i>23</i>&nbsp;public class PrintTree&lt;N, L&gt; {</b>
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;    private static final int HORIZONTAL_SPACING = 2;
+<i>26</i>&nbsp;//    private static final int VERTICAL_SPACING = 3;
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;    private final Console console;
+<i>29</i>&nbsp;    private Map&lt;Integer, Map&lt;Integer, Character&gt;&gt; table;
+<i>30</i>&nbsp;    private int maxWidth;
+<i>31</i>&nbsp;    private int maxDepth;
+<i>32</i>&nbsp;
+<b class="nc"><i>33</i>&nbsp;    public PrintTree(Console console) {</b>
+<b class="nc"><i>34</i>&nbsp;        this.console = console;</b>
+<i>35</i>&nbsp;    }
+<i>36</i>&nbsp;
+<i>37</i>&nbsp;    public PrintTree() {
+<b class="nc"><i>38</i>&nbsp;        this(new SystemConsole());</b>
+<i>39</i>&nbsp;    }
+<i>40</i>&nbsp;
+<i>41</i>&nbsp;    public void print(Tree&lt;N, L&gt; tree) {
+<b class="nc"><i>42</i>&nbsp;        table = new HashMap&lt;&gt;();</b>
+<b class="nc"><i>43</i>&nbsp;        tree.accept(new Visitor0(0, 0));</b>
+<i>44</i>&nbsp;//        System.out.println(table);
+<b class="nc"><i>45</i>&nbsp;        printTable();</b>
+<i>46</i>&nbsp;    }
+<i>47</i>&nbsp;
+<i>48</i>&nbsp;    private void printTable() {
+<b class="nc"><i>49</i>&nbsp;        for (int y = 0; y &lt;= maxDepth; y++) {</b>
+<b class="nc"><i>50</i>&nbsp;            for (int x = 0; x &lt;= maxWidth; x++) {</b>
+<b class="nc"><i>51</i>&nbsp;                assert table.containsKey(y) : &quot;No map for &quot; + y;</b>
+<b class="nc"><i>52</i>&nbsp;                console.print(table.get(y).getOrDefault(x, &#39; &#39;));</b>
+<i>53</i>&nbsp;            }
+<b class="nc"><i>54</i>&nbsp;            console.println();</b>
+<i>55</i>&nbsp;        }
+<i>56</i>&nbsp;    }
+<i>57</i>&nbsp;
+<i>58</i>&nbsp;    private void set(char c, int x, int y) {
+<b class="nc"><i>59</i>&nbsp;        Map&lt;Integer, Character&gt; subMap = table.get(y);</b>
+<b class="nc"><i>60</i>&nbsp;        if (subMap == null) {</b>
+<b class="nc"><i>61</i>&nbsp;            subMap = new HashMap&lt;&gt;();</b>
+<b class="nc"><i>62</i>&nbsp;            table.put(y, subMap);</b>
+<i>63</i>&nbsp;        }
+<i>64</i>&nbsp;
+<b class="nc"><i>65</i>&nbsp;        Character old = subMap.put(x, c);</b>
+<i>66</i>&nbsp;        // TODO That assert is legit but yet have to remove it
+<i>67</i>&nbsp;//        assert old == null : &quot;[&quot; + x + &quot;, &quot; + y + &quot;] Try to put &quot; + c + &quot; but already has &quot; + old;
+<i>68</i>&nbsp;
+<b class="nc"><i>69</i>&nbsp;        if (x &gt; maxWidth) {</b>
+<b class="nc"><i>70</i>&nbsp;            maxWidth = x;</b>
+<i>71</i>&nbsp;        }
+<b class="nc"><i>72</i>&nbsp;        if (y &gt; maxDepth) {</b>
+<b class="nc"><i>73</i>&nbsp;            maxDepth = y;</b>
+<i>74</i>&nbsp;        }
+<i>75</i>&nbsp;    }
+<i>76</i>&nbsp;
+<i>77</i>&nbsp;    private class Visitor0 implements TreeVisitor&lt;Integer, N, L&gt; {
+<i>78</i>&nbsp;
+<i>79</i>&nbsp;        private final int x;
+<i>80</i>&nbsp;        private final int y;
+<i>81</i>&nbsp;
+<b class="nc"><i>82</i>&nbsp;        public Visitor0(int x, int y) {</b>
+<b class="nc"><i>83</i>&nbsp;            this.x = x;</b>
+<b class="nc"><i>84</i>&nbsp;            this.y = y;</b>
+<i>85</i>&nbsp;        }
+<i>86</i>&nbsp;
+<i>87</i>&nbsp;        @Override
+<i>88</i>&nbsp;        public Integer visit(Leaf&lt;N, L&gt; leaf) {
+<b class="nc"><i>89</i>&nbsp;            return printBox(leaf, x, y, false, true);</b>
+<i>90</i>&nbsp;        }
+<i>91</i>&nbsp;
+<i>92</i>&nbsp;        @Override
+<i>93</i>&nbsp;        public Integer visit(Node&lt;N, L&gt; node) {
+<b class="nc"><i>94</i>&nbsp;            if (node.getNodes().length == 0) {</b>
+<b class="nc"><i>95</i>&nbsp;                return printBox(node, x, y, false, false);</b>
+<i>96</i>&nbsp;            }
+<i>97</i>&nbsp;
+<b class="nc"><i>98</i>&nbsp;            final int childrenY = y + 5;</b>
+<b class="nc"><i>99</i>&nbsp;            int childrenX = x;</b>
+<i>100</i>&nbsp;
+<b class="nc"><i>101</i>&nbsp;            Tree&lt;N, L&gt;[] children = node.getNodes();</b>
+<b class="nc"><i>102</i>&nbsp;            TreeSet&lt;Integer&gt; childrenMiddle = new TreeSet&lt;&gt;();</b>
+<i>103</i>&nbsp;
+<b class="nc"><i>104</i>&nbsp;            for (Tree&lt;N, L&gt; child : children) {</b>
+<b class="nc"><i>105</i>&nbsp;                Integer childWidth = child.accept(new Visitor0(childrenX, childrenY));</b>
+<i>106</i>&nbsp;
+<b class="nc"><i>107</i>&nbsp;                childrenMiddle.add(childrenX + childWidth / 2);</b>
+<b class="nc"><i>108</i>&nbsp;                childrenX += childWidth + HORIZONTAL_SPACING;</b>
+<i>109</i>&nbsp;            }
+<i>110</i>&nbsp;
+<b class="nc"><i>111</i>&nbsp;            final int totalWidth = childrenX - x;</b>
+<b class="nc"><i>112</i>&nbsp;            final int middleX = x - 0 + totalWidth / 2;</b>
+<i>113</i>&nbsp;
+<i>114</i>&nbsp;//            System.out.println(childrenStart + &quot; :: &quot; +childrenEnd);
+<b class="nc"><i>115</i>&nbsp;            if (children.length == 1) {</b>
+<b class="nc"><i>116</i>&nbsp;                set(&#39;\u256D&#39;, childrenMiddle.first(), y + 4);</b>
+<b class="nc"><i>117</i>&nbsp;                set(&#39;\u256F&#39;, childrenMiddle.first() + 1, y + 4);</b>
+<i>118</i>&nbsp;            } else {
+<b class="nc"><i>119</i>&nbsp;                set(&#39;\u256D&#39;, childrenMiddle.first(), y + 4);</b>
+<b class="nc"><i>120</i>&nbsp;                set(&#39;\u256E&#39;, childrenMiddle.last(), y + 4);</b>
+<b class="nc"><i>121</i>&nbsp;                for (int j = childrenMiddle.first() + 1; j &lt; childrenMiddle.last(); j++) {</b>
+<b class="nc"><i>122</i>&nbsp;                    if (childrenMiddle.contains(j)) {</b>
+<b class="nc"><i>123</i>&nbsp;                        set(j == middleX ? &#39;\u253C&#39; : &#39;\u252C&#39;, j, y + 4);</b>
+<i>124</i>&nbsp;                    } else {
+<b class="nc"><i>125</i>&nbsp;                        set(j == middleX ? &#39;\u2534&#39; : &#39;\u2500&#39;, j, y + 4);</b>
+<i>126</i>&nbsp;                    }
+<i>127</i>&nbsp;                }                
+<i>128</i>&nbsp;            }
+<i>129</i>&nbsp;
+<b class="nc"><i>130</i>&nbsp;            set(&#39;\u2502&#39;, middleX, y + 3);</b>
+<i>131</i>&nbsp;            /**
+<i>132</i>&nbsp;             * |
+<i>133</i>&nbsp;             * ---/\--
+<i>134</i>&nbsp;             */
+<b class="nc"><i>135</i>&nbsp;            int boxWidth = printBox(node, middleX, y, true, false);</b>
+<i>136</i>&nbsp;
+<b class="nc"><i>137</i>&nbsp;            return Math.max(totalWidth, boxWidth);</b>
+<i>138</i>&nbsp;        }
+<i>139</i>&nbsp;
+<i>140</i>&nbsp;    }
+<i>141</i>&nbsp;
+<i>142</i>&nbsp;    private int printBox(Tree t, int x, int y, boolean centered, boolean isLast) {
+<b class="nc"><i>143</i>&nbsp;        String content = &quot;\u2502 &quot; + t.toString() + &quot; \u2502&quot;;</b>
+<i>144</i>&nbsp;
+<b class="nc"><i>145</i>&nbsp;        int width = content.length();</b>
+<i>146</i>&nbsp;
+<b class="nc"><i>147</i>&nbsp;        if (centered) {</b>
+<b class="nc"><i>148</i>&nbsp;            x = x - width / 2;</b>
+<i>149</i>&nbsp;        }
+<i>150</i>&nbsp;
+<b class="nc"><i>151</i>&nbsp;        int middle = x + width / 2;</b>
+<i>152</i>&nbsp;
+<b class="nc"><i>153</i>&nbsp;        x = Math.max(0, x);</b>
+<i>154</i>&nbsp;
+<b class="nc"><i>155</i>&nbsp;        set(&#39;\u256D&#39;, x, y);</b>
+<b class="nc"><i>156</i>&nbsp;        set(&#39;\u256E&#39;, x + width - 1, y);</b>
+<b class="nc"><i>157</i>&nbsp;        for (int j = x + 1; j &lt; x + width - 1; j++) {</b>
+<b class="nc"><i>158</i>&nbsp;            set(j == middle ? &#39;\u2534&#39; : &#39;\u2500&#39;, j, y);</b>
+<i>159</i>&nbsp;        }
+<i>160</i>&nbsp;
+<b class="nc"><i>161</i>&nbsp;        int index = 0;</b>
+<b class="nc"><i>162</i>&nbsp;        for (char c : content.toCharArray()) {</b>
+<b class="nc"><i>163</i>&nbsp;            set(c, x + index, y + 1);</b>
+<b class="nc"><i>164</i>&nbsp;            index++;</b>
+<i>165</i>&nbsp;        }
+<i>166</i>&nbsp;
+<b class="nc"><i>167</i>&nbsp;        set(&#39;\u2570&#39;, x, y + 2);</b>
+<b class="nc"><i>168</i>&nbsp;        set(&#39;\u256F&#39;, x + width - 1, y + 2);</b>
+<b class="nc"><i>169</i>&nbsp;        for (int j = x + 1; j &lt; x + width - 1; j++) {</b>
+<b class="nc"><i>170</i>&nbsp;            set(j == middle &amp;&amp; !isLast ? &#39;\u252C&#39; : &#39;\u2500&#39;, j, y + 2);</b>
+<i>171</i>&nbsp;        }
+<i>172</i>&nbsp;
+<b class="nc"><i>173</i>&nbsp;        return width;</b>
+<i>174</i>&nbsp;    }
+<i>175</i>&nbsp;//    
+<i>176</i>&nbsp;//
+<i>177</i>&nbsp;//    private final Console console;
+<i>178</i>&nbsp;//    private final int offset;
+<i>179</i>&nbsp;//    
+<i>180</i>&nbsp;//    
+<i>181</i>&nbsp;//
+<i>182</i>&nbsp;//    private PrintVisitor(Console console, int offset) {
+<i>183</i>&nbsp;//        this.console = console;
+<i>184</i>&nbsp;//        this.offset = offset;
+<i>185</i>&nbsp;//        
+<i>186</i>&nbsp;//        
+<i>187</i>&nbsp;//    }
+<i>188</i>&nbsp;//    
+<i>189</i>&nbsp;//    public PrintVisitor(Console console) {
+<i>190</i>&nbsp;//        this(console, 0);
+<i>191</i>&nbsp;//    }
+<i>192</i>&nbsp;//
+<i>193</i>&nbsp;//    public PrintVisitor() {
+<i>194</i>&nbsp;//        this(new SystemConsole());
+<i>195</i>&nbsp;//    }
+<i>196</i>&nbsp;//    
+<i>197</i>&nbsp;//    
+<i>198</i>&nbsp;//    
+<i>199</i>&nbsp;//    @Override
+<i>200</i>&nbsp;//    public void visit(Leaf leaf) {
+<i>201</i>&nbsp;//        printChar(&#39; &#39;, offset);
+<i>202</i>&nbsp;//        printBox(leaf);
+<i>203</i>&nbsp;//    }
+<i>204</i>&nbsp;//
+<i>205</i>&nbsp;//    @Override
+<i>206</i>&nbsp;//    public void visit(Node node) {
+<i>207</i>&nbsp;//        int currentOffset = offset;
+<i>208</i>&nbsp;//        
+<i>209</i>&nbsp;//        for (Tree n : node.getNodes()) {
+<i>210</i>&nbsp;//            TreeSize&lt;Object&gt; size = new TreeSize&lt;&gt;(o -&gt; Objects.toString(o).length() + 4, n);
+<i>211</i>&nbsp;////
+<i>212</i>&nbsp;////            
+<i>213</i>&nbsp;////            PrintVisitor print = new PrintVisitor(console, currentOffset);
+<i>214</i>&nbsp;////            n.accept(print);
+<i>215</i>&nbsp;//        }
+<i>216</i>&nbsp;//    }
+<i>217</i>&nbsp;//    
+<i>218</i>&nbsp;//    private int printBox2(Tree tree) {
+<i>219</i>&nbsp;//        String content = Objects.toString(tree.getElement());
+<i>220</i>&nbsp;//        
+<i>221</i>&nbsp;//        int width = content.length() + 4;
+<i>222</i>&nbsp;//        int middle = width / 2;
+<i>223</i>&nbsp;//        
+<i>224</i>&nbsp;//        for (int i = 0; i &lt; width; i++) {
+<i>225</i>&nbsp;//            console.print(i == middle ? &quot;|&quot; : &quot;_&quot;);
+<i>226</i>&nbsp;//        }
+<i>227</i>&nbsp;//        console.println();
+<i>228</i>&nbsp;//        console.print(&quot;| &quot; + content + &quot; |&quot;);
+<i>229</i>&nbsp;//        
+<i>230</i>&nbsp;//        return width;        
+<i>231</i>&nbsp;//    }
+<i>232</i>&nbsp;//    
+<i>233</i>&nbsp;//    private void printChar(char c, int count) {
+<i>234</i>&nbsp;//        for (int i = 0; i &lt; count; i++) {
+<i>235</i>&nbsp;//            console.print(c);
+<i>236</i>&nbsp;//        }
+<i>237</i>&nbsp;//    }
+<i>238</i>&nbsp;
+<i>239</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2014-11-07 23:06</div>
+</div>
+</body>
+</html>

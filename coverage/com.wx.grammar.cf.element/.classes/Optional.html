@@ -1,0 +1,125 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Optional</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.wx.grammar.cf.element</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Optional (com.wx.grammar.cf.element)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Optional</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 7)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.wx.grammar.cf.element;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.wx.grammar.cnf.CNFGrammar;
+<i>4</i>&nbsp;import com.wx.grammar.symbol.Symbol;
+<i>5</i>&nbsp;import com.wx.grammar.symbol.GeneratedSymbol;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;/**
+<i>8</i>&nbsp; *
+<i>9</i>&nbsp; * @author Raffaele Canale (raffaelecanale@gmail.com)
+<i>10</i>&nbsp; * @version 0.1
+<i>11</i>&nbsp; */
+<i>12</i>&nbsp;public class Optional implements Element {
+<i>13</i>&nbsp;    
+<i>14</i>&nbsp;        
+<i>15</i>&nbsp;    private final Element rule;
+<i>16</i>&nbsp;
+<b class="nc"><i>17</i>&nbsp;    public Optional(Element rule) {</b>
+<b class="nc"><i>18</i>&nbsp;        this.rule = rule;</b>
+<i>19</i>&nbsp;    }
+<i>20</i>&nbsp;    
+<i>21</i>&nbsp;    @Override
+<i>22</i>&nbsp;    public Symbol[] normalize(CNFGrammar.Builder builder) {
+<i>23</i>&nbsp;        /*
+<i>24</i>&nbsp;        R := (A B C)?
+<i>25</i>&nbsp;        
+<i>26</i>&nbsp;        is equivalent to
+<i>27</i>&nbsp;        
+<i>28</i>&nbsp;        R := O
+<i>29</i>&nbsp;        O := (A B C)
+<i>30</i>&nbsp;        O := €
+<i>31</i>&nbsp;        */
+<b class="nc"><i>32</i>&nbsp;        Symbol[] ruleSymbols = rule.normalize(builder);</b>
+<i>33</i>&nbsp;        
+<b class="nc"><i>34</i>&nbsp;        Symbol optional = new GeneratedSymbol(&quot;optional&quot;);</b>
+<i>35</i>&nbsp;        
+<b class="nc"><i>36</i>&nbsp;        builder.addProductiveRule(optional, ruleSymbols);        </b>
+<b class="nc"><i>37</i>&nbsp;        builder.addEpsilonSymbol(optional);</b>
+<i>38</i>&nbsp;        
+<b class="nc"><i>39</i>&nbsp;        return new Symbol[]{optional};        </b>
+<i>40</i>&nbsp;    }
+<i>41</i>&nbsp;
+<i>42</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2014-11-07 23:06</div>
+</div>
+</body>
+</html>

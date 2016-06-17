@@ -1,0 +1,186 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: MarkedOption</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.wx.console.command.executable.options</a> ]
+</div>
+
+<h1>Coverage Summary for Class: MarkedOption (com.wx.console.command.executable.options)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MarkedOption</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 23)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.wx.console.command.executable.options;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.wx.console.InputException;
+<i>4</i>&nbsp;import com.wx.console.command.Command;
+<i>5</i>&nbsp;import com.wx.util.representables.TypeCaster;
+<i>6</i>&nbsp;import com.wx.util.representables.string.StringRepr;
+<i>7</i>&nbsp;import java.util.Arrays;
+<i>8</i>&nbsp;import java.util.LinkedList;
+<i>9</i>&nbsp;import java.util.List;
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;/**
+<i>12</i>&nbsp; * This class represents a marked option. A marked option is an argument of the
+<i>13</i>&nbsp; * form:&lt;br&gt;&lt;br&gt;
+<i>14</i>&nbsp; *
+<i>15</i>&nbsp; * container &lt;b&gt;-m option&lt;/b&gt; &lt;br&gt;&lt;br&gt;
+<i>16</i>&nbsp; * where &lt;b&gt;m&lt;/b&gt; is the marker and &lt;b&gt;option&lt;/b&gt; the
+<i>17</i>&nbsp; * value of the option.&lt;br&gt;
+<i>18</i>&nbsp; * Note that a marker can also be alone, as well as it can be followed by
+<i>19</i>&nbsp; * several options.
+<i>20</i>&nbsp; *
+<i>21</i>&nbsp; *
+<i>22</i>&nbsp; * @author Raffaele Canale
+<i>23</i>&nbsp; * @version 1.5
+<i>24</i>&nbsp; */
+<b class="nc"><i>25</i>&nbsp;public class MarkedOption&lt;Type&gt; extends AbstractArgument&lt;Type&gt; {</b>
+<i>26</i>&nbsp;
+<i>27</i>&nbsp;    /**
+<i>28</i>&nbsp;     * Build a marked options with no associated values. &lt;br&gt;&lt;br&gt;
+<i>29</i>&nbsp;     * To test if the user did input or not the marked, use {@link #isSet()}.
+<i>30</i>&nbsp;     *
+<i>31</i>&nbsp;     * @param markers Any marker that identify this option.
+<i>32</i>&nbsp;     *
+<i>33</i>&nbsp;     * @return The built option
+<i>34</i>&nbsp;     */
+<i>35</i>&nbsp;    public static MarkedOption&lt;?&gt; markerOnly(String... markers) {
+<b class="nc"><i>36</i>&nbsp;        return new MarkedOption&lt;&gt;(null, 0, 0, markers, null);</b>
+<i>37</i>&nbsp;    }
+<i>38</i>&nbsp;
+<i>39</i>&nbsp;    public static &lt;E&gt; MarkedOption&lt;E&gt; singleOptional(TypeCaster&lt;String, E&gt; caster,
+<i>40</i>&nbsp;            String... markers) {
+<b class="nc"><i>41</i>&nbsp;        return new MarkedOption&lt;&gt;(caster, 0, 1, markers, null);</b>
+<i>42</i>&nbsp;    }
+<i>43</i>&nbsp;    
+<i>44</i>&nbsp;    public static MarkedOption&lt;String&gt; singleOptional(String... markers) {
+<b class="nc"><i>45</i>&nbsp;        return singleOptional(new StringRepr(), markers);</b>
+<i>46</i>&nbsp;    }
+<i>47</i>&nbsp;    
+<i>48</i>&nbsp;    public static &lt;E&gt; MarkedOption&lt;E&gt; single(E def, 
+<i>49</i>&nbsp;            TypeCaster&lt;String, E&gt; caster, String... markers) {
+<b class="nc"><i>50</i>&nbsp;        return new MarkedOption&lt;&gt;(caster, 1, 1, markers, </b>
+<b class="nc"><i>51</i>&nbsp;                def == null ? null : Arrays.asList(def));</b>
+<i>52</i>&nbsp;    }
+<i>53</i>&nbsp;    
+<i>54</i>&nbsp;    public static MarkedOption&lt;String&gt; single(String def, String... markers) {
+<b class="nc"><i>55</i>&nbsp;        return single(def, new StringRepr(), markers);</b>
+<i>56</i>&nbsp;    }
+<i>57</i>&nbsp;    
+<i>58</i>&nbsp;    public static &lt;E&gt; MarkedOption&lt;E&gt; array(TypeCaster&lt;String, E&gt; caster,
+<i>59</i>&nbsp;            int min, int max, String... markers) {
+<b class="nc"><i>60</i>&nbsp;        return array(caster, min, max, null, markers);</b>
+<i>61</i>&nbsp;    }
+<i>62</i>&nbsp;
+<i>63</i>&nbsp;    public static &lt;E&gt; MarkedOption&lt;E&gt; array(TypeCaster&lt;String, E&gt; caster,
+<i>64</i>&nbsp;            int min, int max, E[] def, String... markers) {
+<i>65</i>&nbsp;//        assert max &gt; 1;
+<b class="nc"><i>66</i>&nbsp;        return new MarkedOption&lt;&gt;(caster, min, max, markers, </b>
+<b class="nc"><i>67</i>&nbsp;                def == null ? null : Arrays.asList(def));</b>
+<i>68</i>&nbsp;    }
+<i>69</i>&nbsp;
+<i>70</i>&nbsp;    private final String[] markers;
+<i>71</i>&nbsp;
+<i>72</i>&nbsp;    private MarkedOption(TypeCaster&lt;String, Type&gt; caster, int min, int max,
+<i>73</i>&nbsp;            String[] markers, List&lt;Type&gt; def) {
+<b class="nc"><i>74</i>&nbsp;        super(caster, min, max, def);</b>
+<b class="nc"><i>75</i>&nbsp;        assert markers.length &gt; 0;</b>
+<b class="nc"><i>76</i>&nbsp;        this.markers = markers;</b>
+<i>77</i>&nbsp;    }
+<i>78</i>&nbsp;
+<i>79</i>&nbsp;    @Override
+<i>80</i>&nbsp;    public String getUsage(String optionName, final boolean brief) {
+<b class="nc"><i>81</i>&nbsp;        String markerUsage = markers[0];</b>
+<b class="nc"><i>82</i>&nbsp;        for (int i = 1; !brief &amp;&amp; i &lt; markers.length; i++) {</b>
+<b class="nc"><i>83</i>&nbsp;            markerUsage += &quot;, &quot; + markers[i];</b>
+<i>84</i>&nbsp;        }
+<i>85</i>&nbsp;
+<b class="nc"><i>86</i>&nbsp;        return markerUsage + &quot; &quot; + super.getUsage(optionName, brief);</b>
+<i>87</i>&nbsp;    }
+<i>88</i>&nbsp;
+<i>89</i>&nbsp;    @Override
+<i>90</i>&nbsp;    Command registerFrom(Command container) throws InputException {
+<b class="nc"><i>91</i>&nbsp;        int index = container.indexOf(markers);</b>
+<i>92</i>&nbsp;        
+<b class="nc"><i>93</i>&nbsp;        if (index &gt;= 0) {</b>
+<b class="nc"><i>94</i>&nbsp;            container = registerWithMinMax(container.drop(index), index);</b>
+<b class="nc"><i>95</i>&nbsp;            if (!isSet()) {</b>
+<b class="nc"><i>96</i>&nbsp;                setValues(new LinkedList&lt;&gt;());</b>
+<i>97</i>&nbsp;            }
+<i>98</i>&nbsp;        }
+<i>99</i>&nbsp;        
+<b class="nc"><i>100</i>&nbsp;        return container;</b>
+<i>101</i>&nbsp;    }
+<i>102</i>&nbsp;
+<i>103</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2014-11-07 23:06</div>
+</div>
+</body>
+</html>

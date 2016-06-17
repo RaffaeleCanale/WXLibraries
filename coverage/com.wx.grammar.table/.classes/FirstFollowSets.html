@@ -1,0 +1,329 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: FirstFollowSets</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.wx.grammar.table</a> ]
+</div>
+
+<h1>Coverage Summary for Class: FirstFollowSets (com.wx.grammar.table)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">FirstFollowSets</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 6)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">FirstFollowSets$Builder</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 73)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 79)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.wx.grammar.table;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.wx.grammar.GrammarException;
+<i>4</i>&nbsp;import com.wx.grammar.cnf.CNFGrammar;
+<i>5</i>&nbsp;import com.wx.grammar.cnf.rule.ProductionRule;
+<i>6</i>&nbsp;import com.wx.grammar.cnf.rule.TerminalRule;
+<i>7</i>&nbsp;import com.wx.grammar.symbol.Symbol;
+<i>8</i>&nbsp;import com.wx.lexer.tokens.EOFToken;
+<i>9</i>&nbsp;import com.wx.resource.property.Property;
+<i>10</i>&nbsp;import com.wx.resource.property.SimpleProperty;
+<i>11</i>&nbsp;import java.util.HashMap;
+<i>12</i>&nbsp;import java.util.Map;
+<i>13</i>&nbsp;import java.util.Set;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;/**
+<i>16</i>&nbsp; *
+<i>17</i>&nbsp; * This class allows to build the first and follow sets of a {@link CNFGrammar}.
+<i>18</i>&nbsp; *
+<i>19</i>&nbsp; * @author Raffaele Canale (raffaelecanale@gmail.com)
+<i>20</i>&nbsp; * @version 0.1
+<i>21</i>&nbsp; */
+<i>22</i>&nbsp;public class FirstFollowSets {
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;    private final Map&lt;Symbol, TokenSet&gt; first;
+<i>25</i>&nbsp;    private final Map&lt;Symbol, TokenSet&gt; follow;
+<i>26</i>&nbsp;
+<i>27</i>&nbsp;    /**
+<i>28</i>&nbsp;     * Constructs the sets from the given grammar
+<i>29</i>&nbsp;     *
+<i>30</i>&nbsp;     * @param grammar Grammar to analyze
+<i>31</i>&nbsp;     *
+<i>32</i>&nbsp;     * @throws GrammarException
+<i>33</i>&nbsp;     */
+<b class="nc"><i>34</i>&nbsp;    public FirstFollowSets(CNFGrammar grammar) throws GrammarException {</b>
+<b class="nc"><i>35</i>&nbsp;        Builder builder = new Builder(grammar);</b>
+<i>36</i>&nbsp;//        builder.buildFirst(grammar);
+<i>37</i>&nbsp;//        builder.buildFollow(grammar);
+<i>38</i>&nbsp;
+<b class="nc"><i>39</i>&nbsp;        first = builder.buildFirst();</b>
+<b class="nc"><i>40</i>&nbsp;        follow = builder.buildFollow();</b>
+<i>41</i>&nbsp;    }
+<i>42</i>&nbsp;
+<i>43</i>&nbsp;    /**
+<i>44</i>&nbsp;     * Get the first set for the given symbol
+<i>45</i>&nbsp;     *
+<i>46</i>&nbsp;     * @param s Symbol of the first set
+<i>47</i>&nbsp;     *
+<i>48</i>&nbsp;     * @return The first set of the given symbol
+<i>49</i>&nbsp;     */
+<i>50</i>&nbsp;    public TokenSet getFirst(Symbol s) {
+<b class="nc"><i>51</i>&nbsp;        return first.get(s);</b>
+<i>52</i>&nbsp;    }
+<i>53</i>&nbsp;
+<i>54</i>&nbsp;    /**
+<i>55</i>&nbsp;     * Get the follow set for the given symbol
+<i>56</i>&nbsp;     *
+<i>57</i>&nbsp;     * @param s Symbol of the follow set
+<i>58</i>&nbsp;     *
+<i>59</i>&nbsp;     * @return The follow set of the given symbol
+<i>60</i>&nbsp;     */
+<i>61</i>&nbsp;    public TokenSet getFollow(Symbol s) {
+<b class="nc"><i>62</i>&nbsp;        return follow.get(s);</b>
+<i>63</i>&nbsp;    }
+<i>64</i>&nbsp;
+<i>65</i>&nbsp;    private class Builder {
+<i>66</i>&nbsp;
+<i>67</i>&nbsp;        private final CNFGrammar grammar;
+<b class="nc"><i>68</i>&nbsp;        private final Map&lt;Symbol, TokenSet.Builder&gt; first = new HashMap&lt;&gt;();</b>
+<b class="nc"><i>69</i>&nbsp;        private final Map&lt;Symbol, TokenSet.Builder&gt; follow = new HashMap&lt;&gt;();</b>
+<i>70</i>&nbsp;
+<b class="nc"><i>71</i>&nbsp;        public Builder(CNFGrammar grammar) {</b>
+<b class="nc"><i>72</i>&nbsp;            this.grammar = grammar;</b>
+<i>73</i>&nbsp;        }
+<i>74</i>&nbsp;
+<i>75</i>&nbsp;        private Map&lt;Symbol, TokenSet&gt; build(Map&lt;Symbol, TokenSet.Builder&gt; map) {
+<b class="nc"><i>76</i>&nbsp;            Map&lt;Symbol, TokenSet&gt; result = new HashMap&lt;&gt;();</b>
+<i>77</i>&nbsp;
+<b class="nc"><i>78</i>&nbsp;            for (Map.Entry&lt;Symbol, TokenSet.Builder&gt; entry : map.entrySet()) {</b>
+<b class="nc"><i>79</i>&nbsp;                result.put(entry.getKey(), entry.getValue().build());</b>
+<b class="nc"><i>80</i>&nbsp;            }</b>
+<i>81</i>&nbsp;
+<b class="nc"><i>82</i>&nbsp;            return result;</b>
+<i>83</i>&nbsp;        }
+<i>84</i>&nbsp;
+<i>85</i>&nbsp;        private TokenSet.Builder builder(Map&lt;Symbol, TokenSet.Builder&gt; map, Symbol symbol) {
+<b class="nc"><i>86</i>&nbsp;            TokenSet.Builder builder = map.get(symbol);</b>
+<b class="nc"><i>87</i>&nbsp;            if (builder == null) {</b>
+<b class="nc"><i>88</i>&nbsp;                builder = new TokenSet.Builder();</b>
+<b class="nc"><i>89</i>&nbsp;                map.put(symbol, builder);</b>
+<i>90</i>&nbsp;            }
+<i>91</i>&nbsp;
+<b class="nc"><i>92</i>&nbsp;            return builder;</b>
+<i>93</i>&nbsp;        }
+<i>94</i>&nbsp;
+<i>95</i>&nbsp;        //&lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;FIRST&quot;&gt;
+<i>96</i>&nbsp;        public Map&lt;Symbol, TokenSet&gt; buildFirst() throws GrammarException {
+<i>97</i>&nbsp;            // Add epsilons
+<b class="nc"><i>98</i>&nbsp;            grammar.getProductiveRules().stream().filter(</b>
+<b class="nc"><i>99</i>&nbsp;                    ProductionRule::isEpsilon).forEach(</b>
+<b class="nc"><i>100</i>&nbsp;                            e -&gt; builder(first, e.getSymbol()).addEpsilon());</b>
+<i>101</i>&nbsp;
+<i>102</i>&nbsp;            // Add terminals
+<b class="nc"><i>103</i>&nbsp;            for (TerminalRule terminalRule : grammar.getTerminalRules()) {</b>
+<b class="nc"><i>104</i>&nbsp;                builder(first, terminalRule.getSymbol()).</b>
+<b class="nc"><i>105</i>&nbsp;                        addToken(terminalRule.getExpectedToken());</b>
+<b class="nc"><i>106</i>&nbsp;            }</b>
+<i>107</i>&nbsp;
+<i>108</i>&nbsp;            // Add productive rules until nothing changes
+<b class="nc"><i>109</i>&nbsp;            Set&lt;ProductionRule&gt; prod = grammar.getProductiveRules();</b>
+<i>110</i>&nbsp;            boolean changed;
+<i>111</i>&nbsp;            do {
+<b class="nc"><i>112</i>&nbsp;                changed = addFirsts(prod);</b>
+<b class="nc"><i>113</i>&nbsp;            } while (changed);</b>
+<i>114</i>&nbsp;
+<i>115</i>&nbsp;            // return
+<b class="nc"><i>116</i>&nbsp;            return build(first);</b>
+<i>117</i>&nbsp;        }
+<i>118</i>&nbsp;
+<i>119</i>&nbsp;        private boolean addFirsts(Set&lt;ProductionRule&gt; prod) {
+<b class="nc"><i>120</i>&nbsp;            boolean changed = false;</b>
+<b class="nc"><i>121</i>&nbsp;            for (ProductionRule rule : prod) {</b>
+<b class="nc"><i>122</i>&nbsp;                if (addFirsts(rule)) {</b>
+<b class="nc"><i>123</i>&nbsp;                    changed = true;</b>
+<i>124</i>&nbsp;                }
+<b class="nc"><i>125</i>&nbsp;            }</b>
+<i>126</i>&nbsp;
+<b class="nc"><i>127</i>&nbsp;            return changed;</b>
+<i>128</i>&nbsp;        }
+<i>129</i>&nbsp;
+<i>130</i>&nbsp;        private boolean addFirsts(ProductionRule rule) {
+<b class="nc"><i>131</i>&nbsp;            boolean changed = false;</b>
+<i>132</i>&nbsp;
+<b class="nc"><i>133</i>&nbsp;            TokenSet.Builder builder = builder(first, rule.getSymbol());</b>
+<i>134</i>&nbsp;
+<b class="nc"><i>135</i>&nbsp;            for (Symbol el : rule) {</b>
+<b class="nc"><i>136</i>&nbsp;                TokenSet.Builder subFirst = first.get(el);</b>
+<i>137</i>&nbsp;
+<b class="nc"><i>138</i>&nbsp;                if (subFirst == null) {</b>
+<i>139</i>&nbsp;                    // Element does not have a first yet, we should break
+<b class="nc"><i>140</i>&nbsp;                    return true;</b>
+<i>141</i>&nbsp;                }
+<i>142</i>&nbsp;
+<b class="nc"><i>143</i>&nbsp;                if (builder.addFromBuilder(subFirst)) {</b>
+<b class="nc"><i>144</i>&nbsp;                    changed = true;</b>
+<i>145</i>&nbsp;                }
+<i>146</i>&nbsp;
+<b class="nc"><i>147</i>&nbsp;                if (!subFirst.hasEpsilon()) {</b>
+<b class="nc"><i>148</i>&nbsp;                    return changed;</b>
+<i>149</i>&nbsp;                }
+<b class="nc"><i>150</i>&nbsp;            }</b>
+<i>151</i>&nbsp;
+<b class="nc"><i>152</i>&nbsp;            if (!builder.hasEpsilon()) {</b>
+<b class="nc"><i>153</i>&nbsp;                builder.addEpsilon();</b>
+<b class="nc"><i>154</i>&nbsp;                return true;</b>
+<i>155</i>&nbsp;            }
+<i>156</i>&nbsp;
+<b class="nc"><i>157</i>&nbsp;            return false;</b>
+<i>158</i>&nbsp;        }
+<i>159</i>&nbsp;//&lt;/editor-fold&gt;
+<i>160</i>&nbsp;
+<i>161</i>&nbsp;        //&lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;FOLLOW&quot;&gt;
+<i>162</i>&nbsp;        public Map&lt;Symbol, TokenSet&gt; buildFollow() {
+<i>163</i>&nbsp;            // Add EOF to start symbol
+<b class="nc"><i>164</i>&nbsp;            builder(follow, grammar.getStartSymbol()).</b>
+<b class="nc"><i>165</i>&nbsp;                    addToken(new EOFToken(null));</b>
+<i>166</i>&nbsp;            
+<i>167</i>&nbsp;            boolean changed;
+<i>168</i>&nbsp;            do {
+<b class="nc"><i>169</i>&nbsp;                changed = addFollow(grammar.getProductiveRules());</b>
+<b class="nc"><i>170</i>&nbsp;            } while (changed);</b>
+<i>171</i>&nbsp;            
+<b class="nc"><i>172</i>&nbsp;            return build(follow);</b>
+<i>173</i>&nbsp;        }
+<i>174</i>&nbsp;        
+<i>175</i>&nbsp;        private boolean addFollow(Set&lt;ProductionRule&gt; rules) {
+<b class="nc"><i>176</i>&nbsp;            boolean changed = false;</b>
+<b class="nc"><i>177</i>&nbsp;            for (ProductionRule rule : rules) {</b>
+<b class="nc"><i>178</i>&nbsp;                if (addFollow(rule)) {</b>
+<b class="nc"><i>179</i>&nbsp;                    changed = true;</b>
+<i>180</i>&nbsp;                }
+<b class="nc"><i>181</i>&nbsp;            }</b>
+<i>182</i>&nbsp;            
+<b class="nc"><i>183</i>&nbsp;            return changed;</b>
+<i>184</i>&nbsp;        }
+<i>185</i>&nbsp;        
+<i>186</i>&nbsp;        private boolean addFollow(ProductionRule rule) {
+<b class="nc"><i>187</i>&nbsp;            if (rule.isEpsilon()) {</b>
+<b class="nc"><i>188</i>&nbsp;                return false;</b>
+<i>189</i>&nbsp;            }
+<i>190</i>&nbsp;            
+<b class="nc"><i>191</i>&nbsp;            Property&lt;Boolean&gt; changed = new SimpleProperty&lt;&gt;(false);</b>
+<i>192</i>&nbsp;            
+<b class="nc"><i>193</i>&nbsp;            rule.stream().reduce((a, b) -&gt; {</b>
+<i>194</i>&nbsp;                
+<b class="nc"><i>195</i>&nbsp;                TokenSet.Builder followA = builder(follow, a);</b>
+<b class="nc"><i>196</i>&nbsp;                TokenSet.Builder firstB = builder(first, b);</b>
+<i>197</i>&nbsp;                
+<b class="nc"><i>198</i>&nbsp;                if (followA.addFromBuilder(firstB)) {</b>
+<b class="nc"><i>199</i>&nbsp;                    changed.set(true);</b>
+<i>200</i>&nbsp;                }
+<i>201</i>&nbsp;                
+<b class="nc"><i>202</i>&nbsp;                if (firstB.hasEpsilon()) {</b>
+<b class="nc"><i>203</i>&nbsp;                    if (followA.addFromBuilder(builder(follow, b))) {</b>
+<b class="nc"><i>204</i>&nbsp;                        changed.set(true);</b>
+<i>205</i>&nbsp;                    }
+<i>206</i>&nbsp;                }
+<i>207</i>&nbsp;                
+<b class="nc"><i>208</i>&nbsp;                return b;</b>
+<i>209</i>&nbsp;            });
+<i>210</i>&nbsp;            
+<b class="nc"><i>211</i>&nbsp;            TokenSet.Builder lastFollow = builder(follow, rule.lastSymbol());</b>
+<b class="nc"><i>212</i>&nbsp;            if (lastFollow.addFromBuilder(builder(follow, rule.getSymbol()))) {</b>
+<b class="nc"><i>213</i>&nbsp;                changed.set(true);</b>
+<i>214</i>&nbsp;            }
+<i>215</i>&nbsp;            
+<b class="nc"><i>216</i>&nbsp;            return changed.get();</b>
+<i>217</i>&nbsp;        }
+<i>218</i>&nbsp;//&lt;/editor-fold&gt;
+<i>219</i>&nbsp;    }
+<i>220</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2014-11-07 23:06</div>
+</div>
+</body>
+</html>

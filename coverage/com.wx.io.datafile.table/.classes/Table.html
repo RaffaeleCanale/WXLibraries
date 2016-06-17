@@ -1,0 +1,256 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Table</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.wx.io.datafile.table</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Table (com.wx.io.datafile.table)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Table</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 17)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 55)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.wx.io.datafile.table;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;
+<i>4</i>&nbsp;import com.wx.io.datafile.BufferedRegisterIterator;
+<i>5</i>&nbsp;import com.wx.io.datafile.DataAccessException;
+<i>6</i>&nbsp;import com.wx.io.datafile.DataFile;
+<i>7</i>&nbsp;import com.wx.io.datafile.register.RegisterColType;
+<i>8</i>&nbsp;import com.wx.io.datafile.register.RegisterColumn;
+<i>9</i>&nbsp;import com.wx.io.datafile.table.id.IdGeneratorInterface;
+<i>10</i>&nbsp;import com.wx.io.table.search.Condition;
+<i>11</i>&nbsp;import com.wx.io.table.search.IdMatch;
+<i>12</i>&nbsp;import com.wx.util.AuditMessage;
+<i>13</i>&nbsp;import com.wx.util.Auditable;
+<i>14</i>&nbsp;import com.wx.util.pair.Pair;
+<i>15</i>&nbsp;import java.io.IOException;
+<i>16</i>&nbsp;import java.util.List;
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;/**
+<i>19</i>&nbsp; * Representation of database table that can be saved in a file.&lt;br&gt;&lt;br&gt;
+<i>20</i>&nbsp; * 
+<i>21</i>&nbsp; * @author Raffaele Canale - raffaelecanale@gmail.com
+<i>22</i>&nbsp; * @version 0.9
+<i>23</i>&nbsp; *
+<i>24</i>&nbsp; * Project: Worx
+<i>25</i>&nbsp; * File: Table.java (UTF-8)
+<i>26</i>&nbsp; * Date: May 9, 2013 
+<i>27</i>&nbsp; */
+<b class="nc"><i>28</i>&nbsp;public class Table implements Auditable {</b>
+<i>29</i>&nbsp;    
+<i>30</i>&nbsp;      
+<i>31</i>&nbsp;    private final String tableName;
+<i>32</i>&nbsp;    private final RegisterColumn[] columns;
+<i>33</i>&nbsp;    final IdGeneratorInterface idGenerator;
+<i>34</i>&nbsp;    private final DataFile dataFile;
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;    
+<i>37</i>&nbsp;    public Table(String tableName,
+<i>38</i>&nbsp;            RegisterColumn[] columns, IdGeneratorInterface idGenerator,
+<b class="nc"><i>39</i>&nbsp;            DataFile dataFile) {</b>
+<b class="nc"><i>40</i>&nbsp;        this.tableName = tableName;</b>
+<b class="nc"><i>41</i>&nbsp;        this.columns = columns;</b>
+<b class="nc"><i>42</i>&nbsp;        this.idGenerator = idGenerator;</b>
+<b class="nc"><i>43</i>&nbsp;        this.dataFile = dataFile;</b>
+<i>44</i>&nbsp;    }
+<i>45</i>&nbsp;
+<i>46</i>&nbsp;    public String getTableName() {
+<b class="nc"><i>47</i>&nbsp;        return tableName;</b>
+<i>48</i>&nbsp;    }
+<i>49</i>&nbsp;        
+<i>50</i>&nbsp;    public int addRegister(Object... fieldsValue) throws IOException, 
+<i>51</i>&nbsp;            DataAccessException {
+<b class="nc"><i>52</i>&nbsp;        assert fieldsValue.length == columns.length;</b>
+<i>53</i>&nbsp;        
+<i>54</i>&nbsp;        /* From the create statement, we know for sure that 
+<i>55</i>&nbsp;         * the first column is an id
+<i>56</i>&nbsp;         */
+<b class="nc"><i>57</i>&nbsp;        int registerId = getUniqueId(fieldsValue[0]);</b>
+<b class="nc"><i>58</i>&nbsp;        fieldsValue[0] = registerId;</b>
+<i>59</i>&nbsp;        
+<b class="nc"><i>60</i>&nbsp;        dataFile.addRegister(fieldsValue);</b>
+<i>61</i>&nbsp;        
+<b class="nc"><i>62</i>&nbsp;        return registerId;</b>
+<i>63</i>&nbsp;    }
+<i>64</i>&nbsp;    
+<i>65</i>&nbsp;    public Object[] getById(int id) throws IOException {
+<b class="nc"><i>66</i>&nbsp;        try (BufferedRegisterIterator rs = getRegisters(1, new IdMatch(id))) {</b>
+<b class="nc"><i>67</i>&nbsp;            if (rs.hasNext()) {</b>
+<b class="nc"><i>68</i>&nbsp;                return rs.readRegister();</b>
+<i>69</i>&nbsp;            }
+<b class="nc"><i>70</i>&nbsp;            return null;</b>
+<b class="nc"><i>71</i>&nbsp;        }</b>
+<i>72</i>&nbsp;    }
+<i>73</i>&nbsp;    
+<i>74</i>&nbsp;    public boolean update(int id, List&lt;Pair&lt;String, Object&gt;&gt; updates) throws IOException {
+<b class="nc"><i>75</i>&nbsp;        assert !updates.isEmpty();</b>
+<i>76</i>&nbsp;        
+<b class="nc"><i>77</i>&nbsp;        boolean[] updateMap = new boolean[columns.length];</b>
+<b class="nc"><i>78</i>&nbsp;        Object[] newRegister = new Object[columns.length];</b>
+<b class="nc"><i>79</i>&nbsp;        newRegister[0] = id;</b>
+<i>80</i>&nbsp;        
+<b class="nc"><i>81</i>&nbsp;        for (Pair&lt;String, Object&gt; pair : updates) {</b>
+<b class="nc"><i>82</i>&nbsp;            int colIndex = findColumn(pair.get1());</b>
+<b class="nc"><i>83</i>&nbsp;            assert columns[colIndex].getType() != RegisterColType.id;</b>
+<i>84</i>&nbsp;            
+<b class="nc"><i>85</i>&nbsp;            updateMap[colIndex] = true;</b>
+<b class="nc"><i>86</i>&nbsp;            newRegister[colIndex] = pair.get2();</b>
+<b class="nc"><i>87</i>&nbsp;        }</b>
+<i>88</i>&nbsp;        
+<i>89</i>&nbsp;        
+<b class="nc"><i>90</i>&nbsp;        return dataFile.updateRegister(newRegister, updateMap);</b>
+<i>91</i>&nbsp;    }
+<i>92</i>&nbsp;    
+<i>93</i>&nbsp;    @Deprecated
+<i>94</i>&nbsp;    public boolean updateRegister(Object[] register) throws IOException {
+<b class="nc"><i>95</i>&nbsp;        assert register[0] != null : &quot;Can&#39;t update a register with no id&quot;;</b>
+<b class="nc"><i>96</i>&nbsp;        assert register.length == columns.length;</b>
+<i>97</i>&nbsp;        
+<b class="nc"><i>98</i>&nbsp;        boolean[] updateMap = new boolean[columns.length];</b>
+<i>99</i>&nbsp;        
+<b class="nc"><i>100</i>&nbsp;        for (int i = 1; i &lt; columns.length; i++) {</b>
+<b class="nc"><i>101</i>&nbsp;            updateMap[i] = columns[i].getType() != RegisterColType.id;</b>
+<i>102</i>&nbsp;            
+<b class="nc"><i>103</i>&nbsp;            assert updateMap[i] || register[i] == null : </b>
+<i>104</i>&nbsp;                    &quot;Trying to update an id field: &quot; + columns[i] + &quot; with &quot; + register[i];            
+<i>105</i>&nbsp;        }
+<i>106</i>&nbsp;        
+<b class="nc"><i>107</i>&nbsp;        return dataFile.updateRegister(register, updateMap);</b>
+<i>108</i>&nbsp;    }
+<i>109</i>&nbsp;    
+<i>110</i>&nbsp;    public BufferedRegisterIterator getRegisters(int limit, Condition condition) throws IOException {
+<b class="nc"><i>111</i>&nbsp;        return dataFile.readRegisters(condition, limit);</b>
+<i>112</i>&nbsp;    }
+<i>113</i>&nbsp;    
+<i>114</i>&nbsp;    public BufferedRegisterIterator getRegisters(int limit) throws IOException {
+<b class="nc"><i>115</i>&nbsp;        return dataFile.readRegisters(limit);</b>
+<i>116</i>&nbsp;    }
+<i>117</i>&nbsp;
+<i>118</i>&nbsp;    public int removeRegisters(Condition condition, int limit) throws IOException {
+<b class="nc"><i>119</i>&nbsp;        return dataFile.removeRegisters(condition, limit);</b>
+<i>120</i>&nbsp;    }
+<i>121</i>&nbsp;    
+<i>122</i>&nbsp;        
+<i>123</i>&nbsp;    public void flushDataFile() throws IOException {        
+<b class="nc"><i>124</i>&nbsp;        dataFile.flush();</b>
+<i>125</i>&nbsp;    }
+<i>126</i>&nbsp;    
+<i>127</i>&nbsp;    public void close() throws IOException {
+<b class="nc"><i>128</i>&nbsp;        dataFile.close();</b>
+<i>129</i>&nbsp;    }
+<i>130</i>&nbsp;
+<i>131</i>&nbsp;    @Override
+<i>132</i>&nbsp;    public void auditErrors(int depth, AuditMessage message) {
+<b class="nc"><i>133</i>&nbsp;        if (depth &lt;= 0) {</b>
+<b class="nc"><i>134</i>&nbsp;            message.stopped(this);</b>
+<i>135</i>&nbsp;            return;
+<i>136</i>&nbsp;        }
+<b class="nc"><i>137</i>&nbsp;        depth--;</b>
+<b class="nc"><i>138</i>&nbsp;        dataFile.auditErrors(depth, message);</b>
+<i>139</i>&nbsp;    }
+<i>140</i>&nbsp;
+<i>141</i>&nbsp;    
+<i>142</i>&nbsp;    private int getUniqueId(Object providedId) throws DataAccessException {
+<b class="nc"><i>143</i>&nbsp;        if (providedId != null) {</b>
+<b class="nc"><i>144</i>&nbsp;            int id = (int) providedId;</b>
+<i>145</i>&nbsp;//            checkIdIsUnique(id);
+<b class="nc"><i>146</i>&nbsp;            idGenerator.registerId(id);</b>
+<b class="nc"><i>147</i>&nbsp;            return id;</b>
+<i>148</i>&nbsp;        } else {
+<b class="nc"><i>149</i>&nbsp;            return idGenerator.generateNewId();</b>
+<i>150</i>&nbsp;        }
+<i>151</i>&nbsp;    }
+<i>152</i>&nbsp;
+<i>153</i>&nbsp;    private void checkIdIsUnique(Object providedId) {
+<i>154</i>&nbsp;        // TODO query id = providedId and check if result
+<b class="nc"><i>155</i>&nbsp;        throw new UnsupportedOperationException(&quot;Not supported yet&quot;);</b>
+<i>156</i>&nbsp;    }
+<i>157</i>&nbsp;    
+<i>158</i>&nbsp;    private int findColumn(String name) throws IOException {
+<b class="nc"><i>159</i>&nbsp;        for (int i = 0; i &lt; columns.length; i++) {</b>
+<b class="nc"><i>160</i>&nbsp;            if (name.equals(columns[i].getName())) {</b>
+<b class="nc"><i>161</i>&nbsp;                return i;</b>
+<i>162</i>&nbsp;            }
+<i>163</i>&nbsp;        }
+<i>164</i>&nbsp;            
+<b class="nc"><i>165</i>&nbsp;        throw new IOException(&quot;Column &quot; + name + &quot; does not exist&quot;);</b>
+<i>166</i>&nbsp;    }
+<i>167</i>&nbsp;
+<i>168</i>&nbsp;    @Deprecated
+<i>169</i>&nbsp;    public RegisterColumn[] getColumns() {
+<b class="nc"><i>170</i>&nbsp;        return columns;</b>
+<i>171</i>&nbsp;    }
+<i>172</i>&nbsp;    
+<i>173</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2014-11-07 23:06</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,392 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: BitMappedPage</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.wx.io.datafile.page.impl</a> ]
+</div>
+
+<h1>Coverage Summary for Class: BitMappedPage (com.wx.io.datafile.page.impl)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">BitMappedPage</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 35)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">BitMappedPage$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 4)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">BitMappedPage$Metadata</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 8)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 20)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">BitMappedPage$RegisterIterator</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 20)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 28)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 79)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;/*
+<i>2</i>&nbsp; * To change this template, choose Tools | Templates
+<i>3</i>&nbsp; * and open the template in the editor.
+<i>4</i>&nbsp; */
+<i>5</i>&nbsp;package com.wx.io.datafile.page.impl;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;import com.wx.io.datafile.page.DataPage;
+<i>8</i>&nbsp;import com.wx.io.datafile.page.DataPageFactory;
+<i>9</i>&nbsp;import com.wx.io.datafile.page.RegisterSetIterator;
+<i>10</i>&nbsp;import com.wx.io.datafile.register.RegisterSaveStrategy;
+<i>11</i>&nbsp;import com.wx.io.table.search.Condition;
+<i>12</i>&nbsp;import com.wx.util.AuditMessage;
+<i>13</i>&nbsp;import java.io.File;
+<i>14</i>&nbsp;import java.io.FileNotFoundException;
+<i>15</i>&nbsp;import java.io.IOException;
+<i>16</i>&nbsp;import java.io.RandomAccessFile;
+<i>17</i>&nbsp;import java.util.BitSet;
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;/**
+<i>20</i>&nbsp; * This is an implementation of a {@link DataPage} based on a bitmap. This
+<i>21</i>&nbsp; * implementation only works with fixed length registers. It will parse the file
+<i>22</i>&nbsp; * into a table where the registers will be placed, and all information about
+<i>23</i>&nbsp; * free/occupied cells will be kept in a bit map.
+<i>24</i>&nbsp; *
+<i>25</i>&nbsp; * @author Raffaele Canale - raffaelecanale@gmail.com
+<i>26</i>&nbsp; * @version 1.0
+<i>27</i>&nbsp; *
+<i>28</i>&nbsp; * Project: Worx.ANT File: FLPage.java (UTF-8) Date: Jul 14, 2013
+<i>29</i>&nbsp; */
+<b class="nc"><i>30</i>&nbsp;public class BitMappedPage extends DataPage {</b>
+<i>31</i>&nbsp;
+<i>32</i>&nbsp;    /**
+<i>33</i>&nbsp;     * Gets a factory for this data page.
+<i>34</i>&nbsp;     *
+<i>35</i>&nbsp;     * @param rs               Register save strategy to be used, &lt;b&gt;must be
+<i>36</i>&nbsp;     *                         fixed length&lt;/b&gt;
+<i>37</i>&nbsp;     * @param registerLength   Length of a register (must be constant)
+<i>38</i>&nbsp;     * @param registerCapacity Maximum number of records that should be stored
+<i>39</i>&nbsp;     *                         in this file
+<i>40</i>&nbsp;     *
+<i>41</i>&nbsp;     * @return A created or loaded bit mapped page
+<i>42</i>&nbsp;     */
+<i>43</i>&nbsp;    public static DataPageFactory getFactory(final RegisterSaveStrategy rs,
+<i>44</i>&nbsp;            final int registerLength, final int registerCapacity) {
+<b class="nc"><i>45</i>&nbsp;        return new DataPageFactory() {</b>
+<i>46</i>&nbsp;            @Override
+<i>47</i>&nbsp;            public DataPage getNewPage(File pageFile) throws IOException {
+<b class="nc"><i>48</i>&nbsp;                if (pageFile.exists() &amp;&amp; pageFile.length() &gt; 0) {</b>
+<b class="nc"><i>49</i>&nbsp;                    return new BitMappedPage(pageFile, rs);</b>
+<i>50</i>&nbsp;                } else {
+<b class="nc"><i>51</i>&nbsp;                    return new BitMappedPage(pageFile, registerLength, registerCapacity, rs);</b>
+<i>52</i>&nbsp;                }
+<i>53</i>&nbsp;            }
+<i>54</i>&nbsp;
+<i>55</i>&nbsp;        };
+<i>56</i>&nbsp;    }
+<i>57</i>&nbsp;
+<i>58</i>&nbsp;    private final RandomAccessFile raf;
+<i>59</i>&nbsp;    private final Metadata metadata;
+<i>60</i>&nbsp;
+<i>61</i>&nbsp;    private BitMappedPage(File dataFile, int recordLength, int recordsCapacity,
+<i>62</i>&nbsp;            RegisterSaveStrategy rs)
+<i>63</i>&nbsp;            throws FileNotFoundException, IOException {
+<b class="nc"><i>64</i>&nbsp;        super(rs, dataFile);</b>
+<b class="nc"><i>65</i>&nbsp;        this.raf = new RandomAccessFile(dataFile, &quot;rw&quot;);</b>
+<i>66</i>&nbsp;        
+<b class="nc"><i>67</i>&nbsp;        BitSet bitMap = new BitSet(recordsCapacity);</b>
+<b class="nc"><i>68</i>&nbsp;        bitMap.set(0, recordsCapacity);        </b>
+<b class="nc"><i>69</i>&nbsp;        this.metadata = new Metadata(recordLength, recordsCapacity, bitMap);</b>
+<i>70</i>&nbsp;
+<b class="nc"><i>71</i>&nbsp;        createFile();</b>
+<i>72</i>&nbsp;    }
+<i>73</i>&nbsp;
+<i>74</i>&nbsp;    private BitMappedPage(File dataFile, RegisterSaveStrategy rs) throws FileNotFoundException, IOException {
+<b class="nc"><i>75</i>&nbsp;        super(rs, dataFile);</b>
+<b class="nc"><i>76</i>&nbsp;        this.raf = new RandomAccessFile(dataFile, &quot;rw&quot;);</b>
+<b class="nc"><i>77</i>&nbsp;        this.metadata = readMetadata();</b>
+<i>78</i>&nbsp;    }
+<i>79</i>&nbsp;
+<i>80</i>&nbsp;    @Override
+<i>81</i>&nbsp;    public boolean add(Object[] register) throws IOException {
+<b class="nc"><i>82</i>&nbsp;        int freeSlotIndex = metadata.findFreeSlotIndex();</b>
+<b class="nc"><i>83</i>&nbsp;        if (freeSlotIndex &lt; 0) {</b>
+<b class="nc"><i>84</i>&nbsp;            return false;</b>
+<i>85</i>&nbsp;        }
+<b class="nc"><i>86</i>&nbsp;        long address = metadata.convertIndexToAddress(freeSlotIndex);</b>
+<i>87</i>&nbsp;
+<b class="nc"><i>88</i>&nbsp;        raf.seek(address);</b>
+<b class="nc"><i>89</i>&nbsp;        rs.write(register, raf);</b>
+<i>90</i>&nbsp;
+<b class="nc"><i>91</i>&nbsp;        metadata.updateMap(freeSlotIndex, false);</b>
+<b class="nc"><i>92</i>&nbsp;        return true;</b>
+<i>93</i>&nbsp;    }
+<i>94</i>&nbsp;
+<i>95</i>&nbsp;    @Override
+<i>96</i>&nbsp;    public RegisterSetIterator getIterator(Condition condition) {
+<b class="nc"><i>97</i>&nbsp;        return new RegisterIterator(condition);</b>
+<i>98</i>&nbsp;    }
+<i>99</i>&nbsp;
+<i>100</i>&nbsp;    @Override
+<i>101</i>&nbsp;    public void flush() throws IOException {
+<b class="nc"><i>102</i>&nbsp;        metadata.writeToFile();</b>
+<i>103</i>&nbsp;    }
+<i>104</i>&nbsp;
+<i>105</i>&nbsp;    @Override
+<i>106</i>&nbsp;    public void clearBuffers() {
+<i>107</i>&nbsp;    }
+<i>108</i>&nbsp;
+<i>109</i>&nbsp;    @Override
+<i>110</i>&nbsp;    public void auditErrors(int depth, AuditMessage message) {
+<b class="nc"><i>111</i>&nbsp;        message.error(&quot;Not supported yet&quot;);</b>
+<i>112</i>&nbsp;    }
+<i>113</i>&nbsp;
+<i>114</i>&nbsp;    @Override
+<i>115</i>&nbsp;    public void close() throws IOException {
+<b class="nc"><i>116</i>&nbsp;        flush();</b>
+<b class="nc"><i>117</i>&nbsp;        raf.close();</b>
+<i>118</i>&nbsp;    }
+<i>119</i>&nbsp;
+<i>120</i>&nbsp;    private void createFile() throws IOException {
+<b class="nc"><i>121</i>&nbsp;        metadata.freeSlotBitMap.set(0, metadata.recordsCapacity);</b>
+<b class="nc"><i>122</i>&nbsp;        raf.setLength(metadata.getFileLength());</b>
+<b class="nc"><i>123</i>&nbsp;        metadata.writeToFile();</b>
+<i>124</i>&nbsp;    }
+<i>125</i>&nbsp;
+<i>126</i>&nbsp;    private Metadata readMetadata() throws IOException {
+<b class="nc"><i>127</i>&nbsp;        raf.seek(0);</b>
+<b class="nc"><i>128</i>&nbsp;        int recordLength = raf.readInt();</b>
+<b class="nc"><i>129</i>&nbsp;        int recordsCapacity = raf.readInt();</b>
+<b class="nc"><i>130</i>&nbsp;        int bitMapSize = raf.readInt();</b>
+<i>131</i>&nbsp;
+<b class="nc"><i>132</i>&nbsp;        byte[] bitMapBytes = new byte[bitMapSize];</b>
+<b class="nc"><i>133</i>&nbsp;        raf.read(bitMapBytes);</b>
+<i>134</i>&nbsp;
+<b class="nc"><i>135</i>&nbsp;        BitSet bitMap = BitSet.valueOf(bitMapBytes);</b>
+<b class="nc"><i>136</i>&nbsp;        return new Metadata(recordLength, recordsCapacity, bitMap);</b>
+<i>137</i>&nbsp;    }
+<i>138</i>&nbsp;
+<b class="nc"><i>139</i>&nbsp;    private class Metadata {</b>
+<i>140</i>&nbsp;
+<i>141</i>&nbsp;        private final static int BIT_MAP_START = 12;
+<i>142</i>&nbsp;        private final int recordLength;
+<i>143</i>&nbsp;        private final int recordsCapacity;
+<i>144</i>&nbsp;        private final BitSet freeSlotBitMap;
+<i>145</i>&nbsp;        private final int dataStartPointer;
+<i>146</i>&nbsp;
+<b class="nc"><i>147</i>&nbsp;        private Metadata(int recordLength, int recordsCapacity, BitSet bitMap) {</b>
+<b class="nc"><i>148</i>&nbsp;            this.recordLength = recordLength;</b>
+<b class="nc"><i>149</i>&nbsp;            this.recordsCapacity = recordsCapacity;</b>
+<b class="nc"><i>150</i>&nbsp;            this.freeSlotBitMap = bitMap;</b>
+<b class="nc"><i>151</i>&nbsp;            this.dataStartPointer = BIT_MAP_START + (int) Math.ceil(bitMap.length()/8.0);</b>
+<i>152</i>&nbsp;        }
+<i>153</i>&nbsp;
+<i>154</i>&nbsp;        private long getFileLength() {
+<b class="nc"><i>155</i>&nbsp;            return dataStartPointer + (recordsCapacity * recordLength);</b>
+<i>156</i>&nbsp;        }
+<i>157</i>&nbsp;
+<i>158</i>&nbsp;        private void writeToFile() throws IOException {
+<b class="nc"><i>159</i>&nbsp;            raf.seek(0);</b>
+<i>160</i>&nbsp;
+<b class="nc"><i>161</i>&nbsp;            raf.writeInt(recordLength);</b>
+<b class="nc"><i>162</i>&nbsp;            raf.writeInt(recordsCapacity);</b>
+<i>163</i>&nbsp;
+<b class="nc"><i>164</i>&nbsp;            byte[] bitMapBytes = freeSlotBitMap.toByteArray();</b>
+<b class="nc"><i>165</i>&nbsp;            raf.writeInt(bitMapBytes.length);</b>
+<b class="nc"><i>166</i>&nbsp;            raf.write(bitMapBytes);</b>
+<i>167</i>&nbsp;        }
+<i>168</i>&nbsp;
+<i>169</i>&nbsp;        private int findFreeSlotIndex() {
+<b class="nc"><i>170</i>&nbsp;            return freeSlotBitMap.nextSetBit(0);</b>
+<i>171</i>&nbsp;        }
+<i>172</i>&nbsp;
+<i>173</i>&nbsp;        private int findNextUsedSlot(int fromIndex) {
+<b class="nc"><i>174</i>&nbsp;            int usedSlot = freeSlotBitMap.nextClearBit(fromIndex);</b>
+<b class="nc"><i>175</i>&nbsp;            if (usedSlot &gt;= recordsCapacity) {</b>
+<b class="nc"><i>176</i>&nbsp;                return -1;</b>
+<i>177</i>&nbsp;            }
+<i>178</i>&nbsp;
+<b class="nc"><i>179</i>&nbsp;            return usedSlot;</b>
+<i>180</i>&nbsp;        }
+<i>181</i>&nbsp;
+<i>182</i>&nbsp;        private long convertIndexToAddress(int index) {            
+<b class="nc"><i>183</i>&nbsp;            return dataStartPointer + (index * recordLength);</b>
+<i>184</i>&nbsp;        }
+<i>185</i>&nbsp;
+<i>186</i>&nbsp;        private void updateMap(int index, boolean isFree) {
+<b class="nc"><i>187</i>&nbsp;            freeSlotBitMap.set(index, isFree);</b>
+<i>188</i>&nbsp;        }
+<i>189</i>&nbsp;
+<i>190</i>&nbsp;    }
+<i>191</i>&nbsp;
+<b class="nc"><i>192</i>&nbsp;    private class RegisterIterator implements RegisterSetIterator {</b>
+<i>193</i>&nbsp;
+<i>194</i>&nbsp;        private int currentSlot;
+<i>195</i>&nbsp;        private final Condition condition;
+<i>196</i>&nbsp;
+<b class="nc"><i>197</i>&nbsp;        private RegisterIterator(Condition condition) {</b>
+<b class="nc"><i>198</i>&nbsp;            this.condition = condition;</b>
+<b class="nc"><i>199</i>&nbsp;            currentSlot = -1;</b>
+<i>200</i>&nbsp;        }
+<i>201</i>&nbsp;
+<i>202</i>&nbsp;        @Override
+<i>203</i>&nbsp;        public Object[] readRegister() throws IOException {
+<i>204</i>&nbsp;            Object[] record;
+<i>205</i>&nbsp;
+<i>206</i>&nbsp;            do {
+<b class="nc"><i>207</i>&nbsp;                record = readNextRecord();                </b>
+<b class="nc"><i>208</i>&nbsp;                if (record == null) {</b>
+<b class="nc"><i>209</i>&nbsp;                    return null;</b>
+<i>210</i>&nbsp;                }
+<b class="nc"><i>211</i>&nbsp;            } while (!condition.matches(record));</b>
+<i>212</i>&nbsp;            
+<b class="nc"><i>213</i>&nbsp;            return record;</b>
+<i>214</i>&nbsp;        }
+<i>215</i>&nbsp;
+<i>216</i>&nbsp;        @Override
+<i>217</i>&nbsp;        public void update(Object[] register) throws IOException {
+<b class="nc"><i>218</i>&nbsp;            long address = metadata.convertIndexToAddress(currentSlot);</b>
+<b class="nc"><i>219</i>&nbsp;            raf.seek(address);</b>
+<b class="nc"><i>220</i>&nbsp;            rs.write(register, raf);</b>
+<i>221</i>&nbsp;        }
+<i>222</i>&nbsp;
+<i>223</i>&nbsp;        @Override
+<i>224</i>&nbsp;        public void remove() throws IOException {
+<b class="nc"><i>225</i>&nbsp;            metadata.updateMap(currentSlot, true);</b>
+<i>226</i>&nbsp;        }
+<i>227</i>&nbsp;
+<i>228</i>&nbsp;        @Override
+<i>229</i>&nbsp;        public void close() throws IOException {
+<b class="nc"><i>230</i>&nbsp;            flush();</b>
+<i>231</i>&nbsp;        }
+<i>232</i>&nbsp;
+<i>233</i>&nbsp;        private Object[] readNextRecord() throws IOException {
+<b class="nc"><i>234</i>&nbsp;            currentSlot = metadata.findNextUsedSlot(currentSlot + 1);</b>
+<b class="nc"><i>235</i>&nbsp;            if (currentSlot &lt; 0) {</b>
+<b class="nc"><i>236</i>&nbsp;                return null;</b>
+<i>237</i>&nbsp;            }
+<i>238</i>&nbsp;
+<b class="nc"><i>239</i>&nbsp;            long address = metadata.convertIndexToAddress(currentSlot);</b>
+<b class="nc"><i>240</i>&nbsp;            raf.seek(address);</b>
+<b class="nc"><i>241</i>&nbsp;            return rs.read(raf);</b>
+<i>242</i>&nbsp;        }
+<i>243</i>&nbsp;
+<i>244</i>&nbsp;    }
+<i>245</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2014-11-07 23:06</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,343 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: CNFGrammar</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.wx.grammar.cnf</a> ]
+</div>
+
+<h1>Coverage Summary for Class: CNFGrammar (com.wx.grammar.cnf)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CNFGrammar</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 13)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 43)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">CNFGrammar$Builder</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 21)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 20)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 64)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.wx.grammar.cnf;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.wx.grammar.GrammarException;
+<i>4</i>&nbsp;import com.wx.grammar.symbol.Symbol;
+<i>5</i>&nbsp;import com.wx.grammar.cnf.rule.ProductionRule;
+<i>6</i>&nbsp;import com.wx.grammar.cnf.rule.CnfRule;
+<i>7</i>&nbsp;import com.wx.grammar.cnf.rule.TerminalRule;
+<i>8</i>&nbsp;import com.wx.lexer.tokens.Token;
+<i>9</i>&nbsp;import java.util.Arrays;
+<i>10</i>&nbsp;import java.util.Collections;
+<i>11</i>&nbsp;import java.util.HashSet;
+<i>12</i>&nbsp;import java.util.Set;
+<i>13</i>&nbsp;import java.util.stream.Collectors;
+<i>14</i>&nbsp;import java.util.stream.Stream;
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;/**
+<i>17</i>&nbsp; *
+<i>18</i>&nbsp; * Representation of a Grammar in Chomsky Normal Form. That includes rules of
+<i>19</i>&nbsp; * the following form:
+<i>20</i>&nbsp; * &lt;ul&gt;
+<i>21</i>&nbsp; * &lt;li&gt;A := BC...&lt;/li&gt;
+<i>22</i>&nbsp; * &lt;li&gt;A := a&lt;/li&gt;
+<i>23</i>&nbsp; * &lt;li&gt;S := &amp;epsilon;&lt;/li&gt;
+<i>24</i>&nbsp; * &lt;li&gt;...&lt;/li&gt;
+<i>25</i>&nbsp; * &lt;/ul&gt;
+<i>26</i>&nbsp; *
+<i>27</i>&nbsp; * To build a Grammar, use the {@link Builder}
+<i>28</i>&nbsp; *
+<i>29</i>&nbsp; *
+<i>30</i>&nbsp; * &lt;br&gt;&lt;br&gt;&lt;br&gt;See http://en.wikipedia.org/wiki/Chomsky_normal_form
+<i>31</i>&nbsp; *
+<i>32</i>&nbsp; * @author Raffaele Canale (raffaelecanale@gmail.com)
+<i>33</i>&nbsp; * @version 0.1
+<i>34</i>&nbsp; */
+<b class="nc"><i>35</i>&nbsp;public class CNFGrammar {</b>
+<i>36</i>&nbsp;
+<i>37</i>&nbsp;    private final Symbol startSymbol;
+<i>38</i>&nbsp;    private final Set&lt;ProductionRule&gt; productiveRules;  // includes epsilon symbols
+<i>39</i>&nbsp;    private final Set&lt;TerminalRule&gt; terminalRules;
+<i>40</i>&nbsp;
+<i>41</i>&nbsp;    private CNFGrammar(Symbol startSymbol, Set&lt;ProductionRule&gt; productiveSymbols,
+<b class="nc"><i>42</i>&nbsp;            Set&lt;TerminalRule&gt; terminalSymbols) throws GrammarException {</b>
+<b class="nc"><i>43</i>&nbsp;        this.startSymbol = startSymbol;</b>
+<b class="nc"><i>44</i>&nbsp;        this.productiveRules = Collections.unmodifiableSet(productiveSymbols);</b>
+<b class="nc"><i>45</i>&nbsp;        this.terminalRules = Collections.unmodifiableSet(terminalSymbols);</b>
+<i>46</i>&nbsp;
+<b class="nc"><i>47</i>&nbsp;        testSymbolsValidity();</b>
+<i>48</i>&nbsp;    }
+<i>49</i>&nbsp;
+<i>50</i>&nbsp;    public TerminalRule getTerminalRule(Symbol sym) {
+<i>51</i>&nbsp;        // terminal rule symbols are unique
+<b class="nc"><i>52</i>&nbsp;        return terminalRules.stream().filter(t -&gt; t.getSymbol().equals(sym))</b>
+<b class="nc"><i>53</i>&nbsp;                .findAny().orElse(null);</b>
+<i>54</i>&nbsp;    }
+<i>55</i>&nbsp;    
+<i>56</i>&nbsp;    /**
+<i>57</i>&nbsp;     * Get the set of all productive rules (including epsilon rules)
+<i>58</i>&nbsp;     *
+<i>59</i>&nbsp;     * @return The set of productive rules
+<i>60</i>&nbsp;     */
+<i>61</i>&nbsp;    public Set&lt;ProductionRule&gt; getProductiveRules() {
+<b class="nc"><i>62</i>&nbsp;        return productiveRules;</b>
+<i>63</i>&nbsp;    }
+<i>64</i>&nbsp;
+<i>65</i>&nbsp;    /**
+<i>66</i>&nbsp;     * Get the set of all terminal rules,
+<i>67</i>&nbsp;     *
+<i>68</i>&nbsp;     * @return The set of terminal rules
+<i>69</i>&nbsp;     */
+<i>70</i>&nbsp;    public Set&lt;TerminalRule&gt; getTerminalRules() {
+<b class="nc"><i>71</i>&nbsp;        return terminalRules;</b>
+<i>72</i>&nbsp;    }
+<i>73</i>&nbsp;
+<i>74</i>&nbsp;    /**
+<i>75</i>&nbsp;     * Get the starting symbol to use for parsing.
+<i>76</i>&nbsp;     *
+<i>77</i>&nbsp;     * @return Starting symbol
+<i>78</i>&nbsp;     */
+<i>79</i>&nbsp;    public Symbol getStartSymbol() {
+<b class="nc"><i>80</i>&nbsp;        return startSymbol;</b>
+<i>81</i>&nbsp;    }
+<i>82</i>&nbsp;
+<i>83</i>&nbsp;    private boolean isDeclared(Symbol sym) {
+<b class="nc"><i>84</i>&nbsp;        return Stream.concat(productiveRules.stream(), terminalRules.stream())</b>
+<b class="nc"><i>85</i>&nbsp;                .map(CnfRule::getSymbol).anyMatch(s -&gt; s.equals(sym));</b>
+<i>86</i>&nbsp;    }
+<i>87</i>&nbsp;
+<i>88</i>&nbsp;    private void testSymbolsValidity() throws GrammarException {
+<b class="nc"><i>89</i>&nbsp;        if (!isDeclared(startSymbol)) {</b>
+<b class="nc"><i>90</i>&nbsp;            throw new GrammarException(&quot;Start symbol (&quot; + startSymbol + &quot;) &quot;</b>
+<i>91</i>&nbsp;                    + &quot;not declared&quot;);
+<i>92</i>&nbsp;        }
+<i>93</i>&nbsp;
+<b class="nc"><i>94</i>&nbsp;        Set&lt;Symbol&gt; unusedSymbols = getAllSymbols();</b>
+<b class="nc"><i>95</i>&nbsp;        unusedSymbols.remove(startSymbol);</b>
+<i>96</i>&nbsp;
+<b class="nc"><i>97</i>&nbsp;        for (ProductionRule rule : productiveRules) {</b>
+<b class="nc"><i>98</i>&nbsp;            for (Symbol sym : rule) {</b>
+<b class="nc"><i>99</i>&nbsp;                if (!isDeclared(sym)) {</b>
+<b class="nc"><i>100</i>&nbsp;                    throw new GrammarException(&quot;Undeclared symbol (&quot; + sym + &quot;) &quot;</b>
+<i>101</i>&nbsp;                            + &quot;in the following rule: &quot; + rule);
+<i>102</i>&nbsp;                }
+<b class="nc"><i>103</i>&nbsp;                unusedSymbols.remove(sym);</b>
+<b class="nc"><i>104</i>&nbsp;            }</b>
+<b class="nc"><i>105</i>&nbsp;        }</b>
+<i>106</i>&nbsp;
+<b class="nc"><i>107</i>&nbsp;        if (!unusedSymbols.isEmpty()) {</b>
+<b class="nc"><i>108</i>&nbsp;            throw new GrammarException(&quot;Unused symbols: &quot; + unusedSymbols);</b>
+<i>109</i>&nbsp;        }
+<i>110</i>&nbsp;        
+<b class="nc"><i>111</i>&nbsp;        Set&lt;Symbol&gt; productiveSymbols = productiveRules.stream()</b>
+<b class="nc"><i>112</i>&nbsp;                .map(CnfRule::getSymbol).collect(Collectors.toSet());</b>
+<b class="nc"><i>113</i>&nbsp;        Set&lt;Symbol&gt; terminalSymbols = terminalRules.stream()</b>
+<b class="nc"><i>114</i>&nbsp;                .map(CnfRule::getSymbol).collect(Collectors.toSet());</b>
+<i>115</i>&nbsp;        
+<b class="nc"><i>116</i>&nbsp;        productiveSymbols.retainAll(terminalSymbols);</b>
+<b class="nc"><i>117</i>&nbsp;        if (!productiveSymbols.isEmpty()) {</b>
+<b class="nc"><i>118</i>&nbsp;            throw new GrammarException(&quot;Terminal symbols must be unique\n&quot;</b>
+<i>119</i>&nbsp;                    + productiveSymbols);
+<i>120</i>&nbsp;        }
+<i>121</i>&nbsp;        
+<b class="nc"><i>122</i>&nbsp;        if (terminalSymbols.size() != terminalRules.size()) {</b>
+<b class="nc"><i>123</i>&nbsp;            throw new GrammarException(&quot;A terminal rule is declared twice&quot;);</b>
+<i>124</i>&nbsp;        }
+<i>125</i>&nbsp;    }
+<i>126</i>&nbsp;
+<i>127</i>&nbsp;    private Set&lt;Symbol&gt; getAllSymbols() {
+<b class="nc"><i>128</i>&nbsp;        return Stream.concat(productiveRules.stream(), terminalRules.stream())</b>
+<b class="nc"><i>129</i>&nbsp;                .map(CnfRule::getSymbol).collect(Collectors.toSet());</b>
+<i>130</i>&nbsp;    }
+<i>131</i>&nbsp;
+<i>132</i>&nbsp;    @Override
+<i>133</i>&nbsp;    public String toString() {
+<b class="nc"><i>134</i>&nbsp;        return Stream.concat(</b>
+<b class="nc"><i>135</i>&nbsp;                productiveRules.stream()</b>
+<b class="nc"><i>136</i>&nbsp;                        .sorted((s1, s2) -&gt; s1.getSymbol().equals(startSymbol) ? -10 : </b>
+<b class="nc"><i>137</i>&nbsp;                                s1.getSymbol().toString().compareTo(s2.getSymbol().toString())),</b>
+<b class="nc"><i>138</i>&nbsp;                terminalRules.stream()).map(CnfRule::toString)</b>
+<b class="nc"><i>139</i>&nbsp;                .collect(Collectors.joining(&quot;\n&quot;));        </b>
+<i>140</i>&nbsp;    }
+<i>141</i>&nbsp;
+<i>142</i>&nbsp;    /**
+<i>143</i>&nbsp;     * Builder to construct a {@link CNFGrammar}
+<i>144</i>&nbsp;     */
+<i>145</i>&nbsp;    public static class Builder {
+<i>146</i>&nbsp;
+<i>147</i>&nbsp;        private final Symbol startSymbol;
+<b class="nc"><i>148</i>&nbsp;        private final Set&lt;ProductionRule&gt; productiveSymbols = new HashSet&lt;&gt;();</b>
+<b class="nc"><i>149</i>&nbsp;        private final Set&lt;TerminalRule&gt; terminalSymbols = new HashSet&lt;&gt;();</b>
+<i>150</i>&nbsp;        private boolean simplify;
+<i>151</i>&nbsp;
+<i>152</i>&nbsp;        /**
+<i>153</i>&nbsp;         * Constructs a new Grammar builder
+<i>154</i>&nbsp;         *
+<i>155</i>&nbsp;         * @param startSymbol Grammar&#39;s start symbol
+<i>156</i>&nbsp;         */
+<b class="nc"><i>157</i>&nbsp;        public Builder(Symbol startSymbol) {</b>
+<b class="nc"><i>158</i>&nbsp;            this.startSymbol = startSymbol;</b>
+<i>159</i>&nbsp;        }
+<i>160</i>&nbsp;        
+<i>161</i>&nbsp;        /**
+<i>162</i>&nbsp;         * Declare an epsilon rule
+<i>163</i>&nbsp;         *
+<i>164</i>&nbsp;         * @param sym Symbol of the rule
+<i>165</i>&nbsp;         *
+<i>166</i>&nbsp;         * @return A reference to the created rule
+<i>167</i>&nbsp;         */
+<i>168</i>&nbsp;        public ProductionRule addEpsilonSymbol(Symbol sym) {
+<b class="nc"><i>169</i>&nbsp;            ProductionRule rule = new ProductionRule(sym);</b>
+<b class="nc"><i>170</i>&nbsp;            productiveSymbols.add(rule);</b>
+<i>171</i>&nbsp;
+<b class="nc"><i>172</i>&nbsp;            return rule;</b>
+<i>173</i>&nbsp;        }
+<i>174</i>&nbsp;
+<i>175</i>&nbsp;        /**
+<i>176</i>&nbsp;         * Declare a terminal rule
+<i>177</i>&nbsp;         *
+<i>178</i>&nbsp;         * @param sym   Symbol of the rule
+<i>179</i>&nbsp;         * @param token Terminal token
+<i>180</i>&nbsp;         *
+<i>181</i>&nbsp;         * @return A reference to the created rule
+<i>182</i>&nbsp;         */
+<i>183</i>&nbsp;        public TerminalRule addTerminalRule(Symbol sym, Token token) {
+<b class="nc"><i>184</i>&nbsp;            TerminalRule rule = new TerminalRule(sym, token);</b>
+<b class="nc"><i>185</i>&nbsp;            terminalSymbols.add(rule);</b>
+<i>186</i>&nbsp;
+<b class="nc"><i>187</i>&nbsp;            return rule;</b>
+<i>188</i>&nbsp;        }
+<i>189</i>&nbsp;
+<i>190</i>&nbsp;        /**
+<i>191</i>&nbsp;         * Declare a productive rule
+<i>192</i>&nbsp;         *
+<i>193</i>&nbsp;         * @param sym  Symbol of the rule
+<i>194</i>&nbsp;         * @param rule Symbols forming (concatenation) the rule
+<i>195</i>&nbsp;         *
+<i>196</i>&nbsp;         * @return A reference to the created rule
+<i>197</i>&nbsp;         */
+<i>198</i>&nbsp;        public ProductionRule addProductiveRule(Symbol sym, Symbol... rule) {
+<b class="nc"><i>199</i>&nbsp;            ProductionRule r = new ProductionRule(sym, Arrays.asList(rule));</b>
+<b class="nc"><i>200</i>&nbsp;            productiveSymbols.add(r);</b>
+<i>201</i>&nbsp;
+<b class="nc"><i>202</i>&nbsp;            return r;</b>
+<i>203</i>&nbsp;        }
+<i>204</i>&nbsp;        
+<i>205</i>&nbsp;        public Builder simplify() {
+<b class="nc"><i>206</i>&nbsp;            this.simplify = true;</b>
+<i>207</i>&nbsp;            
+<b class="nc"><i>208</i>&nbsp;            return this;</b>
+<i>209</i>&nbsp;        }
+<i>210</i>&nbsp;
+<i>211</i>&nbsp;        /**
+<i>212</i>&nbsp;         * Build the grammar
+<i>213</i>&nbsp;         *
+<i>214</i>&nbsp;         * @return The created grammar
+<i>215</i>&nbsp;         *
+<i>216</i>&nbsp;         * @throws com.wx.grammar.GrammarException
+<i>217</i>&nbsp;         */
+<i>218</i>&nbsp;        public CNFGrammar build() throws GrammarException {
+<b class="nc"><i>219</i>&nbsp;            if (simplify) {</b>
+<b class="nc"><i>220</i>&nbsp;                performSimplifications();</b>
+<i>221</i>&nbsp;            }
+<b class="nc"><i>222</i>&nbsp;            return new CNFGrammar(startSymbol, productiveSymbols, terminalSymbols);</b>
+<i>223</i>&nbsp;        }
+<i>224</i>&nbsp;        
+<i>225</i>&nbsp;        private void performSimplifications() {
+<b class="nc"><i>226</i>&nbsp;            for (ProductionRule productionRule : productiveSymbols) {</b>
+<b class="nc"><i>227</i>&nbsp;                if (productionRule.getElements().size() == 1) {</b>
+<i>228</i>&nbsp;                    // TODO
+<i>229</i>&nbsp;                }
+<b class="nc"><i>230</i>&nbsp;            }</b>
+<i>231</i>&nbsp;        }
+<i>232</i>&nbsp;    }
+<i>233</i>&nbsp;
+<i>234</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2014-11-07 23:06</div>
+</div>
+</body>
+</html>

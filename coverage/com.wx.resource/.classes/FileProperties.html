@@ -1,0 +1,151 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: FileProperties</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.wx.resource</a> ]
+</div>
+
+<h1>Coverage Summary for Class: FileProperties (com.wx.resource)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">FileProperties</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 19)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.wx.resource;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.wx.crypto.Crypter;
+<i>4</i>&nbsp;import com.wx.crypto.CryptoException;
+<i>5</i>&nbsp;import java.io.File;
+<i>6</i>&nbsp;import java.io.FileInputStream;
+<i>7</i>&nbsp;import java.io.FileNotFoundException;
+<i>8</i>&nbsp;import java.io.FileOutputStream;
+<i>9</i>&nbsp;import java.io.IOException;
+<i>10</i>&nbsp;import java.io.InputStream;
+<i>11</i>&nbsp;import java.io.OutputStream;
+<i>12</i>&nbsp;import java.util.Properties;
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;/**
+<i>15</i>&nbsp; *
+<i>16</i>&nbsp; * @author canale
+<i>17</i>&nbsp; */
+<i>18</i>&nbsp;public class FileProperties extends AbstractProperties {
+<i>19</i>&nbsp;    
+<i>20</i>&nbsp;    public static FileProperties externalize(AbstractProperties props, String path) {
+<b class="nc"><i>21</i>&nbsp;        FileProperties fileProperties = </b>
+<b class="nc"><i>22</i>&nbsp;                new FileProperties(path, props.isXML(), props.getDefaults());</b>
+<b class="nc"><i>23</i>&nbsp;        fileProperties.putAll(props);</b>
+<i>24</i>&nbsp;        
+<b class="nc"><i>25</i>&nbsp;        return fileProperties;</b>
+<i>26</i>&nbsp;    }
+<i>27</i>&nbsp;    
+<i>28</i>&nbsp;    private final String filePath;
+<i>29</i>&nbsp;    private final boolean autoCreateParentFolders;
+<i>30</i>&nbsp;    
+<i>31</i>&nbsp;    public FileProperties(String filePath, boolean autoCreateParentFolders, boolean xml, Properties defaults) {
+<b class="nc"><i>32</i>&nbsp;        super(xml, defaults);</b>
+<b class="nc"><i>33</i>&nbsp;        this.filePath = filePath;</b>
+<b class="nc"><i>34</i>&nbsp;        this.autoCreateParentFolders = autoCreateParentFolders;</b>
+<i>35</i>&nbsp;    }
+<i>36</i>&nbsp;
+<i>37</i>&nbsp;    public FileProperties(String filePath, boolean xml, Properties defaults) {
+<b class="nc"><i>38</i>&nbsp;        this(filePath, true, xml, defaults);</b>
+<i>39</i>&nbsp;    }
+<i>40</i>&nbsp;    
+<i>41</i>&nbsp;    public File getFile() {
+<b class="nc"><i>42</i>&nbsp;        return new File(filePath);</b>
+<i>43</i>&nbsp;    }
+<i>44</i>&nbsp;
+<i>45</i>&nbsp;
+<i>46</i>&nbsp;    @Override
+<i>47</i>&nbsp;    protected OutputStream getOutputStream(Crypter crypter) throws FileNotFoundException, IOException, CryptoException {
+<b class="nc"><i>48</i>&nbsp;        File file = getFile();</b>
+<i>49</i>&nbsp;        
+<b class="nc"><i>50</i>&nbsp;        if (autoCreateParentFolders) {</b>
+<b class="nc"><i>51</i>&nbsp;            File parent = file.getAbsoluteFile().getParentFile();</b>
+<b class="nc"><i>52</i>&nbsp;            if (parent != null &amp;&amp; !parent.exists() &amp;&amp; !parent.mkdirs()) {</b>
+<b class="nc"><i>53</i>&nbsp;                throw new IOException(&quot;Unknow error. Can&#39;t create parent &quot;</b>
+<b class="nc"><i>54</i>&nbsp;                        + &quot;folders for:\n&quot; + file.getAbsoluteFile());</b>
+<i>55</i>&nbsp;            }
+<i>56</i>&nbsp;        }
+<i>57</i>&nbsp;        
+<b class="nc"><i>58</i>&nbsp;        FileOutputStream fos = new FileOutputStream(file);</b>
+<b class="nc"><i>59</i>&nbsp;        return crypter == null ? fos : crypter.getOutputStream(fos, true);</b>
+<i>60</i>&nbsp;    }
+<i>61</i>&nbsp;
+<i>62</i>&nbsp;    @Override
+<i>63</i>&nbsp;    protected InputStream getInputStream(Crypter crypter, Class&lt;?&gt; source) throws FileNotFoundException, CryptoException {
+<b class="nc"><i>64</i>&nbsp;        FileInputStream fis = new FileInputStream(filePath);</b>
+<b class="nc"><i>65</i>&nbsp;        return crypter == null ? fis : crypter.getInputStream(fis, false);</b>
+<i>66</i>&nbsp;    }
+<i>67</i>&nbsp;    
+<i>68</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2014-11-07 23:06</div>
+</div>
+</body>
+</html>

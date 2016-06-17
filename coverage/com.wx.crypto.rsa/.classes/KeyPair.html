@@ -1,0 +1,157 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: KeyPair</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.wx.crypto.rsa</a> ]
+</div>
+
+<h1>Coverage Summary for Class: KeyPair (com.wx.crypto.rsa)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">KeyPair</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 13)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.wx.crypto.rsa;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.math.BigInteger;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;/**
+<i>6</i>&nbsp; * This class is a representation of a RSA key
+<i>7</i>&nbsp; *
+<i>8</i>&nbsp; * @author Raffaele Canale, Triin Merivald
+<i>9</i>&nbsp; */
+<i>10</i>&nbsp;public class KeyPair {
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;    private BigInteger n;	//Modulo
+<i>13</i>&nbsp;    private BigInteger e;	//Public key, Encryption key
+<i>14</i>&nbsp;    private BigInteger d;	//Private key, Decryption key
+<i>15</i>&nbsp;    private int N;			//Multiple of 8, key length
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;    /**
+<i>18</i>&nbsp;     * Initiates a key with the given parameters.
+<i>19</i>&nbsp;     *
+<i>20</i>&nbsp;     * @param n Modulo.
+<i>21</i>&nbsp;     * @param e Encryption key.
+<i>22</i>&nbsp;     * @param d Decryption key.
+<i>23</i>&nbsp;     * @param N Key length, should be a multiple of 8.
+<i>24</i>&nbsp;     */
+<b class="nc"><i>25</i>&nbsp;    public KeyPair(BigInteger n, BigInteger e, BigInteger d, int N) {</b>
+<b class="nc"><i>26</i>&nbsp;        if (N % 8 != 0) {</b>
+<b class="nc"><i>27</i>&nbsp;            throw new IllegalArgumentException(&quot;N must be a multiple of 8&quot;);</b>
+<i>28</i>&nbsp;        }
+<b class="nc"><i>29</i>&nbsp;        this.n = n;</b>
+<b class="nc"><i>30</i>&nbsp;        this.e = e;</b>
+<b class="nc"><i>31</i>&nbsp;        this.d = d;</b>
+<b class="nc"><i>32</i>&nbsp;        this.N = N;</b>
+<i>33</i>&nbsp;    }
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;    /**
+<i>36</i>&nbsp;     * Encrypts a BigInteger
+<i>37</i>&nbsp;     *
+<i>38</i>&nbsp;     * @param m Value to encrypt
+<i>39</i>&nbsp;     * @return Returns m &lt;sup&gt;e&lt;/sup&gt; (mod n)
+<i>40</i>&nbsp;     */
+<i>41</i>&nbsp;    public BigInteger encrypt(BigInteger m) {
+<b class="nc"><i>42</i>&nbsp;        return m.modPow(e, n);</b>
+<i>43</i>&nbsp;    }
+<i>44</i>&nbsp;
+<i>45</i>&nbsp;    /**
+<i>46</i>&nbsp;     * Decrypts a BigInteger
+<i>47</i>&nbsp;     *
+<i>48</i>&nbsp;     * @param c Value to decrypt
+<i>49</i>&nbsp;     * @return Returns c &lt;sup&gt;d&lt;/sup&gt; (mod n)
+<i>50</i>&nbsp;     */
+<i>51</i>&nbsp;    public BigInteger decrypt(BigInteger c) {
+<b class="nc"><i>52</i>&nbsp;        return c.modPow(d, n);</b>
+<i>53</i>&nbsp;    }
+<i>54</i>&nbsp;
+<i>55</i>&nbsp;    public int getKeyLength() {
+<b class="nc"><i>56</i>&nbsp;        return N;</b>
+<i>57</i>&nbsp;    }
+<i>58</i>&nbsp;
+<i>59</i>&nbsp;    public BigInteger getPublicKey() {
+<b class="nc"><i>60</i>&nbsp;        return e;</b>
+<i>61</i>&nbsp;    }
+<i>62</i>&nbsp;
+<i>63</i>&nbsp;    public BigInteger getModulo() {
+<b class="nc"><i>64</i>&nbsp;        return n;</b>
+<i>65</i>&nbsp;    }
+<i>66</i>&nbsp;
+<i>67</i>&nbsp;    @Override
+<i>68</i>&nbsp;    public String toString() {
+<b class="nc"><i>69</i>&nbsp;        return &quot;Modulo: &quot; + n + &quot;\n&quot;</b>
+<i>70</i>&nbsp;                + &quot;Encryption key: &quot; + e + &quot;\n&quot;
+<i>71</i>&nbsp;                + &quot;Decryption key: &quot; + d + &quot;\n&quot;
+<i>72</i>&nbsp;                + &quot;Key length: &quot; + N;
+<i>73</i>&nbsp;    }
+<i>74</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2014-11-07 23:06</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,132 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ActionArgs</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.wx.actionN</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ActionArgs (com.wx.actionN)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ActionArgs</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 11)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.wx.actionN;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;
+<i>4</i>&nbsp;import com.google.common.base.Supplier;
+<i>5</i>&nbsp;import com.wx.util.condition.Condition;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;import java.util.function.Function;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;/**
+<i>10</i>&nbsp; * Created by canale on 11/6/14.
+<i>11</i>&nbsp; */
+<b class="nc"><i>12</i>&nbsp;public abstract class ActionArgs {</b>
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;    public String getString(String defaultValue, Condition&lt;String&gt;... conditions) {
+<b class="nc"><i>16</i>&nbsp;        return getValue(this::supplyString, conditions, defaultValue);</b>
+<i>17</i>&nbsp;    }
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;    public String getString(Condition&lt;String&gt;... conditions) {
+<b class="nc"><i>20</i>&nbsp;        return getValue(this::supplyString, conditions, null);</b>
+<i>21</i>&nbsp;    }
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;    public Integer getInt (Integer defaultValue, Condition&lt;Integer&gt;... conditions) {
+<b class="nc"><i>24</i>&nbsp;        return getValue(this::supplyInt, conditions, defaultValue);</b>
+<i>25</i>&nbsp;    }
+<i>26</i>&nbsp;
+<i>27</i>&nbsp;    public Integer getInt (Condition&lt;Integer&gt;... conditions) {
+<b class="nc"><i>28</i>&nbsp;        return getValue(this::supplyInt, conditions, null);</b>
+<i>29</i>&nbsp;    }
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;
+<i>32</i>&nbsp;    protected abstract String supplyString();
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;    protected abstract Integer supplyInt();
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;
+<i>37</i>&nbsp;    private &lt;T&gt; T getValue(Supplier&lt;T&gt; supplier, Condition&lt;T&gt;[] conditions, T defaultValue) {
+<b class="nc"><i>38</i>&nbsp;        T value = supplier.get();</b>
+<b class="nc"><i>39</i>&nbsp;        if (value == null) {</b>
+<b class="nc"><i>40</i>&nbsp;            return defaultValue;</b>
+<i>41</i>&nbsp;        }
+<i>42</i>&nbsp;
+<b class="nc"><i>43</i>&nbsp;        for (Condition&lt;T&gt; condition : conditions) {</b>
+<b class="nc"><i>44</i>&nbsp;            condition.check(value);</b>
+<i>45</i>&nbsp;        }
+<i>46</i>&nbsp;
+<b class="nc"><i>47</i>&nbsp;        return value;</b>
+<i>48</i>&nbsp;    }
+<i>49</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2014-11-07 23:06</div>
+</div>
+</body>
+</html>

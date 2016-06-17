@@ -1,0 +1,169 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ResourceProperty</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.wx.resource.property</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ResourceProperty (com.wx.resource.property)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ResourceProperty</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 8)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.wx.resource.property;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.wx.resource.manager.ResourcePage;
+<i>4</i>&nbsp;import com.wx.resource.property.Property;
+<i>5</i>&nbsp;import com.wx.util.representables.TypeCaster;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;/**
+<i>8</i>&nbsp; *
+<i>9</i>&nbsp; * This wrapper offers an access to a precise property of a
+<i>10</i>&nbsp; * {@code ResourcePage}.
+<i>11</i>&nbsp; * &lt;br&gt;&lt;br&gt;
+<i>12</i>&nbsp; * With an instance of this object, the user can get and set a property of a
+<i>13</i>&nbsp; * {@code ResourcePage} without actually having any direct access to it.
+<i>14</i>&nbsp; *
+<i>15</i>&nbsp; * @param &lt;PropertyType&gt; Type of the property to wrap
+<i>16</i>&nbsp; *
+<i>17</i>&nbsp; * @author Raffaele Canale - raffaelecanale@gmail.com
+<i>18</i>&nbsp; * @version 1.0
+<i>19</i>&nbsp; *
+<i>20</i>&nbsp; * Project: WXLibraries.ANT File: Property.java (UTF-8) Date: Jul 9, 2013
+<i>21</i>&nbsp; */
+<i>22</i>&nbsp;public class ResourceProperty&lt;PropertyType&gt; extends Property&lt;PropertyType&gt; {
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;    private final ResourcePage page;
+<i>25</i>&nbsp;    private final String key;
+<i>26</i>&nbsp;    private final TypeCaster&lt;String, PropertyType&gt; propCaster;
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;    /**
+<i>29</i>&nbsp;     * Constructs a new property.
+<i>30</i>&nbsp;     *
+<i>31</i>&nbsp;     * @param page       Page pointed by this property
+<i>32</i>&nbsp;     * @param key        Key of this property
+<i>33</i>&nbsp;     * @param propCaster Caster of this property
+<i>34</i>&nbsp;     */
+<i>35</i>&nbsp;    public ResourceProperty(ResourcePage page, String key,
+<b class="nc"><i>36</i>&nbsp;            TypeCaster&lt;String, PropertyType&gt; propCaster) {</b>
+<b class="nc"><i>37</i>&nbsp;        this.page = page;</b>
+<b class="nc"><i>38</i>&nbsp;        this.key = key;</b>
+<b class="nc"><i>39</i>&nbsp;        this.propCaster = propCaster;</b>
+<i>40</i>&nbsp;    }
+<i>41</i>&nbsp;
+<i>42</i>&nbsp;    /**
+<i>43</i>&nbsp;     * Set the value of this property.
+<i>44</i>&nbsp;     * &lt;br&gt;&lt;br&gt;
+<i>45</i>&nbsp;     * 
+<i>46</i>&nbsp;     * Note that this will not save the {@code ResourcePage} and this change
+<i>47</i>&nbsp;     * will not be committed until then.
+<i>48</i>&nbsp;     * 
+<i>49</i>&nbsp;     * @param value Value to set for this property
+<i>50</i>&nbsp;     *
+<i>51</i>&nbsp;     */
+<i>52</i>&nbsp;    @Override
+<i>53</i>&nbsp;    public void set(PropertyType value) {
+<b class="nc"><i>54</i>&nbsp;        page.setValue(key, value, propCaster);</b>
+<i>55</i>&nbsp;    }
+<i>56</i>&nbsp;
+<i>57</i>&nbsp;    /**
+<i>58</i>&nbsp;     * 
+<i>59</i>&nbsp;     * @return Value of this property
+<i>60</i>&nbsp;     */
+<i>61</i>&nbsp;    @Override
+<i>62</i>&nbsp;    public PropertyType get() {
+<b class="nc"><i>63</i>&nbsp;        return page.getValue(key, propCaster);</b>
+<i>64</i>&nbsp;    }
+<i>65</i>&nbsp;
+<i>66</i>&nbsp;    /**
+<i>67</i>&nbsp;     * Tells if this property exists or not.
+<i>68</i>&nbsp;     * &lt;br&gt;&lt;br&gt;
+<i>69</i>&nbsp;     * Note that in the case it does not exist, simply use {@link #setProperty(Object) }
+<i>70</i>&nbsp;     * to create it.
+<i>71</i>&nbsp;     * 
+<i>72</i>&nbsp;     * @return {@code true} if this property exists
+<i>73</i>&nbsp;     */
+<i>74</i>&nbsp;    public boolean exists() {
+<b class="nc"><i>75</i>&nbsp;        return page.containsKey(key);</b>
+<i>76</i>&nbsp;    }
+<i>77</i>&nbsp;    
+<i>78</i>&nbsp;    /**
+<i>79</i>&nbsp;     * Remove this property from the page.
+<i>80</i>&nbsp;     * 
+<i>81</i>&nbsp;     * @return The plain old value
+<i>82</i>&nbsp;     */
+<i>83</i>&nbsp;    public String remove() {
+<b class="nc"><i>84</i>&nbsp;        return page.removeProperty(key);</b>
+<i>85</i>&nbsp;    }
+<i>86</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2014-11-07 23:06</div>
+</div>
+</body>
+</html>

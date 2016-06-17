@@ -1,0 +1,155 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: SinglePageFile</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.wx.io.datafile.impl</a> ]
+</div>
+
+<h1>Coverage Summary for Class: SinglePageFile (com.wx.io.datafile.impl)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">SinglePageFile</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 10)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.wx.io.datafile.impl;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.wx.io.datafile.DataFile;
+<i>4</i>&nbsp;import com.wx.io.datafile.page.DataPage;
+<i>5</i>&nbsp;import com.wx.io.datafile.page.DataPageFactory;
+<i>6</i>&nbsp;import com.wx.io.datafile.page.RegisterSetIterator;
+<i>7</i>&nbsp;import com.wx.io.table.search.Condition;
+<i>8</i>&nbsp;import com.wx.util.AuditMessage;
+<i>9</i>&nbsp;import java.io.File;
+<i>10</i>&nbsp;import java.io.IOException;
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;/**
+<i>13</i>&nbsp; * This {@code DataFile} simply interfaces one page and, therefore, inherits
+<i>14</i>&nbsp; * from its limitations.
+<i>15</i>&nbsp; *
+<i>16</i>&nbsp; * @author Raffaele Canale - raffaelecanale@gmail.com
+<i>17</i>&nbsp; * @version 1.0.
+<i>18</i>&nbsp; *
+<i>19</i>&nbsp; * Project: Worx.ANT File: SinglePageFile.java (UTF-8) Date: Jul 16, 2013
+<i>20</i>&nbsp; */
+<i>21</i>&nbsp;public class SinglePageFile extends DataFile {
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;    private final DataPage page;
+<i>24</i>&nbsp;    private final String fileName;
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;    /**
+<i>27</i>&nbsp;     * Constructs a new single page {@code DataFile}.
+<i>28</i>&nbsp;     *
+<i>29</i>&nbsp;     * @param fileName          Name of this {@code DataFile}&#39;s page
+<i>30</i>&nbsp;     * @param dataFileDirectory Directory location of this {@code DataFile}
+<i>31</i>&nbsp;     * @param pageFactory       Factory to be used to create/load the page
+<i>32</i>&nbsp;     *
+<i>33</i>&nbsp;     * @throws IOException
+<i>34</i>&nbsp;     */
+<i>35</i>&nbsp;    public SinglePageFile(String fileName, File dataFileDirectory,
+<i>36</i>&nbsp;            DataPageFactory pageFactory) throws IOException {
+<b class="nc"><i>37</i>&nbsp;        super(dataFileDirectory, pageFactory);</b>
+<b class="nc"><i>38</i>&nbsp;        this.fileName = fileName;</b>
+<b class="nc"><i>39</i>&nbsp;        this.page = getPage(fileName);</b>
+<i>40</i>&nbsp;    }
+<i>41</i>&nbsp;
+<i>42</i>&nbsp;    @Override
+<i>43</i>&nbsp;    public void addRegister(Object[] record) throws IOException {
+<b class="nc"><i>44</i>&nbsp;        if (!page.add(record)) {</b>
+<b class="nc"><i>45</i>&nbsp;            throw new IOException(&quot;Data file is full&quot;);</b>
+<i>46</i>&nbsp;        }
+<i>47</i>&nbsp;    }
+<i>48</i>&nbsp;
+<i>49</i>&nbsp;    @Override
+<i>50</i>&nbsp;    public void flush() throws IOException {
+<b class="nc"><i>51</i>&nbsp;        page.flush();</b>
+<i>52</i>&nbsp;    }
+<i>53</i>&nbsp;
+<i>54</i>&nbsp;    @Override
+<i>55</i>&nbsp;    public void close() throws IOException {
+<b class="nc"><i>56</i>&nbsp;        page.close();</b>
+<i>57</i>&nbsp;    }
+<i>58</i>&nbsp;
+<i>59</i>&nbsp;    @Override
+<i>60</i>&nbsp;    public void auditErrors(int depth, AuditMessage message) {
+<b class="nc"><i>61</i>&nbsp;        if (depth &lt;= 0) {</b>
+<i>62</i>&nbsp;            return;
+<i>63</i>&nbsp;        }
+<b class="nc"><i>64</i>&nbsp;        page.auditErrors(depth-1, message);</b>
+<i>65</i>&nbsp;    }
+<i>66</i>&nbsp;    
+<i>67</i>&nbsp;    @Override
+<i>68</i>&nbsp;    protected RegisterSetIterator getIterator(Condition condition)
+<i>69</i>&nbsp;            throws IOException {
+<b class="nc"><i>70</i>&nbsp;        return page.getIterator(condition);</b>
+<i>71</i>&nbsp;    }
+<i>72</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2014-11-07 23:06</div>
+</div>
+</body>
+</html>

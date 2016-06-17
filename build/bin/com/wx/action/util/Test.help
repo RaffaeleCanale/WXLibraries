@@ -1,0 +1,20 @@
+command: container
+help:
+This is the verbatim text...
+It can have multiple lines
+Also, special symbols, such as :or"
+and keywords!, like property id or even numbers24 22
+$
+property: arg
+count: 1 10
+type: String
+markers: a b c def
+default: "value 1" value2 " value 3 "
+propertyHelp:
+As before, verbatim text...$
+property: arg2
+count: 1 2
+type: int
+default:
+propertyHelp:
+None$

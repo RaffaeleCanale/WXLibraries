@@ -1,0 +1,212 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: RegisterSaveStrategy</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.wx.io.datafile.register</a> ]
+</div>
+
+<h1>Coverage Summary for Class: RegisterSaveStrategy (com.wx.io.datafile.register)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">RegisterSaveStrategy</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 30)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.wx.io.datafile.register;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.wx.util.AuditMessage;
+<i>4</i>&nbsp;import java.io.DataInput;
+<i>5</i>&nbsp;import java.io.DataOutput;
+<i>6</i>&nbsp;import java.io.EOFException;
+<i>7</i>&nbsp;import java.io.File;
+<i>8</i>&nbsp;import java.io.IOException;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;/**
+<i>11</i>&nbsp; *
+<i>12</i>&nbsp; * This strategy object will allow to write a register to a data output (and
+<i>13</i>&nbsp; * respectively to read a register from a data input). &lt;br&gt;&lt;br&gt;
+<i>14</i>&nbsp; * This abstract representation of the strategy only performs some basic logic,
+<i>15</i>&nbsp; * the true encode/decode algorithm is performed by the sub-classes.
+<i>16</i>&nbsp; *
+<i>17</i>&nbsp; * @author Raffaele Canale - raffaelecanale@gmail.com
+<i>18</i>&nbsp; * @version 0.1
+<i>19</i>&nbsp; *
+<i>20</i>&nbsp; * Project: Worx.ANT File: RecordStrategy.java (UTF-8) Date: Jul 12, 2013
+<i>21</i>&nbsp; */
+<b class="nc"><i>22</i>&nbsp;public abstract class RegisterSaveStrategy {</b>
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;    protected final RegisterColumn[] columns;
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;    /**
+<i>27</i>&nbsp;     * Constructs a new strategy.
+<i>28</i>&nbsp;     * &lt;br&gt;&lt;br&gt;
+<i>29</i>&nbsp;     * &lt;b&gt;Important note:&lt;/b&gt; The first column must always be an id.
+<i>30</i>&nbsp;     *
+<i>31</i>&nbsp;     * @param columns Columns description
+<i>32</i>&nbsp;     */
+<b class="nc"><i>33</i>&nbsp;    public RegisterSaveStrategy(RegisterColumn[] columns) {</b>
+<b class="nc"><i>34</i>&nbsp;        assert columns.length &gt; 0</b>
+<b class="nc"><i>35</i>&nbsp;                &amp;&amp; columns[0].getType().equals(RegisterColType.id) :</b>
+<i>36</i>&nbsp;                &quot;First column must be an id&quot;;
+<b class="nc"><i>37</i>&nbsp;        this.columns = columns;</b>
+<i>38</i>&nbsp;    }
+<i>39</i>&nbsp;
+<i>40</i>&nbsp;    /**
+<i>41</i>&nbsp;     * Write a register values into the given data output.&lt;br&gt;
+<i>42</i>&nbsp;     * The values must match the description of the given columns.
+<i>43</i>&nbsp;     *
+<i>44</i>&nbsp;     * @param register Register to write
+<i>45</i>&nbsp;     * @param output   Output to write register
+<i>46</i>&nbsp;     *
+<i>47</i>&nbsp;     * @throws IOException
+<i>48</i>&nbsp;     */
+<i>49</i>&nbsp;    public void write(Object[] register, DataOutput output)
+<i>50</i>&nbsp;            throws IOException {
+<b class="nc"><i>51</i>&nbsp;        assert register.length == columns.length;</b>
+<b class="nc"><i>52</i>&nbsp;        for (int i = 0; i &lt; register.length; i++) {</b>
+<b class="nc"><i>53</i>&nbsp;            writeField(register[i], columns[i], output);</b>
+<i>54</i>&nbsp;        }
+<i>55</i>&nbsp;    }
+<i>56</i>&nbsp;
+<i>57</i>&nbsp;//    public void writeField(Object value, int colIndex, DataOutput output) throws IOException {
+<i>58</i>&nbsp;//        writeField(value, columns[colIndex], output);
+<i>59</i>&nbsp;//    }
+<i>60</i>&nbsp;    /**
+<i>61</i>&nbsp;     * Read a register from the given input according the columns description
+<i>62</i>&nbsp;     * specified to this strategy.
+<i>63</i>&nbsp;     *
+<i>64</i>&nbsp;     * @param input Input to read
+<i>65</i>&nbsp;     *
+<i>66</i>&nbsp;     * @return The read register values or {@code null} if the end of file has
+<i>67</i>&nbsp;     *         been reached
+<i>68</i>&nbsp;     *
+<i>69</i>&nbsp;     * @throws IOException
+<i>70</i>&nbsp;     */
+<i>71</i>&nbsp;    public Object[] read(DataInput input) throws IOException {
+<b class="nc"><i>72</i>&nbsp;        Object[] result = new Object[columns.length];</b>
+<i>73</i>&nbsp;        try {
+<b class="nc"><i>74</i>&nbsp;            result[0] = readField(columns[0], input);</b>
+<b class="nc"><i>75</i>&nbsp;        } catch (EOFException ex) {</b>
+<b class="nc"><i>76</i>&nbsp;            return null;</b>
+<b class="nc"><i>77</i>&nbsp;        }</b>
+<i>78</i>&nbsp;
+<b class="nc"><i>79</i>&nbsp;        for (int i = 1; i &lt; result.length; i++) {</b>
+<b class="nc"><i>80</i>&nbsp;            result[i] = readField(columns[i], input);</b>
+<i>81</i>&nbsp;        }
+<i>82</i>&nbsp;
+<b class="nc"><i>83</i>&nbsp;        return result;</b>
+<i>84</i>&nbsp;    }
+<i>85</i>&nbsp;    
+<i>86</i>&nbsp;    public boolean audit(int depth, AuditMessage message, DataInput input,
+<i>87</i>&nbsp;            File source) throws IOException {
+<b class="nc"><i>88</i>&nbsp;        if (depth &lt;= 0) {</b>
+<b class="nc"><i>89</i>&nbsp;            message.stopped(this);</b>
+<b class="nc"><i>90</i>&nbsp;            return false;</b>
+<i>91</i>&nbsp;        }
+<i>92</i>&nbsp;        
+<i>93</i>&nbsp;        try {
+<b class="nc"><i>94</i>&nbsp;            auditField(columns[0], message, input);</b>
+<b class="nc"><i>95</i>&nbsp;        } catch (EOFException ex) {</b>
+<b class="nc"><i>96</i>&nbsp;            return false;</b>
+<b class="nc"><i>97</i>&nbsp;        }</b>
+<i>98</i>&nbsp;
+<b class="nc"><i>99</i>&nbsp;        for (int i = 1; i &lt; columns.length; i++) {</b>
+<i>100</i>&nbsp;            try {
+<b class="nc"><i>101</i>&nbsp;                auditField(columns[i], message, input);</b>
+<i>102</i>&nbsp;//                System.out.println(readField(columns[i], input));
+<b class="nc"><i>103</i>&nbsp;            } catch (EOFException ex) {</b>
+<b class="nc"><i>104</i>&nbsp;                message.error(&quot;Missing data for column (and followings): &quot; + columns[i]);</b>
+<b class="nc"><i>105</i>&nbsp;                return false;</b>
+<b class="nc"><i>106</i>&nbsp;            } </b>
+<i>107</i>&nbsp;        }
+<i>108</i>&nbsp;        
+<b class="nc"><i>109</i>&nbsp;        return true;</b>
+<i>110</i>&nbsp;    }
+<i>111</i>&nbsp;
+<i>112</i>&nbsp;//    public Object readField(int colIndex, DataInput input) throws IOException {
+<i>113</i>&nbsp;//        return readField(columns[colIndex], input);
+<i>114</i>&nbsp;//    }
+<i>115</i>&nbsp;
+<i>116</i>&nbsp;    protected abstract void writeField(Object value, RegisterColumn col,
+<i>117</i>&nbsp;            DataOutput writeAccessor) throws IOException;
+<i>118</i>&nbsp;
+<i>119</i>&nbsp;    protected abstract Object readField(RegisterColumn col, DataInput input)
+<i>120</i>&nbsp;            throws IOException;
+<i>121</i>&nbsp;    
+<i>122</i>&nbsp;    protected abstract void auditField(RegisterColumn col, 
+<i>123</i>&nbsp;            AuditMessage message, DataInput input) throws IOException;
+<i>124</i>&nbsp;
+<i>125</i>&nbsp;//    protected RegisterColumn[] getColumns() {
+<i>126</i>&nbsp;//        return columns;
+<i>127</i>&nbsp;//    }
+<i>128</i>&nbsp;
+<i>129</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2014-11-07 23:06</div>
+</div>
+</body>
+</html>

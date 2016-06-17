@@ -1,0 +1,204 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: PassKey</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.wx.crypto.hash</a> ]
+</div>
+
+<h1>Coverage Summary for Class: PassKey (com.wx.crypto.hash)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PassKey</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 31)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.wx.crypto.hash;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.wx.crypto.CryptoException;
+<i>4</i>&nbsp;import com.wx.crypto.CryptoUtil;
+<i>5</i>&nbsp;import java.security.MessageDigest;
+<i>6</i>&nbsp;import java.security.NoSuchAlgorithmException;
+<i>7</i>&nbsp;import java.util.Arrays;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;/**
+<i>10</i>&nbsp; * This class permits to generate Hashes using for example MD5 or SHA algorithm.
+<i>11</i>&nbsp; *
+<i>12</i>&nbsp; * @author Raffaele
+<i>13</i>&nbsp; * @version 1.1
+<i>14</i>&nbsp; */
+<i>15</i>&nbsp;public class PassKey {
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;    public static final String MD5_ALGORITHM = &quot;MD5&quot;;
+<i>18</i>&nbsp;    public static final String SHA_ALGORITHM = &quot;SHA&quot;;
+<i>19</i>&nbsp;    private byte[] hash;
+<i>20</i>&nbsp;    private String algorithm;
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;    public PassKey(char[] key, String algorithm) throws CryptoException {
+<b class="nc"><i>23</i>&nbsp;        this(CryptoUtil.toByteArray(key), algorithm);</b>
+<i>24</i>&nbsp;    }
+<i>25</i>&nbsp;    
+<i>26</i>&nbsp;    public PassKey(char[] key, String algorithm, boolean includeSalt) throws CryptoException {
+<b class="nc"><i>27</i>&nbsp;        this(CryptoUtil.toByteArray(includeSalt</b>
+<b class="nc"><i>28</i>&nbsp;                ? CryptoUtil.concat(CryptoUtil.getHashSalt(), key, CryptoUtil.getHashSalt())</b>
+<i>29</i>&nbsp;                : key),
+<i>30</i>&nbsp;                algorithm);
+<i>31</i>&nbsp;    }
+<i>32</i>&nbsp;
+<b class="nc"><i>33</i>&nbsp;    public PassKey(byte[] key, String algorithm) throws CryptoException {</b>
+<b class="nc"><i>34</i>&nbsp;        testAlgorithm(algorithm);</b>
+<b class="nc"><i>35</i>&nbsp;        this.algorithm = algorithm;</b>
+<i>36</i>&nbsp;
+<b class="nc"><i>37</i>&nbsp;        this.hash = generateHash(key);</b>
+<i>38</i>&nbsp;    }
+<i>39</i>&nbsp;
+<b class="nc"><i>40</i>&nbsp;    public PassKey(String algorithm, byte[] hash) throws CryptoException {</b>
+<b class="nc"><i>41</i>&nbsp;        testAlgorithm(algorithm);</b>
+<b class="nc"><i>42</i>&nbsp;        this.hash = hash;</b>
+<b class="nc"><i>43</i>&nbsp;        this.algorithm = algorithm;</b>
+<i>44</i>&nbsp;    }
+<i>45</i>&nbsp;
+<i>46</i>&nbsp;    public PassKey(String algorithm, String hash) throws CryptoException {
+<b class="nc"><i>47</i>&nbsp;        this(algorithm, CryptoUtil.decodeHex(hash.toCharArray()));</b>
+<i>48</i>&nbsp;    }
+<i>49</i>&nbsp;
+<i>50</i>&nbsp;    public String getAlgorithm() {
+<b class="nc"><i>51</i>&nbsp;        return algorithm;</b>
+<i>52</i>&nbsp;    }
+<i>53</i>&nbsp;
+<i>54</i>&nbsp;    private void testAlgorithm(String name) throws CryptoException {
+<b class="nc"><i>55</i>&nbsp;        if (!CryptoUtil.isHashAlgorithmSupported(name)) {</b>
+<b class="nc"><i>56</i>&nbsp;            throw new CryptoException(&quot;Unknown algorithm: &quot; + name);</b>
+<i>57</i>&nbsp;        }
+<i>58</i>&nbsp;    }
+<i>59</i>&nbsp;
+<i>60</i>&nbsp;    /**
+<i>61</i>&nbsp;     * Generates hash data using the given crypt algorithm digest from the given
+<i>62</i>&nbsp;     * key.
+<i>63</i>&nbsp;     *
+<i>64</i>&nbsp;     * @return Hash data represented in byte[].
+<i>65</i>&nbsp;     */
+<i>66</i>&nbsp;    private byte[] generateHash(byte[] key) {
+<i>67</i>&nbsp;        try {
+<b class="nc"><i>68</i>&nbsp;            return MessageDigest.getInstance(algorithm).digest(key);</b>
+<b class="nc"><i>69</i>&nbsp;        } catch (NoSuchAlgorithmException ex) {</b>
+<b class="nc"><i>70</i>&nbsp;            throw new RuntimeException(algorithm + &quot; does not run in this Virtual Machine. Amazing!...&quot;);</b>
+<i>71</i>&nbsp;        }
+<i>72</i>&nbsp;    }
+<i>73</i>&nbsp;
+<i>74</i>&nbsp;    /**
+<i>75</i>&nbsp;     *
+<i>76</i>&nbsp;     * Creates a String representation of hash code.
+<i>77</i>&nbsp;     *
+<i>78</i>&nbsp;     * @return Returns hash encoded in a String
+<i>79</i>&nbsp;     *
+<i>80</i>&nbsp;     */
+<i>81</i>&nbsp;    public String getEncodedHash() {
+<b class="nc"><i>82</i>&nbsp;        return CryptoUtil.encodeHex(hash);</b>
+<i>83</i>&nbsp;    }
+<i>84</i>&nbsp;
+<i>85</i>&nbsp;    /**
+<i>86</i>&nbsp;     * @return Returns the hash code.
+<i>87</i>&nbsp;     */
+<i>88</i>&nbsp;    public byte[] getHash() {
+<b class="nc"><i>89</i>&nbsp;        return Arrays.copyOf(hash, hash.length);</b>
+<i>90</i>&nbsp;    }
+<i>91</i>&nbsp;
+<i>92</i>&nbsp;    /**
+<i>93</i>&nbsp;     * Compares hash of two PassKeys
+<i>94</i>&nbsp;     *
+<i>95</i>&nbsp;     * @param obj The PassKey to compare
+<i>96</i>&nbsp;     *
+<i>97</i>&nbsp;     * @return Returns true if hash are equals.
+<i>98</i>&nbsp;     */
+<i>99</i>&nbsp;    @Override
+<i>100</i>&nbsp;    public boolean equals(Object obj) {
+<b class="nc"><i>101</i>&nbsp;        if (obj == null) {</b>
+<b class="nc"><i>102</i>&nbsp;            return false;</b>
+<i>103</i>&nbsp;        }
+<b class="nc"><i>104</i>&nbsp;        if (getClass() != obj.getClass()) {</b>
+<b class="nc"><i>105</i>&nbsp;            return false;</b>
+<i>106</i>&nbsp;        }
+<b class="nc"><i>107</i>&nbsp;        final PassKey other = (PassKey) obj;</b>
+<b class="nc"><i>108</i>&nbsp;        if ((this.algorithm == null) ? (other.algorithm != null) : !this.algorithm.equals(other.algorithm)) {</b>
+<b class="nc"><i>109</i>&nbsp;            return false;</b>
+<i>110</i>&nbsp;        }
+<i>111</i>&nbsp;
+<b class="nc"><i>112</i>&nbsp;        return Arrays.equals(this.hash, other.hash);</b>
+<i>113</i>&nbsp;    }
+<i>114</i>&nbsp;
+<i>115</i>&nbsp;    @Override
+<i>116</i>&nbsp;    public int hashCode() {
+<b class="nc"><i>117</i>&nbsp;        int hashCode = 7;</b>
+<b class="nc"><i>118</i>&nbsp;        hashCode = 67 * hashCode + Arrays.hashCode(this.hash);</b>
+<b class="nc"><i>119</i>&nbsp;        return hashCode;</b>
+<i>120</i>&nbsp;    }
+<i>121</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2014-11-07 23:06</div>
+</div>
+</body>
+</html>

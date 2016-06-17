@@ -1,0 +1,114 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ExpFunction</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.wx.util.pair</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ExpFunction (com.wx.util.pair)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ExpFunction</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 9)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;/*
+<i>2</i>&nbsp; * To change this template, choose Tools | Templates
+<i>3</i>&nbsp; * and open the template in the editor.
+<i>4</i>&nbsp; */
+<i>5</i>&nbsp;package com.wx.util.pair;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;/**
+<i>8</i>&nbsp; *
+<i>9</i>&nbsp; * @author Raffaele
+<i>10</i>&nbsp; */
+<b class="nc"><i>11</i>&nbsp;public class ExpFunction extends PairingFunction {</b>
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;    @Override
+<i>14</i>&nbsp;    protected long pair0(long x, long y) {
+<b class="nc"><i>15</i>&nbsp;        return (long) (Math.pow(2, x)*(2*y+1) - 1);</b>
+<i>16</i>&nbsp;    }
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;    @Override
+<i>19</i>&nbsp;    protected Pair&lt;Long, Long&gt; unPair0(long z) {
+<b class="nc"><i>20</i>&nbsp;        long x = 0;</b>
+<b class="nc"><i>21</i>&nbsp;        z += 1;</b>
+<b class="nc"><i>22</i>&nbsp;        while (z % 2 == 0) {</b>
+<b class="nc"><i>23</i>&nbsp;            x += 1;</b>
+<b class="nc"><i>24</i>&nbsp;            z /= 2;</b>
+<i>25</i>&nbsp;        }
+<i>26</i>&nbsp;        //TODO Maybe improve with log2(z), maybe...
+<b class="nc"><i>27</i>&nbsp;        long y = (z - 1) / 2;</b>
+<b class="nc"><i>28</i>&nbsp;        return new Pair&lt;&gt;(x, y);   </b>
+<i>29</i>&nbsp;    }
+<i>30</i>&nbsp;    
+<i>31</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2014-11-07 23:06</div>
+</div>
+</body>
+</html>

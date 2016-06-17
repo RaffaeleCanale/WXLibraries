@@ -1,0 +1,659 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: RecordHandler</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.wx.io.datamanager.record</a> ]
+</div>
+
+<h1>Coverage Summary for Class: RecordHandler (com.wx.io.datamanager.record)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">RecordHandler</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 31)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 199)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">RecordHandler$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 32)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 200)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;/*
+<i>2</i>&nbsp; * To change this template, choose Tools | Templates
+<i>3</i>&nbsp; * and open the template in the editor.
+<i>4</i>&nbsp; */
+<i>5</i>&nbsp;package com.wx.io.datamanager.record;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;import com.wx.crypto.CryptoException;
+<i>8</i>&nbsp;import com.wx.io.datafile.BufferedRegisterIterator;
+<i>9</i>&nbsp;import com.wx.io.datafile.DataAccessException;
+<i>10</i>&nbsp;import com.wx.io.datafile.register.RegisterColType;
+<i>11</i>&nbsp;import com.wx.io.datafile.register.RegisterColumn;
+<i>12</i>&nbsp;import com.wx.io.datafile.table.Table;
+<i>13</i>&nbsp;import com.wx.io.datamanager.WxDataManager;
+<i>14</i>&nbsp;import com.wx.io.datamanager.record.descriptor.RecordDescriptor;
+<i>15</i>&nbsp;import com.wx.io.datamanager.record.descriptor.RecordField;
+<i>16</i>&nbsp;import com.wx.io.datamanager.record.descriptor.RecordFieldType;
+<i>17</i>&nbsp;import com.wx.io.table.search.Condition;
+<i>18</i>&nbsp;import com.wx.io.table.search.FieldMatch;
+<i>19</i>&nbsp;import com.wx.util.AuditMessage;
+<i>20</i>&nbsp;import com.wx.util.pair.Pair;
+<i>21</i>&nbsp;import java.io.IOException;
+<i>22</i>&nbsp;import java.util.ArrayList;
+<i>23</i>&nbsp;import java.util.HashMap;
+<i>24</i>&nbsp;import java.util.LinkedList;
+<i>25</i>&nbsp;import java.util.List;
+<i>26</i>&nbsp;import java.util.Map;
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;/**
+<i>29</i>&nbsp; *
+<i>30</i>&nbsp; * @author Raffaele Canale - raffaelecanale@gmail.com
+<i>31</i>&nbsp; * @version 0.1
+<i>32</i>&nbsp; *
+<i>33</i>&nbsp; * Project: Worx.ANT File: RecordHandler.java (UTF-8) Date: Aug 24, 2013
+<i>34</i>&nbsp; */
+<b class="nc"><i>35</i>&nbsp;public final class RecordHandler {</b>
+<i>36</i>&nbsp;
+<i>37</i>&nbsp;    private final WxDataManager dataManager;
+<i>38</i>&nbsp;    private final Map&lt;String, Table&gt; tables;
+<i>39</i>&nbsp;    private final String mainTableName;
+<i>40</i>&nbsp;    private final RecordDescriptor descriptor;
+<i>41</i>&nbsp;
+<i>42</i>&nbsp;    public RecordHandler(WxDataManager dataManager, String name,
+<b class="nc"><i>43</i>&nbsp;            RecordDescriptor descriptor) throws IOException, CryptoException {</b>
+<b class="nc"><i>44</i>&nbsp;        this.dataManager = dataManager;</b>
+<b class="nc"><i>45</i>&nbsp;        this.tables = new HashMap&lt;&gt;();</b>
+<b class="nc"><i>46</i>&nbsp;        this.mainTableName = name;</b>
+<b class="nc"><i>47</i>&nbsp;        this.descriptor = descriptor;</b>
+<i>48</i>&nbsp;
+<b class="nc"><i>49</i>&nbsp;        createTables(name, descriptor);</b>
+<b class="nc"><i>50</i>&nbsp;        dataManager.save();</b>
+<i>51</i>&nbsp;    }
+<i>52</i>&nbsp;
+<i>53</i>&nbsp;    public List&lt;RecordObject&gt; getRecords(int limit) throws IOException {
+<i>54</i>&nbsp;        // TODO Use a record iterator
+<b class="nc"><i>55</i>&nbsp;        List&lt;RecordObject&gt; result = new ArrayList&lt;&gt;();</b>
+<b class="nc"><i>56</i>&nbsp;        Table mainTable = tables.get(mainTableName);</b>
+<b class="nc"><i>57</i>&nbsp;        BufferedRegisterIterator rs = mainTable.getRegisters(limit);</b>
+<b class="nc"><i>58</i>&nbsp;        while (rs.hasNext()) {</b>
+<b class="nc"><i>59</i>&nbsp;            result.add(decode(rs.readRegister(), mainTableName, descriptor, 1));</b>
+<i>60</i>&nbsp;        }
+<i>61</i>&nbsp;
+<b class="nc"><i>62</i>&nbsp;        return result;</b>
+<i>63</i>&nbsp;    }
+<i>64</i>&nbsp;
+<i>65</i>&nbsp;    public void getRecordsIterator(Condition condition) {
+<i>66</i>&nbsp;        // TODO Create another iterator, a RecordObject iterator
+<b class="nc"><i>67</i>&nbsp;        throw new UnsupportedOperationException();</b>
+<i>68</i>&nbsp;    }
+<i>69</i>&nbsp;
+<i>70</i>&nbsp;    public void addRecord(RecordObject record) throws IOException, DataAccessException, CryptoException {
+<b class="nc"><i>71</i>&nbsp;        int id = addRecord(record, tables.get(mainTableName), descriptor);</b>
+<b class="nc"><i>72</i>&nbsp;        record.setId(id);</b>
+<i>73</i>&nbsp;        
+<b class="nc"><i>74</i>&nbsp;        dataManager.save();</b>
+<i>75</i>&nbsp;    }
+<i>76</i>&nbsp;
+<i>77</i>&nbsp;    public RecordDescriptor getDescriptor() {
+<b class="nc"><i>78</i>&nbsp;        return descriptor;</b>
+<i>79</i>&nbsp;    }
+<i>80</i>&nbsp;    
+<i>81</i>&nbsp;    
+<i>82</i>&nbsp;    
+<i>83</i>&nbsp;    public void updateRecord(Integer id, Pair&lt;String, Object&gt;... fields) throws IOException {
+<b class="nc"><i>84</i>&nbsp;        updateRecord(tables.get(mainTableName), id, descriptor, fields);</b>
+<i>85</i>&nbsp;    }
+<i>86</i>&nbsp;    
+<i>87</i>&nbsp;    public boolean updateListRecord(String fieldName, Integer id, 
+<i>88</i>&nbsp;            Pair&lt;String, Object&gt;... fields) throws IOException {
+<b class="nc"><i>89</i>&nbsp;        RecordField field = descriptor.getField(fieldName);</b>
+<b class="nc"><i>90</i>&nbsp;        assert descriptor.getField(fieldName).isListType();</b>
+<i>91</i>&nbsp;        
+<b class="nc"><i>92</i>&nbsp;        Table table = tables.get(fieldName);</b>
+<b class="nc"><i>93</i>&nbsp;        if (table == null) {</b>
+<b class="nc"><i>94</i>&nbsp;            throw new IOException(&quot;Table not found: &quot; + table);            </b>
+<i>95</i>&nbsp;        }
+<b class="nc"><i>96</i>&nbsp;        return updateRecord(table, id, field.getSubDescriptor(), fields);</b>
+<i>97</i>&nbsp;    }
+<i>98</i>&nbsp;    
+<i>99</i>&nbsp;    private boolean updateRecord(Table table, Integer id, 
+<i>100</i>&nbsp;            RecordDescriptor desc, Pair&lt;String, Object&gt;[] fields) throws IOException {
+<b class="nc"><i>101</i>&nbsp;        assert id != null &amp;&amp; fields != null &amp;&amp; fields.length &gt; 0;</b>
+<i>102</i>&nbsp;        
+<b class="nc"><i>103</i>&nbsp;        List&lt;Pair&lt;String, Object&gt;&gt; mainRegisterUpdates = new LinkedList&lt;&gt;();</b>
+<i>104</i>&nbsp;        
+<b class="nc"><i>105</i>&nbsp;        for (Pair&lt;String, Object&gt; pair : fields) {</b>
+<b class="nc"><i>106</i>&nbsp;            String fieldName = pair.get1();</b>
+<b class="nc"><i>107</i>&nbsp;            RecordField field = desc.getField(fieldName);</b>
+<i>108</i>&nbsp;
+<b class="nc"><i>109</i>&nbsp;            if (field.isListType()) {</b>
+<b class="nc"><i>110</i>&nbsp;                if (field.isShared()) {</b>
+<b class="nc"><i>111</i>&nbsp;                    throw new IllegalArgumentException(&quot;Cannot modify shared list through this methods&quot;);</b>
+<i>112</i>&nbsp;                } else {
+<i>113</i>&nbsp;                    // TODO Erase last list and recreate it
+<b class="nc"><i>114</i>&nbsp;                    throw new UnsupportedOperationException(&quot;Not supported yet&quot;);</b>
+<i>115</i>&nbsp;                }
+<i>116</i>&nbsp;            } else {
+<b class="nc"><i>117</i>&nbsp;                if (field.isShared()) {</b>
+<b class="nc"><i>118</i>&nbsp;                    throw new IllegalArgumentException(&quot;Cannot modify shared field through this methods&quot;);</b>
+<i>119</i>&nbsp;                } else {
+<b class="nc"><i>120</i>&nbsp;                    mainRegisterUpdates.add(pair);</b>
+<i>121</i>&nbsp;                }
+<i>122</i>&nbsp;            }
+<i>123</i>&nbsp;        }
+<i>124</i>&nbsp;        
+<b class="nc"><i>125</i>&nbsp;        return table.update(id, mainRegisterUpdates);        </b>
+<i>126</i>&nbsp;    }
+<i>127</i>&nbsp;
+<i>128</i>&nbsp;//    public void updateRecord(RecordObject record) throws IOException {
+<i>129</i>&nbsp;//        throw new IOException(&quot;Not supported yet&quot;);
+<i>130</i>&nbsp;////        if (fieldName == null) {
+<i>131</i>&nbsp;////            updateRecord(record, descriptor, tables.get(mainTableName));
+<i>132</i>&nbsp;////            return;
+<i>133</i>&nbsp;////        }
+<i>134</i>&nbsp;////        
+<i>135</i>&nbsp;////        Table table;
+<i>136</i>&nbsp;////        table = tables.get(fieldName);
+<i>137</i>&nbsp;////        if (table == null) {
+<i>138</i>&nbsp;////            throw new IOException(&quot;Table not found: &quot; + table);
+<i>139</i>&nbsp;////        }
+<i>140</i>&nbsp;////        updateRecord(record, desc, table);
+<i>141</i>&nbsp;//    }
+<i>142</i>&nbsp;//    
+<i>143</i>&nbsp;//    public void updateListRecord(RecordObject record, String fieldName) throws IOException {
+<i>144</i>&nbsp;//        RecordField field = descriptor.getField(fieldName);
+<i>145</i>&nbsp;//        assert field != null;
+<i>146</i>&nbsp;//        assert field.isListType();
+<i>147</i>&nbsp;//        
+<i>148</i>&nbsp;//        RecordDescriptor subDescriptor = field.getSubDescriptor();
+<i>149</i>&nbsp;//        boolean hasRel = !field.isShared();
+<i>150</i>&nbsp;//        
+<i>151</i>&nbsp;//        Object[] register = toRegister(record, subDescriptor, hasRel);
+<i>152</i>&nbsp;//        
+<i>153</i>&nbsp;//        Table table = tables.get(fieldName);
+<i>154</i>&nbsp;//        if (table == null) {
+<i>155</i>&nbsp;//            throw new IOException(&quot;Table not found: &quot; + table);            
+<i>156</i>&nbsp;//        }
+<i>157</i>&nbsp;//        table.updateRegister(register);
+<i>158</i>&nbsp;//    }
+<i>159</i>&nbsp;    
+<i>160</i>&nbsp;//    private void updateRecord(RecordObject record, String fieldName, 
+<i>161</i>&nbsp;//            RecordDescriptor desc, Table table) throws IOException {
+<i>162</i>&nbsp;////        Object[] register = toRegister(record, desc, );
+<i>163</i>&nbsp;//        System.out.println(&quot;Trying to update table: &quot; + table.getTableName());        
+<i>164</i>&nbsp;//        System.out.println(&quot;Record: &quot; + record.toFormattedString(desc));
+<i>165</i>&nbsp;//        System.out.println(&quot;Register: &quot; + Arrays.toString(register));
+<i>166</i>&nbsp;//        table.updateRegister(register);
+<i>167</i>&nbsp;//    }
+<i>168</i>&nbsp;    
+<i>169</i>&nbsp;    private Object[] toRegister(RecordObject record, RecordDescriptor desc,
+<i>170</i>&nbsp;            boolean addRelId) {
+<b class="nc"><i>171</i>&nbsp;        List&lt;Object&gt; register = new LinkedList&lt;&gt;();</b>
+<i>172</i>&nbsp;        
+<b class="nc"><i>173</i>&nbsp;        register.add(record.getId());</b>
+<b class="nc"><i>174</i>&nbsp;        if (addRelId) {</b>
+<b class="nc"><i>175</i>&nbsp;            register.add(null); // Relation id</b>
+<i>176</i>&nbsp;        }
+<b class="nc"><i>177</i>&nbsp;        for (int i = 0; i &lt; desc.count(); i++) {</b>
+<b class="nc"><i>178</i>&nbsp;            RecordField field = desc.getField(i);</b>
+<b class="nc"><i>179</i>&nbsp;            if (!field.isListType()) {</b>
+<b class="nc"><i>180</i>&nbsp;                if (field.isShared()) {</b>
+<i>181</i>&nbsp;                    // There is an id here
+<b class="nc"><i>182</i>&nbsp;                    register.add(null);</b>
+<i>183</i>&nbsp;                } else {
+<b class="nc"><i>184</i>&nbsp;                    register.add(record.getElement(i));</b>
+<i>185</i>&nbsp;                }
+<i>186</i>&nbsp;            } else {
+<i>187</i>&nbsp;            }
+<i>188</i>&nbsp;        }
+<i>189</i>&nbsp;        
+<b class="nc"><i>190</i>&nbsp;        return register.toArray();</b>
+<i>191</i>&nbsp;    }
+<i>192</i>&nbsp;
+<i>193</i>&nbsp;    @Deprecated
+<i>194</i>&nbsp;    public Map&lt;String, Table&gt; getTables() {
+<b class="nc"><i>195</i>&nbsp;        return tables;</b>
+<i>196</i>&nbsp;    }
+<i>197</i>&nbsp;
+<i>198</i>&nbsp;    public void removeRecord(RecordObject record) throws IOException, CryptoException {
+<b class="nc"><i>199</i>&nbsp;        removeRecord(record, tables.get(mainTableName), mainTableName, descriptor);</b>
+<i>200</i>&nbsp;
+<b class="nc"><i>201</i>&nbsp;        dataManager.save();</b>
+<i>202</i>&nbsp;    }
+<i>203</i>&nbsp;
+<i>204</i>&nbsp;    public AuditMessage testData(int depth) {
+<b class="nc"><i>205</i>&nbsp;        AuditMessage message = new AuditMessage();</b>
+<i>206</i>&nbsp;
+<i>207</i>&nbsp;        // TODO Test dataManager?
+<b class="nc"><i>208</i>&nbsp;        for (Table table : tables.values()) {</b>
+<b class="nc"><i>209</i>&nbsp;            table.auditErrors(depth, message);</b>
+<b class="nc"><i>210</i>&nbsp;        }</b>
+<i>211</i>&nbsp;
+<b class="nc"><i>212</i>&nbsp;        return message;</b>
+<i>213</i>&nbsp;    }
+<i>214</i>&nbsp;
+<i>215</i>&nbsp;    private void removeRecord(RecordObject record,
+<i>216</i>&nbsp;            Table table, String tableName, RecordDescriptor descriptor) throws IOException {
+<b class="nc"><i>217</i>&nbsp;        Integer recordId = record.getId();</b>
+<b class="nc"><i>218</i>&nbsp;        assert recordId != null : &quot;Record has no id&quot;;</b>
+<i>219</i>&nbsp;
+<b class="nc"><i>220</i>&nbsp;        for (int i = 0; i &lt; descriptor.count(); i++) {</b>
+<b class="nc"><i>221</i>&nbsp;            RecordField field = descriptor.getField(i);</b>
+<i>222</i>&nbsp;
+<b class="nc"><i>223</i>&nbsp;            if (field.isShared()) {</b>
+<b class="nc"><i>224</i>&nbsp;                if (field.isShared()) {</b>
+<b class="nc"><i>225</i>&nbsp;                    removeSharedListReferences(field.getName(), recordId);</b>
+<i>226</i>&nbsp;                } else {
+<i>227</i>&nbsp;                    // Can&#39;t remove, too risky                    
+<i>228</i>&nbsp;                }
+<i>229</i>&nbsp;            } else {
+<b class="nc"><i>230</i>&nbsp;                if (field.isListType()) {</b>
+<b class="nc"><i>231</i>&nbsp;                    removeSimpleList(field.getName(), recordId);</b>
+<i>232</i>&nbsp;                } else {
+<b class="nc"><i>233</i>&nbsp;                    table.removeRegisters(new FieldMatch(recordId, 0), 1);</b>
+<i>234</i>&nbsp;                }
+<i>235</i>&nbsp;            }
+<i>236</i>&nbsp;        }
+<i>237</i>&nbsp;    }
+<i>238</i>&nbsp;
+<i>239</i>&nbsp;    private RecordObject decode(Object[] readData, String tableName,
+<i>240</i>&nbsp;            RecordDescriptor descriptor, int descriptorStartIndex) throws IOException {
+<i>241</i>&nbsp;
+<b class="nc"><i>242</i>&nbsp;        final int id = (int) readData[0];</b>
+<i>243</i>&nbsp;
+<b class="nc"><i>244</i>&nbsp;        int readDataIndex = descriptorStartIndex;</b>
+<b class="nc"><i>245</i>&nbsp;        final Object[] recordObjectContent = new Object[descriptor.count()];</b>
+<b class="nc"><i>246</i>&nbsp;        for (int i = 0; i &lt; descriptor.count(); i++) {</b>
+<b class="nc"><i>247</i>&nbsp;            RecordField field = descriptor.getField(i);</b>
+<b class="nc"><i>248</i>&nbsp;            String fieldName = field.getName();</b>
+<i>249</i>&nbsp;
+<b class="nc"><i>250</i>&nbsp;            if (field.isListType()) {</b>
+<b class="nc"><i>251</i>&nbsp;                RecordDescriptor subDescriptor = field.getSubDescriptor();</b>
+<b class="nc"><i>252</i>&nbsp;                List&lt;RecordObject&gt; list = field.isShared()</b>
+<b class="nc"><i>253</i>&nbsp;                        ? readSharedList(id, tableName, fieldName, subDescriptor)</b>
+<b class="nc"><i>254</i>&nbsp;                        : readSimpleList(id, tableName, fieldName, subDescriptor);</b>
+<b class="nc"><i>255</i>&nbsp;                recordObjectContent[i] = list;</b>
+<i>256</i>&nbsp;
+<b class="nc"><i>257</i>&nbsp;            } else {</b>
+<b class="nc"><i>258</i>&nbsp;                if (field.isShared()) {</b>
+<b class="nc"><i>259</i>&nbsp;                    int valueId = (int) readData[readDataIndex];</b>
+<i>260</i>&nbsp;
+<b class="nc"><i>261</i>&nbsp;                    Table sharedTable = tables.get(fieldName);</b>
+<b class="nc"><i>262</i>&nbsp;                    recordObjectContent[i] = sharedTable.getById(valueId);</b>
+<b class="nc"><i>263</i>&nbsp;                } else {</b>
+<b class="nc"><i>264</i>&nbsp;                    recordObjectContent[i] = readData[readDataIndex];</b>
+<i>265</i>&nbsp;                }
+<b class="nc"><i>266</i>&nbsp;                readDataIndex++;</b>
+<i>267</i>&nbsp;            }
+<i>268</i>&nbsp;
+<i>269</i>&nbsp;        }
+<i>270</i>&nbsp;
+<b class="nc"><i>271</i>&nbsp;        return new RecordObject(id, recordObjectContent);</b>
+<i>272</i>&nbsp;    }
+<i>273</i>&nbsp;
+<i>274</i>&nbsp;    private int addRecord(RecordObject record, Table table,
+<i>275</i>&nbsp;            RecordDescriptor descriptor) throws IOException, DataAccessException {
+<b class="nc"><i>276</i>&nbsp;        return addRecord(record, table, descriptor, new LinkedList&lt;&gt;());</b>
+<i>277</i>&nbsp;    }
+<i>278</i>&nbsp;
+<i>279</i>&nbsp;    @SuppressWarnings(&quot;unchecked&quot;)
+<i>280</i>&nbsp;    private int addRecord(RecordObject record, Table table,
+<i>281</i>&nbsp;            RecordDescriptor descriptor, List&lt;Object&gt; register)
+<i>282</i>&nbsp;            throws IOException, DataAccessException {
+<b class="nc"><i>283</i>&nbsp;        assert record.getId() == null;</b>
+<b class="nc"><i>284</i>&nbsp;        List&lt;Pair&lt;RecordField, Object&gt;&gt; sharedListFields = new LinkedList&lt;&gt;();</b>
+<b class="nc"><i>285</i>&nbsp;        List&lt;Pair&lt;RecordField, Object&gt;&gt; simpleListFields = new LinkedList&lt;&gt;();</b>
+<i>286</i>&nbsp;
+<b class="nc"><i>287</i>&nbsp;        register.add(0, null); // id</b>
+<b class="nc"><i>288</i>&nbsp;        for (int i = 0; i &lt; descriptor.count(); i++) {</b>
+<b class="nc"><i>289</i>&nbsp;            RecordField field = descriptor.getField(i);</b>
+<i>290</i>&nbsp;
+<b class="nc"><i>291</i>&nbsp;            if (field.isListType()) {</b>
+<b class="nc"><i>292</i>&nbsp;                if (field.isShared()) {</b>
+<b class="nc"><i>293</i>&nbsp;                    sharedListFields.add(new Pair&lt;&gt;(field, record.getElement(i)));</b>
+<i>294</i>&nbsp;                } else {
+<b class="nc"><i>295</i>&nbsp;                    simpleListFields.add(new Pair&lt;&gt;(field, record.getElement(i)));</b>
+<i>296</i>&nbsp;                }
+<i>297</i>&nbsp;            } else {
+<b class="nc"><i>298</i>&nbsp;                if (field.isShared()) {</b>
+<b class="nc"><i>299</i>&nbsp;                    Table sharedTable = tables.get(field.getName());</b>
+<b class="nc"><i>300</i>&nbsp;                    int elementId = sharedTable.addRegister(null, record.getElement(i));</b>
+<b class="nc"><i>301</i>&nbsp;                    register.add(elementId);</b>
+<b class="nc"><i>302</i>&nbsp;                } else {</b>
+<b class="nc"><i>303</i>&nbsp;                    register.add(record.getElement(i));</b>
+<i>304</i>&nbsp;                }
+<i>305</i>&nbsp;            }
+<i>306</i>&nbsp;        }
+<i>307</i>&nbsp;
+<b class="nc"><i>308</i>&nbsp;        Object[] registerArray = new Object[register.size()];</b>
+<b class="nc"><i>309</i>&nbsp;        int registerId = table.addRegister(register.toArray(registerArray));</b>
+<i>310</i>&nbsp;
+<b class="nc"><i>311</i>&nbsp;        for (Pair&lt;RecordField, Object&gt; pair : sharedListFields) {</b>
+<b class="nc"><i>312</i>&nbsp;            String fieldName = pair.get1().getName();</b>
+<b class="nc"><i>313</i>&nbsp;            RecordDescriptor subDescriptor = pair.get1().getSubDescriptor();</b>
+<i>314</i>&nbsp;
+<b class="nc"><i>315</i>&nbsp;            addSharedListRecord(registerId, fieldName, subDescriptor,</b>
+<b class="nc"><i>316</i>&nbsp;                    (List&lt;RecordObject&gt;) pair.get2());</b>
+<b class="nc"><i>317</i>&nbsp;        }</b>
+<i>318</i>&nbsp;
+<b class="nc"><i>319</i>&nbsp;        for (Pair&lt;RecordField, Object&gt; pair : simpleListFields) {</b>
+<b class="nc"><i>320</i>&nbsp;            String fieldName = pair.get1().getName();</b>
+<b class="nc"><i>321</i>&nbsp;            RecordDescriptor subDescriptor = pair.get1().getSubDescriptor();</b>
+<i>322</i>&nbsp;
+<b class="nc"><i>323</i>&nbsp;            addSimpleListRecord(registerId, fieldName, subDescriptor,</b>
+<b class="nc"><i>324</i>&nbsp;                    (List&lt;RecordObject&gt;) pair.get2());</b>
+<b class="nc"><i>325</i>&nbsp;        }</b>
+<i>326</i>&nbsp;
+<b class="nc"><i>327</i>&nbsp;        return registerId;</b>
+<i>328</i>&nbsp;    }
+<i>329</i>&nbsp;    
+<i>330</i>&nbsp;//    private void updateRecord(RecordObject record, Table table,
+<i>331</i>&nbsp;//            RecordDescriptor descriptor, List&lt;Object&gt; register)
+<i>332</i>&nbsp;//            throws IOException, DataAccessException {
+<i>333</i>&nbsp;//        assert record.getId() == null;
+<i>334</i>&nbsp;//        List&lt;Pair&lt;RecordField, Object&gt;&gt; sharedListFields = new LinkedList&lt;&gt;();
+<i>335</i>&nbsp;//        List&lt;Pair&lt;RecordField, Object&gt;&gt; simpleListFields = new LinkedList&lt;&gt;();
+<i>336</i>&nbsp;//
+<i>337</i>&nbsp;//        register.add(0, record.getId()); // id
+<i>338</i>&nbsp;//        for (int i = 0; i &lt; descriptor.count(); i++) {
+<i>339</i>&nbsp;//            RecordField field = descriptor.getField(i);
+<i>340</i>&nbsp;//
+<i>341</i>&nbsp;//            if (field.isListType()) {
+<i>342</i>&nbsp;//                if (field.isShared()) {
+<i>343</i>&nbsp;//                    sharedListFields.add(new Pair&lt;&gt;(field, record.getElement(i)));
+<i>344</i>&nbsp;//                } else {
+<i>345</i>&nbsp;//                    simpleListFields.add(new Pair&lt;&gt;(field, record.getElement(i)));
+<i>346</i>&nbsp;//                }
+<i>347</i>&nbsp;//            } else {
+<i>348</i>&nbsp;//                if (field.isShared()) {
+<i>349</i>&nbsp;//                    Table sharedTable = tables.get(field.getName());
+<i>350</i>&nbsp;//                    int elementId = sharedTable.addRegister(null, record.getElement(i));
+<i>351</i>&nbsp;//                    register.add(elementId);
+<i>352</i>&nbsp;//                } else {
+<i>353</i>&nbsp;//                    register.add(record.getElement(i));
+<i>354</i>&nbsp;//                }
+<i>355</i>&nbsp;//            }
+<i>356</i>&nbsp;//        }
+<i>357</i>&nbsp;//
+<i>358</i>&nbsp;//        Object[] registerArray = new Object[register.size()];
+<i>359</i>&nbsp;//        int registerId = table.addRegister(register.toArray(registerArray));
+<i>360</i>&nbsp;//
+<i>361</i>&nbsp;//        for (Pair&lt;RecordField, Object&gt; pair : sharedListFields) {
+<i>362</i>&nbsp;//            String fieldName = pair.get1().getName();
+<i>363</i>&nbsp;//            RecordDescriptor subDescriptor = pair.get1().getSubDescriptor();
+<i>364</i>&nbsp;//
+<i>365</i>&nbsp;//            addSharedListRecord(registerId, fieldName, subDescriptor,
+<i>366</i>&nbsp;//                    (List&lt;RecordObject&gt;) pair.get2());
+<i>367</i>&nbsp;//        }
+<i>368</i>&nbsp;//
+<i>369</i>&nbsp;//        for (Pair&lt;RecordField, Object&gt; pair : simpleListFields) {
+<i>370</i>&nbsp;//            String fieldName = pair.get1().getName();
+<i>371</i>&nbsp;//            RecordDescriptor subDescriptor = pair.get1().getSubDescriptor();
+<i>372</i>&nbsp;//
+<i>373</i>&nbsp;//            addSimpleListRecord(registerId, fieldName, subDescriptor,
+<i>374</i>&nbsp;//                    (List&lt;RecordObject&gt;) pair.get2());
+<i>375</i>&nbsp;//        }
+<i>376</i>&nbsp;//
+<i>377</i>&nbsp;//        return registerId;
+<i>378</i>&nbsp;//    }
+<i>379</i>&nbsp;
+<i>380</i>&nbsp;    //&lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;create methods&quot;&gt;
+<i>381</i>&nbsp;    private void createTables(String mainTableName,
+<i>382</i>&nbsp;            RecordDescriptor descriptor) throws IOException, CryptoException {
+<b class="nc"><i>383</i>&nbsp;        createTables(mainTableName, descriptor, new ArrayList&lt;RegisterColumn&gt;());</b>
+<i>384</i>&nbsp;    }
+<i>385</i>&nbsp;
+<i>386</i>&nbsp;    private void createTables(String mainTableName, RecordDescriptor descriptor,
+<i>387</i>&nbsp;            List&lt;RegisterColumn&gt; columns) throws IOException, CryptoException {
+<i>388</i>&nbsp;
+<b class="nc"><i>389</i>&nbsp;        assert descriptor.count() &gt; 0;</b>
+<b class="nc"><i>390</i>&nbsp;        columns.add(0, getIdColumn(mainTableName));</b>
+<i>391</i>&nbsp;
+<b class="nc"><i>392</i>&nbsp;        for (int i = 0; i &lt; descriptor.count(); i++) {</b>
+<b class="nc"><i>393</i>&nbsp;            RecordField field = descriptor.getField(i);</b>
+<b class="nc"><i>394</i>&nbsp;            String fieldName = field.getName();</b>
+<i>395</i>&nbsp;
+<b class="nc"><i>396</i>&nbsp;            if (field.isListType()) {</b>
+<b class="nc"><i>397</i>&nbsp;                RecordDescriptor subDescriptor = field.getSubDescriptor();</b>
+<i>398</i>&nbsp;
+<b class="nc"><i>399</i>&nbsp;                if (field.isShared()) {</b>
+<b class="nc"><i>400</i>&nbsp;                    createSharedListTables(mainTableName, fieldName, subDescriptor);</b>
+<i>401</i>&nbsp;                } else {
+<b class="nc"><i>402</i>&nbsp;                    createSimpleListTables(mainTableName, fieldName, subDescriptor);</b>
+<i>403</i>&nbsp;                }
+<i>404</i>&nbsp;
+<b class="nc"><i>405</i>&nbsp;            } else {</b>
+<b class="nc"><i>406</i>&nbsp;                RecordFieldType fieldType = field.getType();</b>
+<b class="nc"><i>407</i>&nbsp;                if (field.isShared()) {</b>
+<b class="nc"><i>408</i>&nbsp;                    RegisterColumn sharedIdColumn = getIdColumn(fieldName);</b>
+<b class="nc"><i>409</i>&nbsp;                    columns.add(sharedIdColumn);</b>
+<i>410</i>&nbsp;
+<b class="nc"><i>411</i>&nbsp;                    addResultTable(fieldName, sharedIdColumn,</b>
+<b class="nc"><i>412</i>&nbsp;                            new RegisterColumn(field.getName(), translateType(fieldType)));</b>
+<b class="nc"><i>413</i>&nbsp;                } else {</b>
+<b class="nc"><i>414</i>&nbsp;                    columns.add(new RegisterColumn(fieldName, translateType(fieldType)));</b>
+<i>415</i>&nbsp;                }
+<i>416</i>&nbsp;            }
+<i>417</i>&nbsp;        }
+<i>418</i>&nbsp;
+<b class="nc"><i>419</i>&nbsp;        RegisterColumn[] columnsArray = new RegisterColumn[columns.size()];</b>
+<b class="nc"><i>420</i>&nbsp;        addResultTable(mainTableName, columns.toArray(columnsArray));</b>
+<i>421</i>&nbsp;    }
+<i>422</i>&nbsp;    //&lt;/editor-fold&gt;
+<i>423</i>&nbsp;
+<i>424</i>&nbsp;    //&lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;shared list&quot;&gt;
+<i>425</i>&nbsp;    private void createSharedListTables(String tableName,
+<i>426</i>&nbsp;            String fieldName, RecordDescriptor subDescripor) throws IOException, CryptoException {
+<b class="nc"><i>427</i>&nbsp;        createTables(fieldName, subDescripor);</b>
+<b class="nc"><i>428</i>&nbsp;        String relationTableName = getRelationTableName(fieldName);</b>
+<b class="nc"><i>429</i>&nbsp;        addResultTable(relationTableName,</b>
+<b class="nc"><i>430</i>&nbsp;                getIdColumn(fieldName),</b>
+<b class="nc"><i>431</i>&nbsp;                getIdColumn(tableName));</b>
+<i>432</i>&nbsp;    }
+<i>433</i>&nbsp;
+<i>434</i>&nbsp;    private List&lt;RecordObject&gt; readSharedList(int registerId, String tableName,
+<i>435</i>&nbsp;            String fieldName, RecordDescriptor subDescriptor) throws IOException {
+<b class="nc"><i>436</i>&nbsp;        String relationTableName = getRelationTableName(fieldName);</b>
+<b class="nc"><i>437</i>&nbsp;        Table relation = tables.get(relationTableName);</b>
+<b class="nc"><i>438</i>&nbsp;        Table fieldTable = tables.get(fieldName);</b>
+<i>439</i>&nbsp;
+<b class="nc"><i>440</i>&nbsp;        List&lt;RecordObject&gt; result = new LinkedList&lt;&gt;();</b>
+<b class="nc"><i>441</i>&nbsp;        BufferedRegisterIterator rs = relation.getRegisters(-1,</b>
+<b class="nc"><i>442</i>&nbsp;                new FieldMatch(registerId, 1));</b>
+<b class="nc"><i>443</i>&nbsp;        while (rs.hasNext()) {</b>
+<b class="nc"><i>444</i>&nbsp;            int fieldId = (int) rs.readRegister()[0];</b>
+<b class="nc"><i>445</i>&nbsp;            Object[] element = fieldTable.getById(fieldId);</b>
+<b class="nc"><i>446</i>&nbsp;            if (element == null) {</b>
+<i>447</i>&nbsp;                // TODO Think here
+<b class="nc"><i>448</i>&nbsp;                throw new IOException();</b>
+<i>449</i>&nbsp;            }
+<b class="nc"><i>450</i>&nbsp;            result.add(decode(element, fieldName, subDescriptor, 1));</b>
+<b class="nc"><i>451</i>&nbsp;        }</b>
+<i>452</i>&nbsp;
+<b class="nc"><i>453</i>&nbsp;        return result;</b>
+<i>454</i>&nbsp;    }
+<i>455</i>&nbsp;
+<i>456</i>&nbsp;    private void addSharedListRecord(int registerId, String fieldName,
+<i>457</i>&nbsp;            RecordDescriptor subDescriptor, List&lt;RecordObject&gt; list)
+<i>458</i>&nbsp;            throws IOException, DataAccessException {
+<b class="nc"><i>459</i>&nbsp;        String relationTableName = getRelationTableName(fieldName);</b>
+<b class="nc"><i>460</i>&nbsp;        Table relationTable = tables.get(relationTableName);</b>
+<b class="nc"><i>461</i>&nbsp;        Table fieldTable = tables.get(fieldName);</b>
+<i>462</i>&nbsp;
+<b class="nc"><i>463</i>&nbsp;        for (RecordObject record : list) {</b>
+<i>464</i>&nbsp;            // TODO Check somehow if the record already exists!
+<b class="nc"><i>465</i>&nbsp;            int id = addRecord(record, fieldTable, subDescriptor, new LinkedList&lt;&gt;());</b>
+<b class="nc"><i>466</i>&nbsp;            relationTable.addRegister(id, registerId);</b>
+<b class="nc"><i>467</i>&nbsp;        }</b>
+<i>468</i>&nbsp;    }
+<i>469</i>&nbsp;
+<i>470</i>&nbsp;    private void removeSharedListReferences(String tableName, int recordId) throws IOException {
+<b class="nc"><i>471</i>&nbsp;        String relationTableName = getRelationTableName(tableName);</b>
+<b class="nc"><i>472</i>&nbsp;        Table relationTable = tables.get(relationTableName);</b>
+<i>473</i>&nbsp;
+<b class="nc"><i>474</i>&nbsp;        relationTable.removeRegisters(new FieldMatch(recordId, 1), -1);</b>
+<i>475</i>&nbsp;    }
+<i>476</i>&nbsp;
+<i>477</i>&nbsp;    //&lt;/editor-fold&gt;
+<i>478</i>&nbsp;    //&lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;simple list&quot;&gt;
+<i>479</i>&nbsp;    private void createSimpleListTables(String tableName, String fieldName,
+<i>480</i>&nbsp;            RecordDescriptor subDescripor) throws IOException, CryptoException {
+<b class="nc"><i>481</i>&nbsp;        List&lt;RegisterColumn&gt; relationColumns = new ArrayList&lt;&gt;();</b>
+<b class="nc"><i>482</i>&nbsp;        relationColumns.add(getIdColumn(tableName));</b>
+<i>483</i>&nbsp;
+<b class="nc"><i>484</i>&nbsp;        createTables(fieldName, subDescripor, relationColumns);</b>
+<i>485</i>&nbsp;    }
+<i>486</i>&nbsp;
+<i>487</i>&nbsp;    private List&lt;RecordObject&gt; readSimpleList(int recordId, String tableName,
+<i>488</i>&nbsp;            String fieldName, RecordDescriptor subDescriptor) throws IOException {
+<b class="nc"><i>489</i>&nbsp;        List&lt;RecordObject&gt; result = new LinkedList&lt;&gt;();</b>
+<i>490</i>&nbsp;
+<b class="nc"><i>491</i>&nbsp;        Table fieldTable = tables.get(fieldName);</b>
+<b class="nc"><i>492</i>&nbsp;        BufferedRegisterIterator rs = fieldTable.getRegisters(-1,</b>
+<b class="nc"><i>493</i>&nbsp;                new FieldMatch(recordId, 1));</b>
+<i>494</i>&nbsp;
+<b class="nc"><i>495</i>&nbsp;        while (rs.hasNext()) {</b>
+<b class="nc"><i>496</i>&nbsp;            result.add(decode(rs.readRegister(), fieldName, subDescriptor, 2));</b>
+<i>497</i>&nbsp;        }
+<i>498</i>&nbsp;
+<b class="nc"><i>499</i>&nbsp;        return result;</b>
+<i>500</i>&nbsp;    }
+<i>501</i>&nbsp;
+<i>502</i>&nbsp;    private void addSimpleListRecord(int recordId, String fieldName,
+<i>503</i>&nbsp;            RecordDescriptor subDescriptor,
+<i>504</i>&nbsp;            List&lt;RecordObject&gt; list) throws IOException, DataAccessException {
+<b class="nc"><i>505</i>&nbsp;        Table fieldTable = tables.get(fieldName);</b>
+<i>506</i>&nbsp;
+<b class="nc"><i>507</i>&nbsp;        for (RecordObject record : list) {</b>
+<b class="nc"><i>508</i>&nbsp;            List&lt;Object&gt; register = new LinkedList&lt;&gt;();</b>
+<b class="nc"><i>509</i>&nbsp;            register.add(recordId);</b>
+<b class="nc"><i>510</i>&nbsp;            addRecord(record, fieldTable, subDescriptor, register);</b>
+<b class="nc"><i>511</i>&nbsp;        }</b>
+<i>512</i>&nbsp;    }
+<i>513</i>&nbsp;
+<i>514</i>&nbsp;    private void removeSimpleList(String fieldName, int recordId) throws IOException {
+<b class="nc"><i>515</i>&nbsp;        Table fieldTable = tables.get(fieldName);</b>
+<b class="nc"><i>516</i>&nbsp;        fieldTable.removeRegisters(new FieldMatch(recordId, 1), -1);</b>
+<i>517</i>&nbsp;    }
+<i>518</i>&nbsp;    //&lt;/editor-fold&gt;
+<i>519</i>&nbsp;
+<i>520</i>&nbsp;    private RegisterColType translateType(RecordFieldType type) {
+<b class="nc"><i>521</i>&nbsp;        switch (type) {</b>
+<i>522</i>&nbsp;            case file_all:
+<i>523</i>&nbsp;            case file_image:
+<i>524</i>&nbsp;            case file_video:
+<i>525</i>&nbsp;            case file_directory:
+<i>526</i>&nbsp;            case string:
+<b class="nc"><i>527</i>&nbsp;                return RegisterColType.string;</b>
+<i>528</i>&nbsp;            case real:
+<b class="nc"><i>529</i>&nbsp;                return RegisterColType.real;</b>
+<i>530</i>&nbsp;            case integer:
+<b class="nc"><i>531</i>&nbsp;                return RegisterColType.integer;</b>
+<i>532</i>&nbsp;            default:
+<b class="nc"><i>533</i>&nbsp;                throw new AssertionError();</b>
+<i>534</i>&nbsp;        }
+<i>535</i>&nbsp;    }
+<i>536</i>&nbsp;
+<i>537</i>&nbsp;    private RegisterColumn getIdColumn(String fieldName) {
+<b class="nc"><i>538</i>&nbsp;        return new RegisterColumn(fieldName + &quot;_id&quot;, RegisterColType.id);</b>
+<i>539</i>&nbsp;    }
+<i>540</i>&nbsp;
+<i>541</i>&nbsp;    private String getRelationTableName(String name) {
+<b class="nc"><i>542</i>&nbsp;        return name + &quot;.rel&quot;;</b>
+<i>543</i>&nbsp;    }
+<i>544</i>&nbsp;
+<i>545</i>&nbsp;    private void addResultTable(String tableName, RegisterColumn... columns) throws IOException, CryptoException {
+<b class="nc"><i>546</i>&nbsp;        Table newTable = dataManager.getTable(tableName, columns);</b>
+<b class="nc"><i>547</i>&nbsp;        tables.put(tableName, newTable);</b>
+<i>548</i>&nbsp;    }
+<i>549</i>&nbsp;
+<i>550</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2014-11-07 23:06</div>
+</div>
+</body>
+</html>

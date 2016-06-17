@@ -1,0 +1,344 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ParseTable</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.wx.grammar.table</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ParseTable (com.wx.grammar.table)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ParseTable</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 35)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ParseTable$Builder</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 28)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">ParseTable$SubTable</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 19)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 15)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 82)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.wx.grammar.table;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.wx.grammar.cnf.CNFGrammar;
+<i>4</i>&nbsp;import com.wx.grammar.GrammarException;
+<i>5</i>&nbsp;import com.wx.grammar.symbol.Symbol;
+<i>6</i>&nbsp;import com.wx.grammar.cnf.rule.ProductionRule;
+<i>7</i>&nbsp;import com.wx.grammar.cnf.rule.CnfRule;
+<i>8</i>&nbsp;import com.wx.lexer.tokens.Token;
+<i>9</i>&nbsp;import com.wx.util.pair.Pair;
+<i>10</i>&nbsp;import java.util.HashMap;
+<i>11</i>&nbsp;import java.util.Iterator;
+<i>12</i>&nbsp;import java.util.LinkedList;
+<i>13</i>&nbsp;import java.util.List;
+<i>14</i>&nbsp;import java.util.ListIterator;
+<i>15</i>&nbsp;import java.util.Map;
+<i>16</i>&nbsp;import java.util.stream.Collectors;
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;/**
+<i>19</i>&nbsp; * Represents a parse table.
+<i>20</i>&nbsp; * To build such a table from a {@link CNFGrammar}, see {@link Builder}
+<i>21</i>&nbsp; *
+<i>22</i>&nbsp; * @author Raffaele Canale (raffaelecanale@gmail.com)
+<i>23</i>&nbsp; * @version 0.1
+<i>24</i>&nbsp; */
+<b class="nc"><i>25</i>&nbsp;public class ParseTable {</b>
+<i>26</i>&nbsp;
+<i>27</i>&nbsp;    private final Map&lt;Symbol, SubTable&gt; table;
+<i>28</i>&nbsp;    private final Symbol firstSymbol;
+<i>29</i>&nbsp;
+<b class="nc"><i>30</i>&nbsp;    private ParseTable(Map&lt;Symbol, SubTable&gt; table, Symbol firstSymbol) {</b>
+<b class="nc"><i>31</i>&nbsp;        assert !table.isEmpty();</b>
+<b class="nc"><i>32</i>&nbsp;        this.table = table;</b>
+<b class="nc"><i>33</i>&nbsp;        this.firstSymbol = firstSymbol;</b>
+<i>34</i>&nbsp;    }
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;    /**
+<i>37</i>&nbsp;     * Get the rule located in the table or {@code null} if it does not contain
+<i>38</i>&nbsp;     * any.
+<i>39</i>&nbsp;     *
+<i>40</i>&nbsp;     * @param symbol Current symbol
+<i>41</i>&nbsp;     * @param token  Current token
+<i>42</i>&nbsp;     *
+<i>43</i>&nbsp;     * @return The rule (or {@code null}) from the table at the given position
+<i>44</i>&nbsp;     */
+<i>45</i>&nbsp;    public ProductionRule getRule(Symbol symbol, Token token) {
+<b class="nc"><i>46</i>&nbsp;        SubTable subMap = table.get(symbol);</b>
+<i>47</i>&nbsp;        
+<b class="nc"><i>48</i>&nbsp;        return subMap == null ? null : subMap.get(token);</b>
+<i>49</i>&nbsp;    }
+<i>50</i>&nbsp;
+<i>51</i>&nbsp;    /**
+<i>52</i>&nbsp;     *
+<i>53</i>&nbsp;     * @return Starting symbol of the grammar
+<i>54</i>&nbsp;     */
+<i>55</i>&nbsp;    public Symbol getFirstSymbol() {
+<b class="nc"><i>56</i>&nbsp;        return firstSymbol;</b>
+<i>57</i>&nbsp;    }
+<i>58</i>&nbsp;
+<i>59</i>&nbsp;    @Override
+<i>60</i>&nbsp;    public String toString() {
+<b class="nc"><i>61</i>&nbsp;        String result = &quot;&quot;;</b>
+<b class="nc"><i>62</i>&nbsp;        int index = 1;</b>
+<i>63</i>&nbsp;
+<b class="nc"><i>64</i>&nbsp;        List&lt;Token&gt; tokens = new LinkedList&lt;&gt;(table.values().iterator().next().keySet());</b>
+<i>65</i>&nbsp;//        List&lt;Symbol&gt; symbols = new LinkedList&lt;&gt;(table.keySet());
+<i>66</i>&nbsp;
+<b class="nc"><i>67</i>&nbsp;        List&lt;ProductionRule&gt; rules = new LinkedList&lt;&gt;();</b>
+<i>68</i>&nbsp;
+<b class="nc"><i>69</i>&nbsp;        for (SubTable entry : table.values()) {           </b>
+<b class="nc"><i>70</i>&nbsp;            for (ProductionRule r : entry.values()) {</b>
+<b class="nc"><i>71</i>&nbsp;                result += String.format(&quot;%2d&quot;, index) + &quot;. &quot; + r + &quot;\n&quot;;</b>
+<b class="nc"><i>72</i>&nbsp;                rules.add(r);</b>
+<b class="nc"><i>73</i>&nbsp;                index++;</b>
+<b class="nc"><i>74</i>&nbsp;            }</b>
+<b class="nc"><i>75</i>&nbsp;        }</b>
+<i>76</i>&nbsp;
+<i>77</i>&nbsp;//        result += &quot;\n     |&quot;;
+<b class="nc"><i>78</i>&nbsp;        result += &quot;\n_____|&quot;;</b>
+<b class="nc"><i>79</i>&nbsp;        for (Token token : tokens) {</b>
+<b class="nc"><i>80</i>&nbsp;            result += &quot; &quot; + token + &quot; |&quot;;</b>
+<b class="nc"><i>81</i>&nbsp;        }</b>
+<b class="nc"><i>82</i>&nbsp;        result += &quot;\n&quot;;</b>
+<i>83</i>&nbsp;
+<b class="nc"><i>84</i>&nbsp;        for (Symbol symbol : table.keySet()) {</b>
+<b class="nc"><i>85</i>&nbsp;            result += &quot;| &quot; + String.format(&quot;%2s&quot;, symbol) + &quot; |&quot;;</b>
+<i>86</i>&nbsp;
+<b class="nc"><i>87</i>&nbsp;            for (Token token : tokens) {</b>
+<b class="nc"><i>88</i>&nbsp;                ProductionRule rule = table.get(symbol).get(token);</b>
+<b class="nc"><i>89</i>&nbsp;                if (rule == null) {</b>
+<b class="nc"><i>90</i>&nbsp;                    result += &quot;  -  |&quot;;</b>
+<i>91</i>&nbsp;                } else {
+<b class="nc"><i>92</i>&nbsp;                    result += &quot;  &quot; + (rules.indexOf(rule) + 1) + &quot;  |&quot;;</b>
+<i>93</i>&nbsp;                }
+<b class="nc"><i>94</i>&nbsp;            }</b>
+<b class="nc"><i>95</i>&nbsp;            result += &quot;\n&quot;;</b>
+<b class="nc"><i>96</i>&nbsp;        }</b>
+<i>97</i>&nbsp;
+<b class="nc"><i>98</i>&nbsp;        return result;</b>
+<i>99</i>&nbsp;    }
+<i>100</i>&nbsp;    
+<b class="nc"><i>101</i>&nbsp;    private static class SubTable {</b>
+<i>102</i>&nbsp;        
+<b class="nc"><i>103</i>&nbsp;        private final List&lt;Pair&lt;Token, ProductionRule&gt;&gt; subTable = new LinkedList&lt;&gt;();</b>
+<i>104</i>&nbsp;        
+<i>105</i>&nbsp;        public ProductionRule get(Token token) {
+<b class="nc"><i>106</i>&nbsp;            for (Pair&lt;Token, ProductionRule&gt; pair : subTable) {</b>
+<b class="nc"><i>107</i>&nbsp;                if (pair.get1().compareTokenType(token)) {</b>
+<b class="nc"><i>108</i>&nbsp;                    return pair.get2();</b>
+<i>109</i>&nbsp;                }
+<b class="nc"><i>110</i>&nbsp;            }</b>
+<i>111</i>&nbsp;            
+<b class="nc"><i>112</i>&nbsp;            return null;</b>
+<i>113</i>&nbsp;        }
+<i>114</i>&nbsp;        
+<i>115</i>&nbsp;        public ProductionRule put(Token token, ProductionRule rule) {
+<b class="nc"><i>116</i>&nbsp;            Pair&lt;Token, ProductionRule&gt; newPair = new Pair&lt;&gt;(token, rule);</b>
+<i>117</i>&nbsp;            
+<b class="nc"><i>118</i>&nbsp;            ListIterator&lt;Pair&lt;Token, ProductionRule&gt;&gt; it = subTable.listIterator();</b>
+<b class="nc"><i>119</i>&nbsp;            while (it.hasNext()) {</b>
+<b class="nc"><i>120</i>&nbsp;                Pair&lt;Token, ProductionRule&gt; current = it.next();</b>
+<b class="nc"><i>121</i>&nbsp;                if (current.get1().compareTokenType(token)) {</b>
+<b class="nc"><i>122</i>&nbsp;                    it.set(newPair);</b>
+<b class="nc"><i>123</i>&nbsp;                    return current.get2();</b>
+<i>124</i>&nbsp;                }
+<b class="nc"><i>125</i>&nbsp;            }</b>
+<i>126</i>&nbsp;            
+<b class="nc"><i>127</i>&nbsp;            subTable.add(newPair);</b>
+<b class="nc"><i>128</i>&nbsp;            return null;</b>
+<i>129</i>&nbsp;        }
+<i>130</i>&nbsp;        
+<i>131</i>&nbsp;        public List&lt;Token&gt; keySet() {
+<b class="nc"><i>132</i>&nbsp;            return subTable.stream().map(Pair::get1).collect(Collectors.toList());</b>
+<i>133</i>&nbsp;        }
+<i>134</i>&nbsp;
+<i>135</i>&nbsp;        public List&lt;ProductionRule&gt; values() {
+<b class="nc"><i>136</i>&nbsp;            return subTable.stream().map(Pair::get2).collect(Collectors.toList());</b>
+<i>137</i>&nbsp;        }
+<i>138</i>&nbsp;    }
+<i>139</i>&nbsp;
+<i>140</i>&nbsp;    /**
+<i>141</i>&nbsp;     * Build a {@link ParseTable} from a {@link CNFGrammar}
+<i>142</i>&nbsp;     */
+<i>143</i>&nbsp;    public static class Builder {
+<i>144</i>&nbsp;
+<b class="nc"><i>145</i>&nbsp;        private final Map&lt;Symbol, SubTable&gt; table = new HashMap&lt;&gt;();</b>
+<i>146</i>&nbsp;        private final FirstFollowSets sets;
+<i>147</i>&nbsp;        private final CNFGrammar grammar;
+<i>148</i>&nbsp;
+<i>149</i>&nbsp;        /**
+<i>150</i>&nbsp;         * Constructs a new parse table builder.
+<i>151</i>&nbsp;         *
+<i>152</i>&nbsp;         * @param grammar Grammar to analyze
+<i>153</i>&nbsp;         *
+<i>154</i>&nbsp;         * @throws GrammarException
+<i>155</i>&nbsp;         */
+<b class="nc"><i>156</i>&nbsp;        public Builder(CNFGrammar grammar) throws GrammarException {</b>
+<b class="nc"><i>157</i>&nbsp;            this.grammar = grammar;</b>
+<b class="nc"><i>158</i>&nbsp;            this.sets = new FirstFollowSets(grammar);</b>
+<i>159</i>&nbsp;        }
+<i>160</i>&nbsp;
+<i>161</i>&nbsp;        /**
+<i>162</i>&nbsp;         * Build the table
+<i>163</i>&nbsp;         * @return The created table
+<i>164</i>&nbsp;         * @throws GrammarException 
+<i>165</i>&nbsp;         */
+<i>166</i>&nbsp;        public ParseTable build() throws GrammarException {
+<b class="nc"><i>167</i>&nbsp;            for (ProductionRule rule : grammar.getProductiveRules()) {</b>
+<b class="nc"><i>168</i>&nbsp;                process(rule, rule.iterator());</b>
+<b class="nc"><i>169</i>&nbsp;            }</b>
+<i>170</i>&nbsp;
+<b class="nc"><i>171</i>&nbsp;            return new ParseTable(table, grammar.getStartSymbol());</b>
+<i>172</i>&nbsp;        }
+<i>173</i>&nbsp;
+<i>174</i>&nbsp;        private void process(ProductionRule rule, Iterator&lt;Symbol&gt; it) throws GrammarException {
+<b class="nc"><i>175</i>&nbsp;            if (rule.isEpsilon()) {</b>
+<b class="nc"><i>176</i>&nbsp;                TokenSet follow = sets.getFollow(rule.getSymbol());</b>
+<b class="nc"><i>177</i>&nbsp;                for (Token tok : follow) {</b>
+<b class="nc"><i>178</i>&nbsp;                    putInTable(tok, rule);</b>
+<b class="nc"><i>179</i>&nbsp;                }</b>
+<i>180</i>&nbsp;                return;
+<i>181</i>&nbsp;            }
+<i>182</i>&nbsp;
+<b class="nc"><i>183</i>&nbsp;            TokenSet firsts = sets.getFirst(it.next());</b>
+<b class="nc"><i>184</i>&nbsp;            for (Token tok : firsts) {</b>
+<b class="nc"><i>185</i>&nbsp;                putInTable(tok, rule);</b>
+<b class="nc"><i>186</i>&nbsp;            }</b>
+<i>187</i>&nbsp;
+<b class="nc"><i>188</i>&nbsp;            if (firsts.hasEpsilon()) {</b>
+<b class="nc"><i>189</i>&nbsp;                if (it.hasNext()) {</b>
+<b class="nc"><i>190</i>&nbsp;                    process(rule, it);</b>
+<i>191</i>&nbsp;                } else {
+<i>192</i>&nbsp;//                    System.out.println(&quot;!!!!! Special case &quot; + rule);
+<i>193</i>&nbsp;                    // TODO ?
+<i>194</i>&nbsp;                }
+<i>195</i>&nbsp;            }
+<i>196</i>&nbsp;        }
+<i>197</i>&nbsp;
+<i>198</i>&nbsp;        private void putInTable(Token token, ProductionRule rule) throws GrammarException {
+<b class="nc"><i>199</i>&nbsp;            Symbol sym = rule.getSymbol();</b>
+<i>200</i>&nbsp;
+<b class="nc"><i>201</i>&nbsp;            SubTable row = table.get(sym);</b>
+<b class="nc"><i>202</i>&nbsp;            if (row == null) {</b>
+<b class="nc"><i>203</i>&nbsp;                row = new SubTable();</b>
+<b class="nc"><i>204</i>&nbsp;                table.put(sym, row);</b>
+<i>205</i>&nbsp;            }
+<i>206</i>&nbsp;
+<b class="nc"><i>207</i>&nbsp;            CnfRule lastValue = row.put(token, rule);</b>
+<b class="nc"><i>208</i>&nbsp;            if (lastValue != null) {</b>
+<b class="nc"><i>209</i>&nbsp;                throw new GrammarException(&quot;There are at least two rules for &quot;</b>
+<i>210</i>&nbsp;                        + &quot;[&quot; + sym + &quot;, &quot; + token + &quot;]:\n&quot;
+<i>211</i>&nbsp;                        + &quot;- &quot; + lastValue + &quot;\n&quot;
+<i>212</i>&nbsp;                        + &quot;- &quot; + rule);
+<i>213</i>&nbsp;            }
+<i>214</i>&nbsp;        }
+<i>215</i>&nbsp;    }
+<i>216</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2014-11-07 23:06</div>
+</div>
+</body>
+</html>

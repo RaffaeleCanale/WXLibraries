@@ -1,0 +1,184 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Pair</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.wx.util.pair</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Pair (com.wx.util.pair)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Pair</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    33.3%
+  </span>
+  <span class="absValue">
+    (3/ 9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    23.1%
+  </span>
+  <span class="absValue">
+    (6/ 26)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.wx.util.pair;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;/**
+<i>4</i>&nbsp; * This class represents a Tuple of any types
+<i>5</i>&nbsp; *
+<i>6</i>&nbsp; * @param &lt;E&gt; Type of the first tuple element
+<i>7</i>&nbsp; * @param &lt;F&gt; Type of the second tuple element
+<i>8</i>&nbsp; * @author Raffaele Canale
+<i>9</i>&nbsp; */
+<i>10</i>&nbsp;public class Pair&lt;E, F&gt; {
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;    private E e;
+<i>13</i>&nbsp;    private F f;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;    /**
+<i>16</i>&nbsp;     * Constructs a new pair.
+<i>17</i>&nbsp;     *
+<i>18</i>&nbsp;     * @param e First element of the pair
+<i>19</i>&nbsp;     * @param f Second element of the pair
+<i>20</i>&nbsp;     */
+<b class="fc"><i>21</i>&nbsp;    public Pair(E e, F f) {</b>
+<b class="fc"><i>22</i>&nbsp;        this.e = e;</b>
+<b class="fc"><i>23</i>&nbsp;        this.f = f;</b>
+<b class="fc"><i>24</i>&nbsp;    }</b>
+<i>25</i>&nbsp;
+<i>26</i>&nbsp;
+<i>27</i>&nbsp;    /**
+<i>28</i>&nbsp;     * Get the first element of the pair.
+<i>29</i>&nbsp;     *
+<i>30</i>&nbsp;     * @return First element of the pair.
+<i>31</i>&nbsp;     */
+<i>32</i>&nbsp;    public E get1() {
+<b class="fc"><i>33</i>&nbsp;        return e;</b>
+<i>34</i>&nbsp;    }
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;    /**
+<i>37</i>&nbsp;     * Set the first element of the pair.
+<i>38</i>&nbsp;     *
+<i>39</i>&nbsp;     * @param e New element to set
+<i>40</i>&nbsp;     */
+<i>41</i>&nbsp;    public void set1(E e) {
+<b class="nc"><i>42</i>&nbsp;        this.e = e;</b>
+<b class="nc"><i>43</i>&nbsp;    }</b>
+<i>44</i>&nbsp;
+<i>45</i>&nbsp;    /**
+<i>46</i>&nbsp;     * Get the second element of the pair.
+<i>47</i>&nbsp;     *
+<i>48</i>&nbsp;     * @return Second element of the pair.
+<i>49</i>&nbsp;     */
+<i>50</i>&nbsp;    public F get2() {
+<b class="fc"><i>51</i>&nbsp;        return f;</b>
+<i>52</i>&nbsp;    }
+<i>53</i>&nbsp;
+<i>54</i>&nbsp;    /**
+<i>55</i>&nbsp;     * Set the second element of the pair.
+<i>56</i>&nbsp;     *
+<i>57</i>&nbsp;     * @param f New element to set
+<i>58</i>&nbsp;     */
+<i>59</i>&nbsp;    public void set2(F f) {
+<b class="nc"><i>60</i>&nbsp;        this.f = f;</b>
+<b class="nc"><i>61</i>&nbsp;    }</b>
+<i>62</i>&nbsp;
+<i>63</i>&nbsp;    /**
+<i>64</i>&nbsp;     * @return {@code true} if any of the pair elements is null
+<i>65</i>&nbsp;     */
+<i>66</i>&nbsp;    public boolean containsNull() {
+<b class="nc"><i>67</i>&nbsp;        return e == null || f == null;</b>
+<i>68</i>&nbsp;    }
+<i>69</i>&nbsp;
+<i>70</i>&nbsp;    @Override
+<i>71</i>&nbsp;    public boolean equals(Object obj) {
+<b class="nc"><i>72</i>&nbsp;        if (obj == null) {</b>
+<b class="nc"><i>73</i>&nbsp;            return false;</b>
+<i>74</i>&nbsp;        }
+<b class="nc"><i>75</i>&nbsp;        if (getClass() != obj.getClass()) {</b>
+<b class="nc"><i>76</i>&nbsp;            return false;</b>
+<i>77</i>&nbsp;        }
+<i>78</i>&nbsp;        @SuppressWarnings(&quot;unchecked&quot;)  //Actually, it&#39;s checked
+<b class="nc"><i>79</i>&nbsp;        final Pair&lt;E, F&gt; other = (Pair&lt;E, F&gt;) obj;</b>
+<b class="nc"><i>80</i>&nbsp;        if (this.e != other.e &amp;&amp; (this.e == null || !this.e.equals(other.e))) {</b>
+<b class="nc"><i>81</i>&nbsp;            return false;</b>
+<i>82</i>&nbsp;        }
+<b class="nc"><i>83</i>&nbsp;        if (this.f != other.f &amp;&amp; (this.f == null || !this.f.equals(other.f))) {</b>
+<b class="nc"><i>84</i>&nbsp;            return false;</b>
+<i>85</i>&nbsp;        }
+<b class="nc"><i>86</i>&nbsp;        return true;</b>
+<i>87</i>&nbsp;    }
+<i>88</i>&nbsp;
+<i>89</i>&nbsp;    @Override
+<i>90</i>&nbsp;    public int hashCode() {
+<b class="nc"><i>91</i>&nbsp;        int hash = 7;</b>
+<b class="nc"><i>92</i>&nbsp;        hash = 71 * hash + (this.e != null ? this.e.hashCode() : 0);</b>
+<b class="nc"><i>93</i>&nbsp;        hash = 71 * hash + (this.f != null ? this.f.hashCode() : 0);</b>
+<b class="nc"><i>94</i>&nbsp;        return hash;</b>
+<i>95</i>&nbsp;    }
+<i>96</i>&nbsp;
+<i>97</i>&nbsp;    @Override
+<i>98</i>&nbsp;    public String toString() {
+<b class="nc"><i>99</i>&nbsp;        return &quot;&#39;&quot; + e + &quot;&#39; / &#39;&quot; + f + &quot;&#39;&quot;;</b>
+<i>100</i>&nbsp;    }
+<i>101</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2014-11-07 23:06</div>
+</div>
+</body>
+</html>

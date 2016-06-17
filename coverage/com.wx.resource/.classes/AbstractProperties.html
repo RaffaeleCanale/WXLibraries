@@ -1,0 +1,344 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: AbstractProperties</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.wx.resource</a> ]
+</div>
+
+<h1>Coverage Summary for Class: AbstractProperties (com.wx.resource)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AbstractProperties</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 32)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.wx.resource;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.wx.crypto.Crypter;
+<i>4</i>&nbsp;import com.wx.crypto.CryptoException;
+<i>5</i>&nbsp;import java.io.File;
+<i>6</i>&nbsp;import java.io.FileInputStream;
+<i>7</i>&nbsp;import java.io.FileNotFoundException;
+<i>8</i>&nbsp;import java.io.FileOutputStream;
+<i>9</i>&nbsp;import java.io.IOException;
+<i>10</i>&nbsp;import java.io.InputStream;
+<i>11</i>&nbsp;import java.io.OutputStream;
+<i>12</i>&nbsp;import java.util.Properties;
+<i>13</i>&nbsp;import java.util.TreeSet;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;/**
+<i>16</i>&nbsp; *
+<i>17</i>&nbsp; * @author canale
+<i>18</i>&nbsp; */
+<i>19</i>&nbsp;public abstract class AbstractProperties extends Properties {
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;    private final boolean isXml;
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;    /**
+<i>24</i>&nbsp;     * Creates a new instance of AbstractProperties
+<i>25</i>&nbsp;     * 
+<i>26</i>&nbsp;     * @param xml      If {@code true}, this property file will be read and
+<i>27</i>&nbsp;     *                 written in {@code XML}
+<i>28</i>&nbsp;     * @param defaults The default properties that will be used in case of
+<i>29</i>&nbsp;     *                 missing ones
+<i>30</i>&nbsp;     */
+<i>31</i>&nbsp;    public AbstractProperties(boolean xml, Properties defaults) {
+<b class="nc"><i>32</i>&nbsp;        super(defaults);</b>
+<i>33</i>&nbsp;        
+<b class="nc"><i>34</i>&nbsp;        this.isXml = xml;</b>
+<i>35</i>&nbsp;    }
+<i>36</i>&nbsp;
+<i>37</i>&nbsp;//    /**
+<i>38</i>&nbsp;//     *
+<i>39</i>&nbsp;//     * @return Returns the file path
+<i>40</i>&nbsp;//     */
+<i>41</i>&nbsp;//    public String getFilePath() {
+<i>42</i>&nbsp;//        return path;
+<i>43</i>&nbsp;//    }
+<i>44</i>&nbsp;//
+<i>45</i>&nbsp;//    /**
+<i>46</i>&nbsp;//     * An external property is a property file which is writable and located in
+<i>47</i>&nbsp;//     * any given path.
+<i>48</i>&nbsp;//     *
+<i>49</i>&nbsp;//     * @return Returns {@code true} if this property is external.
+<i>50</i>&nbsp;//     */
+<i>51</i>&nbsp;//    public boolean isExternal() {
+<i>52</i>&nbsp;//        return isExternalFile;
+<i>53</i>&nbsp;//    }
+<i>54</i>&nbsp;    /**
+<i>55</i>&nbsp;     *
+<i>56</i>&nbsp;     * @return Returns {@code true} if this property file uses {@code XML}
+<i>57</i>&nbsp;     */
+<i>58</i>&nbsp;    public boolean isXML() {
+<b class="nc"><i>59</i>&nbsp;        return isXml;</b>
+<i>60</i>&nbsp;    }
+<i>61</i>&nbsp;
+<i>62</i>&nbsp;    //&lt;editor-fold defaultstate=&quot;collapsed&quot; desc=&quot;saveFile Overload&quot;&gt;
+<i>63</i>&nbsp;    /**
+<i>64</i>&nbsp;     * Saves the properties of this file.&lt;br&gt; &lt;b&gt;Warning:&lt;/b&gt; This file must be
+<i>65</i>&nbsp;     * external in order to be saved.
+<i>66</i>&nbsp;     *
+<i>67</i>&nbsp;     * @throws FileNotFoundException
+<i>68</i>&nbsp;     * @throws IOException
+<i>69</i>&nbsp;     */
+<i>70</i>&nbsp;    public void saveProperties() throws FileNotFoundException, IOException {
+<i>71</i>&nbsp;        try {
+<b class="nc"><i>72</i>&nbsp;            saveProperties(null, null);</b>
+<b class="nc"><i>73</i>&nbsp;        } catch (CryptoException ignored) {</b>
+<i>74</i>&nbsp;            // Can&#39;t happen
+<b class="nc"><i>75</i>&nbsp;        }</b>
+<i>76</i>&nbsp;    }
+<i>77</i>&nbsp;
+<i>78</i>&nbsp;    /**
+<i>79</i>&nbsp;     * Saves the properties of this file.&lt;br&gt; &lt;b&gt;Warning:&lt;/b&gt; This file must be
+<i>80</i>&nbsp;     * external in order to be saved.
+<i>81</i>&nbsp;     *
+<i>82</i>&nbsp;     * @param crypter       The {@code Crypter} used for encryption or
+<i>83</i>&nbsp;     *                      {@code null} to disable it
+<i>84</i>&nbsp;     *
+<i>85</i>&nbsp;     * @throws FileNotFoundException
+<i>86</i>&nbsp;     * @throws IOException
+<i>87</i>&nbsp;     * @throws CryptoException
+<i>88</i>&nbsp;     */
+<i>89</i>&nbsp;    public void saveProperties(Crypter crypter)
+<i>90</i>&nbsp;            throws FileNotFoundException, IOException, CryptoException {
+<b class="nc"><i>91</i>&nbsp;        AbstractProperties.this.saveProperties(null, crypter);</b>
+<i>92</i>&nbsp;    }
+<i>93</i>&nbsp;    //&lt;/editor-fold&gt;
+<i>94</i>&nbsp;
+<i>95</i>&nbsp;    /**
+<i>96</i>&nbsp;     * Saves the properties of this file.&lt;br&gt; &lt;b&gt;Warning:&lt;/b&gt; This file must be
+<i>97</i>&nbsp;     * external in order to be saved.
+<i>98</i>&nbsp;     *
+<i>99</i>&nbsp;     * @param comments      Possible comments to be added in the file.
+<i>100</i>&nbsp;     * @param crypter       The {@code Crypter} used for encryption or
+<i>101</i>&nbsp;     *                      {@code null} to disable it
+<i>102</i>&nbsp;     *
+<i>103</i>&nbsp;     * @throws FileNotFoundException
+<i>104</i>&nbsp;     * @throws IOException
+<i>105</i>&nbsp;     * @throws CryptoException
+<i>106</i>&nbsp;     */
+<i>107</i>&nbsp;    public void saveProperties(String comments, Crypter crypter) throws FileNotFoundException, IOException,
+<i>108</i>&nbsp;            CryptoException {
+<i>109</i>&nbsp;
+<i>110</i>&nbsp;//        if (!isExternal()) {
+<i>111</i>&nbsp;//            throw new IllegalArgumentException(&quot;Can&#39;t save internal files.&quot;);
+<i>112</i>&nbsp;//        }
+<i>113</i>&nbsp;
+<i>114</i>&nbsp;//        assert path != null;
+<i>115</i>&nbsp;//        System.out.println(&quot;Prop saved at: &quot; + mPropertyFilePath + &quot; (&quot; + new File(mPropertyFilePath).getAbsolutePath() + &quot;)&quot;);
+<i>116</i>&nbsp;//        if (createFolders) {
+<i>117</i>&nbsp;//            File parent = new File(path).getParentFile();
+<i>118</i>&nbsp;//            if (parent != null &amp;&amp; !parent.exists() &amp;&amp; !parent.mkdirs()) {
+<i>119</i>&nbsp;//                throw new IOException(&quot;Unknow error. Can&#39;t create parent &quot;
+<i>120</i>&nbsp;//                        + &quot;folders for:\n&quot; + path);
+<i>121</i>&nbsp;//            }
+<i>122</i>&nbsp;//        }
+<i>123</i>&nbsp;
+<b class="nc"><i>124</i>&nbsp;        try (OutputStream os = getOutputStream(crypter)) {</b>
+<b class="nc"><i>125</i>&nbsp;            if (isXml) {</b>
+<b class="nc"><i>126</i>&nbsp;                storeToXML(os, comments);</b>
+<i>127</i>&nbsp;            } else {
+<b class="nc"><i>128</i>&nbsp;                store(os, comments);</b>
+<i>129</i>&nbsp;            }
+<b class="nc"><i>130</i>&nbsp;        }</b>
+<i>131</i>&nbsp;    }
+<i>132</i>&nbsp;
+<i>133</i>&nbsp;    /**
+<i>134</i>&nbsp;     * Loads all properties contained in this file.
+<i>135</i>&nbsp;     *
+<i>136</i>&nbsp;     * @param source The caller&#39;s class. This solves the relative paths problems
+<i>137</i>&nbsp;     *               when getting an internal resource. This can be set to
+<i>138</i>&nbsp;     *               {@code null} for external properties.
+<i>139</i>&nbsp;     *
+<i>140</i>&nbsp;     * @throws FileNotFoundException
+<i>141</i>&nbsp;     * @throws IOException
+<i>142</i>&nbsp;     */
+<i>143</i>&nbsp;    public void load(Class&lt;?&gt; source) throws FileNotFoundException,
+<i>144</i>&nbsp;            IOException {
+<i>145</i>&nbsp;        try {
+<b class="nc"><i>146</i>&nbsp;            load(null, source);</b>
+<b class="nc"><i>147</i>&nbsp;        } catch (CryptoException ignored) {</b>
+<i>148</i>&nbsp;            //Can&#39;t happen
+<b class="nc"><i>149</i>&nbsp;        }</b>
+<i>150</i>&nbsp;    }
+<i>151</i>&nbsp;
+<i>152</i>&nbsp;    /**
+<i>153</i>&nbsp;     * Loads all properties contained in this file.
+<i>154</i>&nbsp;     *
+<i>155</i>&nbsp;     * @param crypter The {@code Crypter} used for decryption or {@code null} to
+<i>156</i>&nbsp;     *                disable it
+<i>157</i>&nbsp;     * @param source  The caller&#39;s class. This solves the relative paths
+<i>158</i>&nbsp;     *                problems when getting an internal resource. This can be set
+<i>159</i>&nbsp;     *                to {@code null} for external properties.
+<i>160</i>&nbsp;     *
+<i>161</i>&nbsp;     * @throws CryptoException
+<i>162</i>&nbsp;     * @throws FileNotFoundException
+<i>163</i>&nbsp;     * @throws IOException
+<i>164</i>&nbsp;     */
+<i>165</i>&nbsp;    public void load(Crypter crypter, Class&lt;?&gt; source) throws CryptoException,
+<i>166</i>&nbsp;            FileNotFoundException, IOException {
+<b class="nc"><i>167</i>&nbsp;        try (InputStream is = getInputStream(crypter, source)) {</b>
+<b class="nc"><i>168</i>&nbsp;            if (isXml) {</b>
+<b class="nc"><i>169</i>&nbsp;                loadFromXML(is);</b>
+<i>170</i>&nbsp;            } else {
+<b class="nc"><i>171</i>&nbsp;                load(is);</b>
+<i>172</i>&nbsp;            }
+<b class="nc"><i>173</i>&nbsp;        }</b>
+<i>174</i>&nbsp;    }
+<i>175</i>&nbsp;
+<i>176</i>&nbsp;//    /**
+<i>177</i>&nbsp;//     * Makes an external copy of this file.
+<i>178</i>&nbsp;//     *
+<i>179</i>&nbsp;//     * @param prefix        The prefix regarding to the package position
+<i>180</i>&nbsp;//     * @param newPrefix     The prefix of the new file
+<i>181</i>&nbsp;//     * @param createFolders If {@code true}, all none existing folders are
+<i>182</i>&nbsp;//     *                      created if the file doesn&#39;t exist
+<i>183</i>&nbsp;//     *
+<i>184</i>&nbsp;//     * @throws FileNotFoundException
+<i>185</i>&nbsp;//     * @throws IOException
+<i>186</i>&nbsp;//     */
+<i>187</i>&nbsp;//    public void externalize(String prefix, String newPrefix,
+<i>188</i>&nbsp;//            boolean createFolders) throws FileNotFoundException, IOException {
+<i>189</i>&nbsp;//        try {
+<i>190</i>&nbsp;//            externalize(prefix, newPrefix, createFolders, null);
+<i>191</i>&nbsp;//        } catch (CryptoException ignored) {
+<i>192</i>&nbsp;//            //Can&#39;t happen
+<i>193</i>&nbsp;//        }
+<i>194</i>&nbsp;//    }
+<i>195</i>&nbsp;//
+<i>196</i>&nbsp;//    /**
+<i>197</i>&nbsp;//     * Makes a copy of this internal file and saves it externally.
+<i>198</i>&nbsp;//     *
+<i>199</i>&nbsp;//     * @param prefix        The prefix regarding to the package position
+<i>200</i>&nbsp;//     * @param newPrefix     The prefix of the new file
+<i>201</i>&nbsp;//     * @param createFolders If {@code true}, all none existing folders are
+<i>202</i>&nbsp;//     *                      created if the file doesn&#39;t exist.
+<i>203</i>&nbsp;//     * @param crypter       The {@code Crypter} used for encryption or
+<i>204</i>&nbsp;//     *                      {@code null} to disable it
+<i>205</i>&nbsp;//     *
+<i>206</i>&nbsp;//     * @throws FileNotFoundException
+<i>207</i>&nbsp;//     * @throws IOException
+<i>208</i>&nbsp;//     * @throws CryptoException
+<i>209</i>&nbsp;//     */
+<i>210</i>&nbsp;//    public void externalize(String prefix, String newPrefix,
+<i>211</i>&nbsp;//            boolean createFolders, Crypter crypter)
+<i>212</i>&nbsp;//            throws FileNotFoundException, IOException, CryptoException {
+<i>213</i>&nbsp;//        if (isExternal()) {
+<i>214</i>&nbsp;//            throw new IllegalArgumentException(&quot;This file is already external&quot;);
+<i>215</i>&nbsp;//        }
+<i>216</i>&nbsp;//
+<i>217</i>&nbsp;//        StringBuilder newPath = new StringBuilder(path);
+<i>218</i>&nbsp;//        newPath.replace(0, prefix.length(), newPrefix);
+<i>219</i>&nbsp;//
+<i>220</i>&nbsp;//        path = newPath.toString();
+<i>221</i>&nbsp;//        isExternalFile = true;
+<i>222</i>&nbsp;//        LocatedProperties.this.save(null, createFolders, crypter);
+<i>223</i>&nbsp;//    }
+<i>224</i>&nbsp;
+<i>225</i>&nbsp;    @Override
+<i>226</i>&nbsp;    public String toString() {
+<b class="nc"><i>227</i>&nbsp;        StringBuilder desc = new StringBuilder();</b>
+<i>228</i>&nbsp;//        if (path == null) {
+<i>229</i>&nbsp;//            desc.append(&quot;  Temporary runtime properties bundle\n&quot;);
+<i>230</i>&nbsp;//        } else {
+<i>231</i>&nbsp;//            desc.append(&quot;  Status: &quot;);
+<i>232</i>&nbsp;//            desc.append(isExternal() ? &quot;external\n&quot; : &quot;internal\n&quot;);
+<i>233</i>&nbsp;//            
+<b class="nc"><i>234</i>&nbsp;        desc.append(&quot;  Use XML: &quot;).append(isXML() ? &quot;Yes\n&quot; : &quot;No\n&quot;);</b>
+<i>235</i>&nbsp;
+<i>236</i>&nbsp;//            desc.append(&quot;  Path: &quot;).append(path).append(&quot;\n&quot;);
+<i>237</i>&nbsp;//        }
+<b class="nc"><i>238</i>&nbsp;        if (isEmpty()) {</b>
+<b class="nc"><i>239</i>&nbsp;            desc.append(&quot;  Empty, no properties stored\n&quot;);</b>
+<i>240</i>&nbsp;        } else {
+<b class="nc"><i>241</i>&nbsp;            desc.append(&quot;  Properties:\n&quot;);</b>
+<b class="nc"><i>242</i>&nbsp;            TreeSet&lt;Object&gt; sortedKeys = new TreeSet&lt;&gt;(keySet());</b>
+<b class="nc"><i>243</i>&nbsp;            for (Object key : sortedKeys) {</b>
+<b class="nc"><i>244</i>&nbsp;                desc.append(&quot;    &quot;).append(key).append(&quot; = &quot;).append(get(key))</b>
+<b class="nc"><i>245</i>&nbsp;                        .append(&quot;\n&quot;);</b>
+<b class="nc"><i>246</i>&nbsp;            }</b>
+<i>247</i>&nbsp;        }
+<i>248</i>&nbsp;
+<b class="nc"><i>249</i>&nbsp;        return desc.toString();</b>
+<i>250</i>&nbsp;    }
+<i>251</i>&nbsp;
+<i>252</i>&nbsp;    protected abstract OutputStream getOutputStream(Crypter crypter)
+<i>253</i>&nbsp;            throws FileNotFoundException, IOException, CryptoException;
+<i>254</i>&nbsp;
+<i>255</i>&nbsp;    protected abstract InputStream getInputStream(Crypter crypter, Class&lt;?&gt; source)
+<i>256</i>&nbsp;            throws FileNotFoundException, IOException, CryptoException;
+<i>257</i>&nbsp;
+<i>258</i>&nbsp;    protected Properties getDefaults() {
+<b class="nc"><i>259</i>&nbsp;        return defaults;</b>
+<i>260</i>&nbsp;    }
+<i>261</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2014-11-07 23:06</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,627 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: AccessorUtil</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.wx.io</a> ]
+</div>
+
+<h1>Coverage Summary for Class: AccessorUtil (com.wx.io)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AccessorUtil</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 21)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 201)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;/*
+<i>2</i>&nbsp; * To change this template, choose Tools | Templates
+<i>3</i>&nbsp; * and open the template in the editor.
+<i>4</i>&nbsp; */
+<i>5</i>&nbsp;package com.wx.io;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;import com.wx.crypto.Crypter;
+<i>8</i>&nbsp;import com.wx.crypto.CryptoException;
+<i>9</i>&nbsp;import com.wx.util.pair.Pair;
+<i>10</i>&nbsp;import java.io.DataInput;
+<i>11</i>&nbsp;import java.io.DataOutput;
+<i>12</i>&nbsp;import java.io.File;
+<i>13</i>&nbsp;import java.io.FileInputStream;
+<i>14</i>&nbsp;import java.io.FileNotFoundException;
+<i>15</i>&nbsp;import java.io.FileOutputStream;
+<i>16</i>&nbsp;import java.io.IOException;
+<i>17</i>&nbsp;import java.io.OutputStream;
+<i>18</i>&nbsp;import java.io.UnsupportedEncodingException;
+<i>19</i>&nbsp;import java.net.URI;
+<i>20</i>&nbsp;import java.util.ArrayDeque;
+<i>21</i>&nbsp;import java.util.Deque;
+<i>22</i>&nbsp;import java.util.Enumeration;
+<i>23</i>&nbsp;import java.util.LinkedList;
+<i>24</i>&nbsp;import java.util.List;
+<i>25</i>&nbsp;import java.util.logging.Level;
+<i>26</i>&nbsp;import java.util.logging.Logger;
+<i>27</i>&nbsp;import java.util.zip.Deflater;
+<i>28</i>&nbsp;import java.util.zip.ZipEntry;
+<i>29</i>&nbsp;import java.util.zip.ZipFile;
+<i>30</i>&nbsp;import java.util.zip.ZipInputStream;
+<i>31</i>&nbsp;import java.util.zip.ZipOutputStream;
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;/**
+<i>34</i>&nbsp; *
+<i>35</i>&nbsp; * @author Raffaele
+<i>36</i>&nbsp; */
+<b class="nc"><i>37</i>&nbsp;public class AccessorUtil {</b>
+<i>38</i>&nbsp;
+<i>39</i>&nbsp;    /**
+<i>40</i>&nbsp;     * Copies a file or folder to destination and automatically creates all
+<i>41</i>&nbsp;     * parents folders if they don&#39;t exist.&lt;br&gt;&lt;br&gt; If you try to copy a
+<i>42</i>&nbsp;     * directory
+<i>43</i>&nbsp;     * &lt;code&gt;A&lt;/code&gt; in a destination
+<i>44</i>&nbsp;     * &lt;code&gt;B&lt;/code&gt;, the content of
+<i>45</i>&nbsp;     * &lt;code&gt;A&lt;/code&gt; will be copied in
+<i>46</i>&nbsp;     * &lt;code&gt;B&lt;/code&gt;. If you really want a copy of
+<i>47</i>&nbsp;     * &lt;code&gt;A&lt;/code&gt; within
+<i>48</i>&nbsp;     * &lt;code&gt;B&lt;/code&gt;, then set the destination as
+<i>49</i>&nbsp;     * &lt;code&gt;B + File.separator + A&lt;/code&gt;.
+<i>50</i>&nbsp;     *
+<i>51</i>&nbsp;     * @param source      File or directory to copy
+<i>52</i>&nbsp;     * @param destination Destination
+<i>53</i>&nbsp;     *
+<i>54</i>&nbsp;     * @throws IOException
+<i>55</i>&nbsp;     */
+<i>56</i>&nbsp;    public static void copyFile(File source, File destination) throws IOException {
+<b class="nc"><i>57</i>&nbsp;        if (source == null || destination == null) {</b>
+<b class="nc"><i>58</i>&nbsp;            throw new NullPointerException();</b>
+<i>59</i>&nbsp;        }
+<b class="nc"><i>60</i>&nbsp;        if (!source.exists()) {</b>
+<b class="nc"><i>61</i>&nbsp;            throw new FileNotFoundException(&quot;Source file does not exits:\n&quot;</b>
+<b class="nc"><i>62</i>&nbsp;                    + source.getAbsolutePath());</b>
+<i>63</i>&nbsp;        }
+<i>64</i>&nbsp;
+<b class="nc"><i>65</i>&nbsp;        if (source.isDirectory()) {</b>
+<b class="nc"><i>66</i>&nbsp;            if (!destination.exists() &amp;&amp; !destination.mkdirs()) {</b>
+<b class="nc"><i>67</i>&nbsp;                throw new IOException(&quot;Unable to create the destination &quot;</b>
+<i>68</i>&nbsp;                        + &quot;directory or one of its parent:\n&quot;
+<b class="nc"><i>69</i>&nbsp;                        + destination.getAbsolutePath());</b>
+<i>70</i>&nbsp;            }
+<i>71</i>&nbsp;
+<b class="nc"><i>72</i>&nbsp;            for (File child : source.listFiles()) {</b>
+<b class="nc"><i>73</i>&nbsp;                copyFile(child, new File(destination.getAbsolutePath()</b>
+<b class="nc"><i>74</i>&nbsp;                        + File.separator + child.getName()));</b>
+<i>75</i>&nbsp;            }
+<i>76</i>&nbsp;        } else {
+<i>77</i>&nbsp;            // Source is a File
+<b class="nc"><i>78</i>&nbsp;            if (!destination.getParentFile().exists()</b>
+<b class="nc"><i>79</i>&nbsp;                    &amp;&amp; !destination.getParentFile().mkdirs()) {</b>
+<b class="nc"><i>80</i>&nbsp;                throw new IOException(&quot;Unable to create the destination&#39;s &quot;</b>
+<i>81</i>&nbsp;                        + &quot;parent directory or one of its parent:\n&quot;
+<b class="nc"><i>82</i>&nbsp;                        + destination.getAbsolutePath());</b>
+<i>83</i>&nbsp;            }
+<i>84</i>&nbsp;
+<b class="nc"><i>85</i>&nbsp;            try (Accessor accessor = new Accessor()) {</b>
+<b class="nc"><i>86</i>&nbsp;                accessor.setIn(source).setOut(destination, false);</b>
+<b class="nc"><i>87</i>&nbsp;                accessor.pourInOut();</b>
+<b class="nc"><i>88</i>&nbsp;            }</b>
+<i>89</i>&nbsp;        }
+<i>90</i>&nbsp;    }
+<i>91</i>&nbsp;
+<i>92</i>&nbsp;    /**
+<i>93</i>&nbsp;     * Deletes a directory and all its content.
+<i>94</i>&nbsp;     *
+<i>95</i>&nbsp;     * @param source Directory to delete
+<i>96</i>&nbsp;     *
+<i>97</i>&nbsp;     * @return {@code true} if everything went successfully
+<i>98</i>&nbsp;     */
+<i>99</i>&nbsp;    public static boolean deleteDir(File source) {
+<b class="nc"><i>100</i>&nbsp;        boolean success = true;</b>
+<i>101</i>&nbsp;
+<b class="nc"><i>102</i>&nbsp;        for (File file : source.listFiles()) {</b>
+<b class="nc"><i>103</i>&nbsp;            if (file.isDirectory()) {</b>
+<b class="nc"><i>104</i>&nbsp;                if (!deleteDir(file)) {</b>
+<b class="nc"><i>105</i>&nbsp;                    success = false;</b>
+<i>106</i>&nbsp;                }
+<i>107</i>&nbsp;            } else {
+<b class="nc"><i>108</i>&nbsp;                if (!file.delete()) {</b>
+<b class="nc"><i>109</i>&nbsp;                    success = false;</b>
+<i>110</i>&nbsp;                }
+<i>111</i>&nbsp;            }
+<i>112</i>&nbsp;        }
+<i>113</i>&nbsp;
+<b class="nc"><i>114</i>&nbsp;        return success &amp;&amp; source.delete();</b>
+<i>115</i>&nbsp;    }
+<i>116</i>&nbsp;
+<i>117</i>&nbsp;    /**
+<i>118</i>&nbsp;     * Deletes a directory and all its content.
+<i>119</i>&nbsp;     *
+<i>120</i>&nbsp;     * @param source Directory to delete
+<i>121</i>&nbsp;     *
+<i>122</i>&nbsp;     * @return {@code true} if everything went successfully
+<i>123</i>&nbsp;     */
+<i>124</i>&nbsp;    public static boolean deleteDir(File source, Logger log) {
+<b class="nc"><i>125</i>&nbsp;        boolean success = true;</b>
+<i>126</i>&nbsp;
+<b class="nc"><i>127</i>&nbsp;        for (File file : source.listFiles()) {</b>
+<b class="nc"><i>128</i>&nbsp;            if (file.isDirectory()) {</b>
+<b class="nc"><i>129</i>&nbsp;                if (!deleteDir(file)) {</b>
+<b class="nc"><i>130</i>&nbsp;                    log.log(Level.WARNING, &quot;Couldn&#39;&#39;t delete directory:\n{0}&quot;,</b>
+<b class="nc"><i>131</i>&nbsp;                            file.getAbsolutePath());</b>
+<b class="nc"><i>132</i>&nbsp;                    success = false;</b>
+<i>133</i>&nbsp;                } else {
+<b class="nc"><i>134</i>&nbsp;                    log.log(Level.INFO, &quot;Directory deleted:\n{0}&quot;,</b>
+<b class="nc"><i>135</i>&nbsp;                            file.getAbsolutePath());</b>
+<i>136</i>&nbsp;                }
+<i>137</i>&nbsp;            } else {
+<b class="nc"><i>138</i>&nbsp;                if (!file.delete()) {</b>
+<b class="nc"><i>139</i>&nbsp;                    success = false;</b>
+<b class="nc"><i>140</i>&nbsp;                    log.log(Level.WARNING, &quot;Couldn&#39;&#39;t delete file:\n{0}&quot;,</b>
+<b class="nc"><i>141</i>&nbsp;                            file.getAbsolutePath());</b>
+<i>142</i>&nbsp;                } else {
+<b class="nc"><i>143</i>&nbsp;                    log.log(Level.INFO, &quot;File deleted:\n{0}&quot;,</b>
+<b class="nc"><i>144</i>&nbsp;                            file.getAbsolutePath());</b>
+<i>145</i>&nbsp;                }
+<i>146</i>&nbsp;            }
+<i>147</i>&nbsp;        }
+<i>148</i>&nbsp;
+<b class="nc"><i>149</i>&nbsp;        return success &amp;&amp; source.delete();</b>
+<i>150</i>&nbsp;    }
+<i>151</i>&nbsp;
+<i>152</i>&nbsp;    /**
+<i>153</i>&nbsp;     * Reads a {@code String} in the given {@code Accessor} that has been
+<i>154</i>&nbsp;     * encoded in UTF-8 and with its length. The encoding is as
+<i>155</i>&nbsp;     * following:&lt;br&gt;&lt;br&gt; {@code &lt;length&gt;&lt;string&gt;}&lt;br&gt;&lt;br&gt; Where
+<i>156</i>&nbsp;     * {@code &lt;length&gt;} is the length of {@code &lt;string&gt;}. Empty or {@code null}
+<i>157</i>&nbsp;     * lines can also be read.&lt;br&gt;&lt;br&gt; Note that carriage returns do not effect
+<i>158</i>&nbsp;     * the encoding.
+<i>159</i>&nbsp;     *
+<i>160</i>&nbsp;     * @param accessor        {@code Accessor} to read
+<i>161</i>&nbsp;     * @param bytesCountLimit Maximum accepted length to read
+<i>162</i>&nbsp;     *
+<i>163</i>&nbsp;     * @return The read {@code String}
+<i>164</i>&nbsp;     *
+<i>165</i>&nbsp;     * @throws IOException
+<i>166</i>&nbsp;     */
+<i>167</i>&nbsp;    public static String readWithLength(DataInput accessor,
+<i>168</i>&nbsp;            int bytesCountLimit) throws IOException {
+<b class="nc"><i>169</i>&nbsp;        assert accessor != null;</b>
+<i>170</i>&nbsp;
+<b class="nc"><i>171</i>&nbsp;        int length = accessor.readInt();</b>
+<i>172</i>&nbsp;
+<b class="nc"><i>173</i>&nbsp;        if (length == -1) {</b>
+<b class="nc"><i>174</i>&nbsp;            return null;</b>
+<i>175</i>&nbsp;
+<b class="nc"><i>176</i>&nbsp;        } else if (length == 0) {</b>
+<b class="nc"><i>177</i>&nbsp;            return &quot;&quot;;</b>
+<i>178</i>&nbsp;
+<b class="nc"><i>179</i>&nbsp;        } else if (length &gt; 0 &amp;&amp; length &lt;= bytesCountLimit) {</b>
+<b class="nc"><i>180</i>&nbsp;            byte[] bytes = new byte[length];</b>
+<b class="nc"><i>181</i>&nbsp;            accessor.readFully(bytes);</b>
+<b class="nc"><i>182</i>&nbsp;            return new String(bytes, &quot;UTF-8&quot;);</b>
+<i>183</i>&nbsp;
+<i>184</i>&nbsp;        }
+<i>185</i>&nbsp;
+<b class="nc"><i>186</i>&nbsp;        throw new IOException(&quot;Out of bounds string length: &quot; + length);</b>
+<i>187</i>&nbsp;    }
+<i>188</i>&nbsp;
+<i>189</i>&nbsp;    /**
+<i>190</i>&nbsp;     * Sends a {@code String} in the given {@code Accessor} with its length. The
+<i>191</i>&nbsp;     * encoding is as following:&lt;br&gt;&lt;br&gt; {@code &lt;length&gt;&lt;string&gt;}&lt;br&gt;&lt;br&gt; Where
+<i>192</i>&nbsp;     * {@code &lt;length&gt;} is the length of {@code &lt;string&gt;}. Empty {@code null}
+<i>193</i>&nbsp;     * lines can also be written.&lt;br&gt;&lt;br&gt; Note that carriage returns do not
+<i>194</i>&nbsp;     * effect the encoding.
+<i>195</i>&nbsp;     *
+<i>196</i>&nbsp;     * @param accessor {@code Accessor} to write
+<i>197</i>&nbsp;     * @param line     {@code String} to send
+<i>198</i>&nbsp;     *
+<i>199</i>&nbsp;     * @throws IOException
+<i>200</i>&nbsp;     */
+<i>201</i>&nbsp;    public static void sendWithLength(DataOutput accessor, String line)
+<i>202</i>&nbsp;            throws IOException {
+<i>203</i>&nbsp;        try {
+<b class="nc"><i>204</i>&nbsp;            if (accessor == null) {</b>
+<b class="nc"><i>205</i>&nbsp;                throw new NullPointerException();</b>
+<i>206</i>&nbsp;            }
+<b class="nc"><i>207</i>&nbsp;            if (line == null) {</b>
+<b class="nc"><i>208</i>&nbsp;                accessor.writeInt(-1);</b>
+<i>209</i>&nbsp;
+<b class="nc"><i>210</i>&nbsp;            } else if (line.isEmpty()) {</b>
+<b class="nc"><i>211</i>&nbsp;                accessor.writeInt(0);</b>
+<i>212</i>&nbsp;
+<i>213</i>&nbsp;            } else {
+<b class="nc"><i>214</i>&nbsp;                byte[] bytes = line.getBytes(&quot;UTF-8&quot;);</b>
+<i>215</i>&nbsp;
+<b class="nc"><i>216</i>&nbsp;                accessor.writeInt(bytes.length);</b>
+<b class="nc"><i>217</i>&nbsp;                accessor.write(bytes, 0, bytes.length);</b>
+<i>218</i>&nbsp;            }
+<i>219</i>&nbsp;
+<b class="nc"><i>220</i>&nbsp;        } catch (UnsupportedEncodingException ex) {</b>
+<b class="nc"><i>221</i>&nbsp;            throw new IOException(ex);</b>
+<b class="nc"><i>222</i>&nbsp;        }</b>
+<i>223</i>&nbsp;    }
+<i>224</i>&nbsp;
+<i>225</i>&nbsp;    /**
+<i>226</i>&nbsp;     * Reads a list of {@code String} that has been encoded with its length in
+<i>227</i>&nbsp;     * the given {@code Accessor}.&lt;br&gt; Empty and {@code null} list can also be
+<i>228</i>&nbsp;     * read.
+<i>229</i>&nbsp;     *
+<i>230</i>&nbsp;     * @param accessor          {@code Accessor} to read
+<i>231</i>&nbsp;     * @param listSizeLimit     Maximum accepted number of elements in the list
+<i>232</i>&nbsp;     *                          to read
+<i>233</i>&nbsp;     * @param stringLengthLimit Maximum accepted length of {@code String} to
+<i>234</i>&nbsp;     *                          read
+<i>235</i>&nbsp;     *
+<i>236</i>&nbsp;     * @return The read list
+<i>237</i>&nbsp;     *
+<i>238</i>&nbsp;     * @throws IOException
+<i>239</i>&nbsp;     */
+<i>240</i>&nbsp;    public static List&lt;String&gt; readListWithLength(Accessor accessor,
+<i>241</i>&nbsp;            int listSizeLimit, int stringLengthLimit) throws IOException {
+<b class="nc"><i>242</i>&nbsp;        List&lt;String&gt; result = new LinkedList&lt;&gt;();</b>
+<i>243</i>&nbsp;
+<b class="nc"><i>244</i>&nbsp;        int size = accessor.readInt();</b>
+<i>245</i>&nbsp;
+<b class="nc"><i>246</i>&nbsp;        if (size == -1) {</b>
+<b class="nc"><i>247</i>&nbsp;            return null;</b>
+<i>248</i>&nbsp;
+<b class="nc"><i>249</i>&nbsp;        } else if (size &gt;= 0 &amp;&amp; size &lt;= listSizeLimit) {</b>
+<b class="nc"><i>250</i>&nbsp;            for (int i = 0; i &lt; size; i++) {</b>
+<b class="nc"><i>251</i>&nbsp;                result.add(readWithLength(accessor, stringLengthLimit));</b>
+<i>252</i>&nbsp;            }
+<b class="nc"><i>253</i>&nbsp;            return result;</b>
+<i>254</i>&nbsp;
+<i>255</i>&nbsp;        }
+<b class="nc"><i>256</i>&nbsp;        throw new IOException(&quot;Out of bounds list size: &quot; + size);</b>
+<i>257</i>&nbsp;    }
+<i>258</i>&nbsp;
+<i>259</i>&nbsp;    /**
+<i>260</i>&nbsp;     * Sends a list of {@code String} with the number of elements of the list
+<i>261</i>&nbsp;     * and the size of each {@code String}.&lt;br&gt; Empty and {@code null} lists can
+<i>262</i>&nbsp;     * also be sent.
+<i>263</i>&nbsp;     *
+<i>264</i>&nbsp;     * @param accessor Accessor to write
+<i>265</i>&nbsp;     * @param list     List to send
+<i>266</i>&nbsp;     *
+<i>267</i>&nbsp;     * @throws IOException
+<i>268</i>&nbsp;     *
+<i>269</i>&nbsp;     * @see #sendWithLength(Accessor, String)
+<i>270</i>&nbsp;     */
+<i>271</i>&nbsp;    public static void sendWithLength(Accessor accessor, List&lt;String&gt; list)
+<i>272</i>&nbsp;            throws IOException {
+<b class="nc"><i>273</i>&nbsp;        if (list == null) {</b>
+<b class="nc"><i>274</i>&nbsp;            accessor.writeInt(-1);</b>
+<b class="nc"><i>275</i>&nbsp;        } else if (list.isEmpty()) {</b>
+<b class="nc"><i>276</i>&nbsp;            accessor.writeInt(0);</b>
+<i>277</i>&nbsp;        } else {
+<b class="nc"><i>278</i>&nbsp;            accessor.writeInt(list.size());</b>
+<b class="nc"><i>279</i>&nbsp;            for (String s : list) {</b>
+<b class="nc"><i>280</i>&nbsp;                sendWithLength(accessor, s);</b>
+<b class="nc"><i>281</i>&nbsp;            }</b>
+<i>282</i>&nbsp;        }
+<i>283</i>&nbsp;    }
+<i>284</i>&nbsp;
+<i>285</i>&nbsp;    /**
+<i>286</i>&nbsp;     * Simply zips the given files into one archive.
+<i>287</i>&nbsp;     *
+<i>288</i>&nbsp;     * @param zipFile Archive to create
+<i>289</i>&nbsp;     * @param files   Files to zip
+<i>290</i>&nbsp;     *
+<i>291</i>&nbsp;     * @throws FileNotFoundException
+<i>292</i>&nbsp;     * @throws IOException
+<i>293</i>&nbsp;     */
+<i>294</i>&nbsp;    public static void zip(File zipFile, File... files)
+<i>295</i>&nbsp;            throws FileNotFoundException, IOException {
+<i>296</i>&nbsp;        try {
+<b class="nc"><i>297</i>&nbsp;            zip(zipFile, Deflater.DEFAULT_COMPRESSION, ZipOutputStream.DEFLATED,</b>
+<i>298</i>&nbsp;                    null, files);
+<b class="nc"><i>299</i>&nbsp;        } catch (CryptoException ex) {</b>
+<b class="nc"><i>300</i>&nbsp;        }</b>
+<i>301</i>&nbsp;    }
+<i>302</i>&nbsp;
+<i>303</i>&nbsp;    public static void zip(File zipfile, Crypter crypter, File... files)
+<i>304</i>&nbsp;            throws FileNotFoundException, IOException, CryptoException {
+<b class="nc"><i>305</i>&nbsp;        zip(zipfile, Deflater.DEFAULT_COMPRESSION, ZipOutputStream.DEFLATED,</b>
+<i>306</i>&nbsp;                crypter, files);
+<i>307</i>&nbsp;    }
+<i>308</i>&nbsp;
+<i>309</i>&nbsp;    public static void zip(File zipfile, int compressionLevel, int method,
+<i>310</i>&nbsp;            Crypter crypter, File... files) throws FileNotFoundException,
+<i>311</i>&nbsp;            IOException, CryptoException {
+<i>312</i>&nbsp;
+<b class="nc"><i>313</i>&nbsp;        if (files == null || files.length == 0) {</b>
+<i>314</i>&nbsp;            return;
+<i>315</i>&nbsp;        }
+<i>316</i>&nbsp;
+<b class="nc"><i>317</i>&nbsp;        Deque&lt;Pair&lt;File, URI&gt;&gt; queue = new ArrayDeque&lt;&gt;();</b>
+<b class="nc"><i>318</i>&nbsp;        for (File file : files) {</b>
+<b class="nc"><i>319</i>&nbsp;            URI base = file.getAbsoluteFile().getParentFile().toURI();</b>
+<b class="nc"><i>320</i>&nbsp;            if (!file.exists()) {</b>
+<b class="nc"><i>321</i>&nbsp;                throw new FileNotFoundException(file.getAbsolutePath()</b>
+<i>322</i>&nbsp;                        + &quot; not found&quot;);
+<i>323</i>&nbsp;            }
+<b class="nc"><i>324</i>&nbsp;            queue.add(new Pair&lt;&gt;(file, base));</b>
+<i>325</i>&nbsp;        }
+<i>326</i>&nbsp;
+<b class="nc"><i>327</i>&nbsp;        try (ZipOutputStream zout = initZipOutputStream(zipfile, crypter);</b>
+<b class="nc"><i>328</i>&nbsp;                Accessor zipAccessor = new Accessor().setOut(zout)) {</b>
+<i>329</i>&nbsp;
+<b class="nc"><i>330</i>&nbsp;            zout.setMethod(method);</b>
+<b class="nc"><i>331</i>&nbsp;            zout.setLevel(compressionLevel);</b>
+<i>332</i>&nbsp;
+<b class="nc"><i>333</i>&nbsp;            while (!queue.isEmpty()) {</b>
+<b class="nc"><i>334</i>&nbsp;                Pair&lt;File, URI&gt; pair = queue.pop();</b>
+<b class="nc"><i>335</i>&nbsp;                File file = pair.get1();</b>
+<b class="nc"><i>336</i>&nbsp;                URI base = pair.get2();</b>
+<i>337</i>&nbsp;
+<b class="nc"><i>338</i>&nbsp;                String name = base.relativize(file.toURI()).getPath();</b>
+<i>339</i>&nbsp;
+<b class="nc"><i>340</i>&nbsp;                zout.putNextEntry(new ZipEntry(name));</b>
+<b class="nc"><i>341</i>&nbsp;                if (file.isDirectory()) {</b>
+<b class="nc"><i>342</i>&nbsp;                    for (File child : file.listFiles()) {</b>
+<b class="nc"><i>343</i>&nbsp;                        queue.add(new Pair&lt;&gt;(child, base));</b>
+<i>344</i>&nbsp;                    }
+<i>345</i>&nbsp;
+<i>346</i>&nbsp;                } else {
+<b class="nc"><i>347</i>&nbsp;                    try (Accessor fileCopy = new Accessor().setIn(file)) {</b>
+<b class="nc"><i>348</i>&nbsp;                        fileCopy.pourInto(zipAccessor);</b>
+<b class="nc"><i>349</i>&nbsp;                    }</b>
+<b class="nc"><i>350</i>&nbsp;                    zout.closeEntry();</b>
+<i>351</i>&nbsp;                }
+<b class="nc"><i>352</i>&nbsp;            }</b>
+<i>353</i>&nbsp;
+<b class="nc"><i>354</i>&nbsp;        }</b>
+<i>355</i>&nbsp;    }
+<i>356</i>&nbsp;
+<i>357</i>&nbsp;    @Deprecated
+<i>358</i>&nbsp;    private static void zipDir(File directory, File zipfile) throws IOException {
+<b class="nc"><i>359</i>&nbsp;        URI base = directory.toURI();</b>
+<b class="nc"><i>360</i>&nbsp;        Deque&lt;File&gt; queue = new LinkedList&lt;&gt;();</b>
+<b class="nc"><i>361</i>&nbsp;        queue.push(directory);</b>
+<i>362</i>&nbsp;
+<b class="nc"><i>363</i>&nbsp;        try (OutputStream out = new FileOutputStream(zipfile);</b>
+<b class="nc"><i>364</i>&nbsp;                ZipOutputStream zout = new ZipOutputStream(out);</b>
+<b class="nc"><i>365</i>&nbsp;                Accessor zipAccessor = new Accessor().setOut(zout)) {</b>
+<i>366</i>&nbsp;
+<b class="nc"><i>367</i>&nbsp;            while (!queue.isEmpty()) {</b>
+<b class="nc"><i>368</i>&nbsp;                directory = queue.pop();</b>
+<b class="nc"><i>369</i>&nbsp;                for (File child : directory.listFiles()) {</b>
+<b class="nc"><i>370</i>&nbsp;                    String name = base.relativize(child.toURI()).getPath();</b>
+<i>371</i>&nbsp;
+<b class="nc"><i>372</i>&nbsp;                    if (child.isDirectory()) {</b>
+<b class="nc"><i>373</i>&nbsp;                        queue.push(child);</b>
+<b class="nc"><i>374</i>&nbsp;                        name = name.endsWith(File.separator) ? name : name + File.separator;</b>
+<b class="nc"><i>375</i>&nbsp;                        zout.putNextEntry(new ZipEntry(name));</b>
+<i>376</i>&nbsp;                    } else {
+<b class="nc"><i>377</i>&nbsp;                        zout.putNextEntry(new ZipEntry(name));</b>
+<b class="nc"><i>378</i>&nbsp;                        try (Accessor fileCopy = new Accessor().setIn(child)) {</b>
+<b class="nc"><i>379</i>&nbsp;                            fileCopy.pourInto(zipAccessor);</b>
+<b class="nc"><i>380</i>&nbsp;                        }</b>
+<b class="nc"><i>381</i>&nbsp;                        zout.closeEntry();</b>
+<i>382</i>&nbsp;                    }
+<i>383</i>&nbsp;                }
+<i>384</i>&nbsp;            }
+<b class="nc"><i>385</i>&nbsp;        }</b>
+<i>386</i>&nbsp;    }
+<i>387</i>&nbsp;
+<i>388</i>&nbsp;    public static void unzip(File zipfile, File toDirectory) throws FileNotFoundException, IOException {
+<i>389</i>&nbsp;        try {
+<b class="nc"><i>390</i>&nbsp;            unzip(zipfile, toDirectory, null);</b>
+<b class="nc"><i>391</i>&nbsp;        } catch (CryptoException ex) {</b>
+<b class="nc"><i>392</i>&nbsp;            throw new IOException(ex);</b>
+<b class="nc"><i>393</i>&nbsp;        }</b>
+<i>394</i>&nbsp;    }
+<i>395</i>&nbsp;
+<i>396</i>&nbsp;    public static void unzip(File zipfile, File toDirectory, Crypter crypter)
+<i>397</i>&nbsp;            throws FileNotFoundException, IOException, CryptoException {
+<i>398</i>&nbsp;
+<b class="nc"><i>399</i>&nbsp;        try (ZipInputStream zis = initZipInputStream(zipfile, crypter);</b>
+<b class="nc"><i>400</i>&nbsp;                Accessor zipAccessor = new Accessor().setIn(zis)) {</b>
+<i>401</i>&nbsp;
+<i>402</i>&nbsp;            ZipEntry entry;
+<b class="nc"><i>403</i>&nbsp;            while ((entry = zis.getNextEntry()) != null) {</b>
+<b class="nc"><i>404</i>&nbsp;                File file = new File(toDirectory, entry.getName());</b>
+<b class="nc"><i>405</i>&nbsp;                if (entry.isDirectory()) {</b>
+<b class="nc"><i>406</i>&nbsp;                    file.mkdirs();</b>
+<i>407</i>&nbsp;                } else {
+<b class="nc"><i>408</i>&nbsp;                    file.getParentFile().mkdirs();</b>
+<i>409</i>&nbsp;
+<b class="nc"><i>410</i>&nbsp;                    try (Accessor accessor = new Accessor().setOut(file, false)) {</b>
+<b class="nc"><i>411</i>&nbsp;                        zipAccessor.pourInto(accessor);</b>
+<b class="nc"><i>412</i>&nbsp;                    }</b>
+<i>413</i>&nbsp;                }
+<b class="nc"><i>414</i>&nbsp;                zis.closeEntry();</b>
+<b class="nc"><i>415</i>&nbsp;            }</b>
+<b class="nc"><i>416</i>&nbsp;        }</b>
+<i>417</i>&nbsp;    }
+<i>418</i>&nbsp;
+<i>419</i>&nbsp;    public static List&lt;String&gt; getZipEntryNames(File zipFile, Crypter crypter) throws FileNotFoundException, CryptoException, IOException {
+<b class="nc"><i>420</i>&nbsp;        List&lt;String&gt; result = new LinkedList&lt;&gt;();</b>
+<i>421</i>&nbsp;
+<b class="nc"><i>422</i>&nbsp;        try (ZipInputStream zis = initZipInputStream(zipFile, crypter)) {</b>
+<i>423</i>&nbsp;            ZipEntry entry;
+<b class="nc"><i>424</i>&nbsp;            while ((entry = zis.getNextEntry()) != null) {</b>
+<b class="nc"><i>425</i>&nbsp;                result.add(entry.getName());</b>
+<b class="nc"><i>426</i>&nbsp;                zis.closeEntry();</b>
+<i>427</i>&nbsp;            }
+<b class="nc"><i>428</i>&nbsp;        }</b>
+<i>429</i>&nbsp;
+<b class="nc"><i>430</i>&nbsp;        return result;</b>
+<i>431</i>&nbsp;    }
+<i>432</i>&nbsp;
+<i>433</i>&nbsp;    public static boolean unzipSingleElement(File zipfile, String elementName,
+<i>434</i>&nbsp;            File toDirectory, Crypter crypter) throws FileNotFoundException, CryptoException, IOException {
+<b class="nc"><i>435</i>&nbsp;        try (ZipInputStream zis = initZipInputStream(zipfile, crypter);</b>
+<b class="nc"><i>436</i>&nbsp;                Accessor zipAccessor = new Accessor().setIn(zis)) {</b>
+<i>437</i>&nbsp;
+<i>438</i>&nbsp;            ZipEntry entry;
+<b class="nc"><i>439</i>&nbsp;            while ((entry = zis.getNextEntry()) != null) {</b>
+<b class="nc"><i>440</i>&nbsp;                if (entry.getName().equals(elementName)) {                    </b>
+<b class="nc"><i>441</i>&nbsp;                    File file = new File(toDirectory, entry.getName());</b>
+<b class="nc"><i>442</i>&nbsp;                    if (entry.isDirectory()) {</b>
+<b class="nc"><i>443</i>&nbsp;                        file.mkdirs();</b>
+<i>444</i>&nbsp;                    } else {
+<b class="nc"><i>445</i>&nbsp;                        file.getParentFile().mkdirs();</b>
+<i>446</i>&nbsp;
+<b class="nc"><i>447</i>&nbsp;                        try (Accessor accessor = new Accessor().setOut(file, false)) {</b>
+<b class="nc"><i>448</i>&nbsp;                            zipAccessor.pourInto(accessor);</b>
+<b class="nc"><i>449</i>&nbsp;                        }</b>
+<i>450</i>&nbsp;                    }
+<b class="nc"><i>451</i>&nbsp;                    zis.closeEntry();</b>
+<b class="nc"><i>452</i>&nbsp;                    return true;</b>
+<i>453</i>&nbsp;                }
+<i>454</i>&nbsp;
+<i>455</i>&nbsp;            }
+<b class="nc"><i>456</i>&nbsp;        }</b>
+<i>457</i>&nbsp;        
+<b class="nc"><i>458</i>&nbsp;        return false;</b>
+<i>459</i>&nbsp;    }
+<i>460</i>&nbsp;
+<i>461</i>&nbsp;    @Deprecated
+<i>462</i>&nbsp;    private static void unzipDir(File zipfile, File toDirectory) throws IOException {
+<b class="nc"><i>463</i>&nbsp;        ZipFile zfile = new ZipFile(zipfile);</b>
+<i>464</i>&nbsp;
+<b class="nc"><i>465</i>&nbsp;        Enumeration&lt;? extends ZipEntry&gt; entries = zfile.entries();</b>
+<i>466</i>&nbsp;
+<b class="nc"><i>467</i>&nbsp;        while (entries.hasMoreElements()) {</b>
+<b class="nc"><i>468</i>&nbsp;            ZipEntry entry = entries.nextElement();</b>
+<b class="nc"><i>469</i>&nbsp;            File file = new File(toDirectory, entry.getName());</b>
+<b class="nc"><i>470</i>&nbsp;            if (entry.isDirectory()) {</b>
+<b class="nc"><i>471</i>&nbsp;                file.mkdirs();</b>
+<i>472</i>&nbsp;            } else {
+<b class="nc"><i>473</i>&nbsp;                file.getParentFile().mkdirs();</b>
+<i>474</i>&nbsp;
+<b class="nc"><i>475</i>&nbsp;                try (Accessor accessor = new Accessor()</b>
+<b class="nc"><i>476</i>&nbsp;                        .setIn(zfile.getInputStream(entry))</b>
+<b class="nc"><i>477</i>&nbsp;                        .setOut(file, false)) {</b>
+<i>478</i>&nbsp;
+<b class="nc"><i>479</i>&nbsp;                    accessor.pourInOut();</b>
+<b class="nc"><i>480</i>&nbsp;                }</b>
+<i>481</i>&nbsp;            }
+<b class="nc"><i>482</i>&nbsp;        }</b>
+<i>483</i>&nbsp;    }
+<i>484</i>&nbsp;
+<i>485</i>&nbsp;    public static boolean createParent(String path) {
+<b class="nc"><i>486</i>&nbsp;        return createParent(new File(path));</b>
+<i>487</i>&nbsp;    }
+<i>488</i>&nbsp;
+<i>489</i>&nbsp;    public static boolean createParent(File file) {
+<i>490</i>&nbsp;
+<b class="nc"><i>491</i>&nbsp;        File parent = file.getParentFile();</b>
+<b class="nc"><i>492</i>&nbsp;        if (parent == null) {</b>
+<i>493</i>&nbsp;
+<b class="nc"><i>494</i>&nbsp;            return false;</b>
+<i>495</i>&nbsp;        }
+<b class="nc"><i>496</i>&nbsp;        return parent.exists() || parent.mkdirs();</b>
+<i>497</i>&nbsp;    }
+<i>498</i>&nbsp;
+<i>499</i>&nbsp;    /**
+<i>500</i>&nbsp;     * Creates a {@link ZipOutputStream} for the given file with (optionally) an
+<i>501</i>&nbsp;     * associated {@code Crypter}
+<i>502</i>&nbsp;     *
+<i>503</i>&nbsp;     * @param zipFile File where to open the output stream
+<i>504</i>&nbsp;     * @param crypter (optional) {@code Crypter} used for encryption
+<i>505</i>&nbsp;     *
+<i>506</i>&nbsp;     * @return The created {@code ZipOutputStream}
+<i>507</i>&nbsp;     *
+<i>508</i>&nbsp;     * @throws CryptoException
+<i>509</i>&nbsp;     * @throws FileNotFoundException
+<i>510</i>&nbsp;     */
+<i>511</i>&nbsp;    private static ZipOutputStream initZipOutputStream(File zipFile,
+<i>512</i>&nbsp;            Crypter crypter) throws CryptoException, FileNotFoundException {
+<b class="nc"><i>513</i>&nbsp;        FileOutputStream fos = new FileOutputStream(zipFile);</b>
+<i>514</i>&nbsp;
+<b class="nc"><i>515</i>&nbsp;        if (crypter != null) {</b>
+<b class="nc"><i>516</i>&nbsp;            return new ZipOutputStream(crypter.getOutputStream(fos, true));</b>
+<i>517</i>&nbsp;        } else {
+<b class="nc"><i>518</i>&nbsp;            return new ZipOutputStream(fos);</b>
+<i>519</i>&nbsp;        }
+<i>520</i>&nbsp;    }
+<i>521</i>&nbsp;
+<i>522</i>&nbsp;    /**
+<i>523</i>&nbsp;     * Creates a {@link ZipInputStream} for the given file with (optionally) an
+<i>524</i>&nbsp;     * associated {@code Crypter}
+<i>525</i>&nbsp;     *
+<i>526</i>&nbsp;     * @param zipFile File where to open the input stream
+<i>527</i>&nbsp;     * @param crypter (optional) {@code Crypter} used for decryption
+<i>528</i>&nbsp;     *
+<i>529</i>&nbsp;     * @return The created {@code ZipInputStream}
+<i>530</i>&nbsp;     *
+<i>531</i>&nbsp;     * @throws CryptoException
+<i>532</i>&nbsp;     * @throws FileNotFoundException
+<i>533</i>&nbsp;     */
+<i>534</i>&nbsp;    private static ZipInputStream initZipInputStream(File zipFile,
+<i>535</i>&nbsp;            Crypter crypter) throws FileNotFoundException, CryptoException {
+<b class="nc"><i>536</i>&nbsp;        FileInputStream fis = new FileInputStream(zipFile);</b>
+<i>537</i>&nbsp;
+<b class="nc"><i>538</i>&nbsp;        if (crypter != null) {</b>
+<b class="nc"><i>539</i>&nbsp;            return new ZipInputStream(crypter.getInputStream(fis, false));</b>
+<i>540</i>&nbsp;        } else {
+<b class="nc"><i>541</i>&nbsp;            return new ZipInputStream(fis);</b>
+<i>542</i>&nbsp;        }
+<i>543</i>&nbsp;    }
+<i>544</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2014-11-07 23:06</div>
+</div>
+</body>
+</html>
