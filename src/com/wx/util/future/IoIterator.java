@@ -15,6 +15,30 @@ import static com.wx.util.future.Future.*;
  */
 public interface IoIterator<E> {
 
+    static <E> IoIterator<E> from(Iterator<E> it) {
+        return new IoIterator<E>() {
+            @Override
+            public E next() {
+                return it.next();
+            }
+
+            @Override
+            public boolean hasNext() {
+                return it.hasNext();
+            }
+
+            @Override
+            public void remove() {
+                it.remove();
+            }
+
+            @Override
+            public void forEachRemaining(Consumer<? super E> action) {
+                it.forEachRemaining(action);
+            }
+        };
+    }
+
     E next() throws IOException;
 
     boolean hasNext();
