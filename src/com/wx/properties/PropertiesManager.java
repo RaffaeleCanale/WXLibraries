@@ -469,6 +469,10 @@ public class PropertiesManager {
         return userKeySet().collect(Collectors.toSet());
     }
 
+    public void clear() {
+        map.clear();
+    }
+
     @Override
     public String toString() {
         StringBuilder desc = new StringBuilder();
