@@ -8,6 +8,7 @@ import com.wx.io.Accessor;
 import com.wx.util.log.LogHelper;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.CookieStore;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.*;
@@ -19,9 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.Objects;
+import java.util.*;
 import java.util.logging.Logger;
 
 /**
@@ -56,6 +55,7 @@ public class HttpRequest extends AbstractHttpRequest {
     private final HttpRequestBase request;
     private boolean aborted;
     private int responseCode;
+    private CookieStore cookieStore;
 
 
     private HttpRequest(HttpRequestBase request) {
@@ -64,6 +64,11 @@ public class HttpRequest extends AbstractHttpRequest {
 
     public HttpRequest setUserAgent(String agent) {
         request.addHeader("User-Agent", agent);
+        return this;
+    }
+
+    public HttpRequest setCookieStore(CookieStore cookieStore) {
+        this.cookieStore = cookieStore;
         return this;
     }
 
@@ -76,6 +81,7 @@ public class HttpRequest extends AbstractHttpRequest {
         return this;
     }
 
+
     public HttpRequest setBasicAuthorization(String user, String password) {
         String encoding = Base64.getEncoder().encodeToString((user + ":" + password).getBytes(StandardCharsets.UTF_8));
         request.setHeader("Authorization", "Basic " + encoding);
@@ -83,13 +89,16 @@ public class HttpRequest extends AbstractHttpRequest {
         return this;
     }
 
-    public synchronized InputStream executeDirect(String url) throws IOException {
+    @Override
+    public synchronized InputStream executeAsStream(String url) throws IOException {
         aborted = false;
 
         LOG.finest("\t" + request.getMethod() + " " + url);
         request.setURI(URI.create(url));
 
-        HttpClient client = HttpClientBuilder.create().build();
+        HttpClient client = HttpClientBuilder.create()
+                .setDefaultCookieStore(cookieStore)
+                .build();
         checkAborted();
 
         HttpResponse response = client.execute(request);
@@ -104,7 +113,7 @@ public class HttpRequest extends AbstractHttpRequest {
 
     @Override
     public synchronized byte[] execute(String url) throws IOException {
-        return read(executeDirect(url));
+        return read(executeAsStream(url));
     }
 
     private void checkAborted() throws IOException {

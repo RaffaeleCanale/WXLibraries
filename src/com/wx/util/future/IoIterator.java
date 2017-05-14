@@ -1,9 +1,7 @@
 package com.wx.util.future;
 
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.NoSuchElementException;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Consumer;
 
 import static com.wx.util.future.Future.*;
@@ -52,6 +50,20 @@ public interface IoIterator<E> {
         while (hasNext())
             action.accept(next());
     }
+
+    default List<E> collect(List<E> list) throws IOException {
+        Objects.requireNonNull(list);
+
+        while (hasNext())
+            list.add(next());
+
+        return list;
+    }
+
+    default List<E> collect() throws IOException {
+        return collect(new LinkedList<>());
+    }
+
 
     /**
      * Wraps this iterator into a conventional {@link Iterator} by wrapping every call of {@link #next()}

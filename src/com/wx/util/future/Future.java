@@ -1,7 +1,10 @@
 package com.wx.util.future;
 
 import java.io.IOException;
+import java.util.NoSuchElementException;
 import java.util.Objects;
+
+import static javafx.scene.input.KeyCode.M;
 
 
 /**
@@ -55,9 +58,28 @@ public class Future<E> implements IoSupplier<E> {
         this.exception = Objects.requireNonNull(exception);
     }
 
+    public boolean isValid() {
+        return exception == null;
+    }
+
+    public IOException getException() {
+        if (isValid()) {
+            throw new NoSuchElementException("This element is valid (has no exception)");
+        }
+        return exception;
+    }
+
+    public E getSafe() {
+        if (!isValid()) {
+            throw new NoSuchElementException("This element has no value");
+        }
+
+        return element;
+    }
+
     /**
      * Get the element contained in this wrapper or throws the associated {@code IOException}.
-     * <p>
+     * <p>c
      * Note that this wrapper only contains one element, thus, any call of this method will have the same result.
      *
      * @return The element contained in this wrapper
@@ -65,7 +87,7 @@ public class Future<E> implements IoSupplier<E> {
      * @throws IOException
      */
     public E get() throws IOException {
-        if (exception != null) {
+        if (!isValid()) {
             throw exception;
         }
 

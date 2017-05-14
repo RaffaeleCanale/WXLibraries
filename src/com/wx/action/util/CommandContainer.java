@@ -25,11 +25,13 @@ public class CommandContainer {
                             String cmdName) {
         this.helpText = helpText;
         this.cmdName = cmdName;
-        this.properties = CollectionsUtil.safe(properties);
-        Collections.sort(this.properties,
+        ArrayList<PropertyContainer> tmp = new ArrayList<>(properties);
+        Collections.sort(tmp,
                 (p1, p2) -> p1.isMarkedOption() == p2.isMarkedOption() ?
                         Integer.compare(p1.getId(), p2.getId()) :
                         Boolean.compare(p2.isMarkedOption(), p1.isMarkedOption()));
+
+        this.properties = Collections.unmodifiableList(tmp);
     }
 
     public static CommandContainer actionCommand(String cmdName, String helpText) {
