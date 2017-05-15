@@ -13,7 +13,26 @@ import static com.wx.util.future.Future.*;
  */
 public interface IoIterator<E> {
 
-    static <E> IoIterator<E> from(Iterator<E> it) {
+    static <E> IoIterator<E> reversed(Iterator<Future<E>> it) {
+        return new IoIterator<E>() {
+            @Override
+            public E next() throws IOException {
+                return it.next().get();
+            }
+
+            @Override
+            public boolean hasNext() {
+                return it.hasNext();
+            }
+
+            @Override
+            public void remove() throws IOException {
+                it.remove();
+            }
+        };
+    }
+
+    static <E> IoIterator<E> wrap(Iterator<E> it) {
         return new IoIterator<E>() {
             @Override
             public E next() {
@@ -28,11 +47,6 @@ public interface IoIterator<E> {
             @Override
             public void remove() {
                 it.remove();
-            }
-
-            @Override
-            public void forEachRemaining(Consumer<? super E> action) {
-                it.forEachRemaining(action);
             }
         };
     }
