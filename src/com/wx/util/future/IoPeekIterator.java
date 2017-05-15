@@ -1,4 +1,4 @@
-package com.wx.util.iterator;
+package com.wx.util.future;
 
 import com.wx.util.future.Future;
 import com.wx.util.future.IoIterator;
