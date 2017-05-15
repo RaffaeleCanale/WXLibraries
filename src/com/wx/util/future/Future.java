@@ -8,7 +8,7 @@ import static javafx.scene.input.KeyCode.M;
 
 
 /**
- * This class emulates an {@link IoSupplier} that provides a single element.
+ * This class emulates an {@link IoSupplier} that provides a single value.
  * <p>
  * This wrapper can be set with an actual value or with an exception.
  * <p>
@@ -35,16 +35,16 @@ public class Future<E> implements IoSupplier<E> {
         }
     }
 
-    private final E element;
+    private final E value;
     private final IOException exception;
 
     /**
-     * Build this wrapper with the given element.
+     * Build this wrapper with the given value.
      *
-     * @param element Element contained in this wrapper
+     * @param value Element contained in this wrapper
      */
-    public Future(E element) {
-        this.element = element;
+    public Future(E value) {
+        this.value = value;
         this.exception = null;
     }
 
@@ -54,43 +54,43 @@ public class Future<E> implements IoSupplier<E> {
      * @param exception Exception to throw
      */
     public Future(IOException exception) {
-        this.element = null;
+        this.value = null;
         this.exception = Objects.requireNonNull(exception);
     }
 
-    public boolean isValid() {
-        return exception == null;
+    public boolean isException() {
+        return exception != null;
     }
 
     public IOException getException() {
-        if (isValid()) {
-            throw new NoSuchElementException("This element is valid (has no exception)");
+        if (isException()) {
+            throw new NoSuchElementException("This element has no exception");
         }
         return exception;
     }
 
-    public E getSafe() {
-        if (!isValid()) {
+    public E getValue() {
+        if (!isException()) {
             throw new NoSuchElementException("This element has no value");
         }
 
-        return element;
+        return value;
     }
 
     /**
-     * Get the element contained in this wrapper or throws the associated {@code IOException}.
+     * Get the value contained in this wrapper or throws the associated {@code IOException}.
      * <p>c
-     * Note that this wrapper only contains one element, thus, any call of this method will have the same result.
+     * Note that this wrapper only contains one value, thus, any call of this method will have the same result.
      *
-     * @return The element contained in this wrapper
+     * @return The value contained in this wrapper
      *
      * @throws IOException
      */
     public E get() throws IOException {
-        if (!isValid()) {
+        if (!isException()) {
             throw exception;
         }
 
-        return element;
+        return value;
     }
 }
