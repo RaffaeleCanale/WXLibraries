@@ -63,14 +63,14 @@ public class Future<E> implements IoSupplier<E> {
     }
 
     public IOException getException() {
-        if (isException()) {
+        if (!isException()) {
             throw new NoSuchElementException("This element has no exception");
         }
         return exception;
     }
 
     public E getValue() {
-        if (!isException()) {
+        if (isException()) {
             throw new NoSuchElementException("This element has no value");
         }
 
@@ -87,7 +87,7 @@ public class Future<E> implements IoSupplier<E> {
      * @throws IOException
      */
     public E get() throws IOException {
-        if (!isException()) {
+        if (isException()) {
             throw exception;
         }
 
