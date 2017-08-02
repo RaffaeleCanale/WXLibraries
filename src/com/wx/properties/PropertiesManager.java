@@ -450,7 +450,7 @@ public class PropertiesManager {
 
     public Optional<String> removeProperty(String key) {
         checkKey(key);
-        return Optional.of(map.remove(key));
+        return Optional.ofNullable(map.remove(key));
     }
 
     public boolean removeProperties(Collection<String> keys) {
