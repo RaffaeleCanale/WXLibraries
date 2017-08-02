@@ -214,7 +214,7 @@ public class FirstFollowSets {
                 changed.set(true);
             }
             
-            return changed.get().get();
+            return changed.get();
         }
 //</editor-fold>
     }

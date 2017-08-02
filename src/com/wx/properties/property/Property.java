@@ -1,9 +1,5 @@
 package com.wx.properties.property;
 
-import java.util.Optional;
-
-
-
 /**
  * Simple and generic interface for a property that can be read or set.
  * <p>
@@ -23,8 +19,10 @@ public abstract class Property<Type> {
 
     public abstract void set(Type value);
 
-    public abstract Optional<Type> get();
+    public abstract Type get();
 
-    public abstract Optional<Type> clear();
+    public abstract boolean exists();
+
+    public abstract Type clear();
 
 }

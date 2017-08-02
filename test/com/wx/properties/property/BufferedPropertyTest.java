@@ -2,9 +2,8 @@ package com.wx.properties.property;
 
 import org.junit.Test;
 
-import java.util.Optional;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 /**
  * Created by canale on 28.04.16.
@@ -21,13 +20,13 @@ public class BufferedPropertyTest extends PropertyTest {
         SimpleProperty<Integer> sub = new SimpleProperty<>(24);
         BufferedProperty<Integer> buffered = new BufferedProperty<>(sub);
 
-//        assertEquals(23, sub.get().get().intValue());
+//        assertEquals(23, sub.get().intValue());
 
         buffered.clear();
-        assertFalse(sub.get().isPresent());
+        assertFalse(sub.exists());
 
         buffered.set(23);
-        assertEquals(23, sub.get().get().intValue());
+        assertEquals(23, sub.get().intValue());
     }
 
     @Test
@@ -37,21 +36,21 @@ public class BufferedPropertyTest extends PropertyTest {
 
         assertEquals(0, countSub.readCount);
 
-        assertEquals(24, buffered.get().get().intValue());
+        assertEquals(24, buffered.get().intValue());
         assertEquals(1, countSub.readCount);
 
-        assertEquals(24, buffered.get().get().intValue());
+        assertEquals(24, buffered.get().intValue());
         assertEquals(1, countSub.readCount);
 
         buffered.set(22);
         assertEquals(1, countSub.readCount);
 
-        assertEquals(22, buffered.get().get().intValue());
+        assertEquals(22, buffered.get().intValue());
         assertEquals(1, countSub.readCount);
 
         buffered.clear();
         assertEquals(1, countSub.readCount);
-        assertFalse(buffered.get().isPresent());
+        assertFalse(buffered.exists());
         assertEquals(1, countSub.readCount);
     }
 
@@ -61,7 +60,7 @@ public class BufferedPropertyTest extends PropertyTest {
         BufferedProperty<Integer> buffered = new BufferedProperty<>(countSub);
 
         assertEquals(0, countSub.writeCount);
-        assertEquals(24, buffered.get().get().intValue());
+        assertEquals(24, buffered.get().intValue());
         assertEquals(0, countSub.writeCount);
 
         buffered.set(22);
@@ -110,13 +109,13 @@ public class BufferedPropertyTest extends PropertyTest {
         }
 
         @Override
-        public Optional<T> get() {
+        public T get() {
             readCount++;
             return super.get();
         }
 
         @Override
-        public Optional<T> clear() {
+        public T clear() {
             clearCount++;
             return super.clear();
         }

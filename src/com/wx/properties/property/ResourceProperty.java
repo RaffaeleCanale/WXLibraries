@@ -60,8 +60,8 @@ public class ResourceProperty<PropertyType> extends Property<PropertyType> {
      * @return Value of this property
      */
     @Override
-    public Optional<PropertyType> get() {
-        return page.getValue(key, propCaster::castOut);
+    public PropertyType get() {
+        return page.getValue(key, propCaster::castOut).orElse(null);
     }
 
     /**
@@ -81,9 +81,7 @@ public class ResourceProperty<PropertyType> extends Property<PropertyType> {
      * 
      * @return The plain old value
      */
-    public Optional<PropertyType> clear() {
-        page.removeProperty(key);
-
-        return null;
+    public PropertyType clear() {
+        return page.removeProperty(key).map(propCaster::castOut).orElse(null);
     }
 }

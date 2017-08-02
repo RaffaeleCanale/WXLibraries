@@ -1,6 +1,6 @@
 package com.wx.properties.property;
 
-import java.util.Optional;
+import java.util.Objects;
 
 /**
  * Simple implementation of the property that will wrap another property and bufferProperty its value.
@@ -18,7 +18,7 @@ import java.util.Optional;
 public class BufferedProperty<Type> extends Property<Type> {
 
     private final Property<Type> underlyingProperty;
-    private final SimpleProperty<Type> bufferProperty;
+    private Type bufferProperty;
     private boolean bufferedLoaded;
 
     /**
@@ -30,7 +30,7 @@ public class BufferedProperty<Type> extends Property<Type> {
      */
     public BufferedProperty(Property<Type> underlyingProperty) {
         this.underlyingProperty = underlyingProperty;
-        this.bufferProperty = new SimpleProperty<>();
+//        this.bufferProperty = new SimpleProperty<>();
         this.bufferedLoaded = false;
     }
 
@@ -44,34 +44,41 @@ public class BufferedProperty<Type> extends Property<Type> {
      */
     @Override
     public void set(Type v) {
-        Optional<Type> newValue = Optional.of(v);
-        if (bufferProperty.get().equals(newValue)) {
+        if (bufferedLoaded && Objects.equals(v, bufferProperty)) {
             return;
         }
 
-        bufferProperty.set(v);
+        bufferedLoaded = true;
+        bufferProperty = v;
         underlyingProperty.set(v);
     }
 
     @Override
-    public Optional<Type> get() {
-        if (!bufferedLoaded) {
-            Optional<Type> currentValue = underlyingProperty.get();
-            currentValue.ifPresent(bufferProperty::set);
+    public Type get() {
+        if (!bufferedLoaded && underlyingProperty.exists()) {
+
+            Type currentValue = underlyingProperty.get();
+            bufferProperty = currentValue;
             bufferedLoaded = true;
         }
-        return bufferProperty.get();
+
+        return bufferProperty;
     }
 
     @Override
-    public Optional<Type> clear() {
-        Optional<Type> oldValue = bufferProperty.clear();
+    public boolean exists() {
+        return underlyingProperty.exists();
+    }
 
-        if (!bufferedLoaded || oldValue.isPresent()) {
-            underlyingProperty.clear();
-            bufferedLoaded = true;
+    @Override
+    public Type clear() {
+        bufferedLoaded = true;
+        bufferProperty = null;
+
+        if (underlyingProperty.exists()) {
+            return underlyingProperty.clear();
         }
 
-        return oldValue;
+        return null;
     }
 }

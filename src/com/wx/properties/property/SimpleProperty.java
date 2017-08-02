@@ -36,15 +36,20 @@ public class SimpleProperty<Type> extends Property<Type> {
     }
 
     @Override
-    public Optional<Type> get() {
-        return Optional.ofNullable(value);
+    public Type get() {
+        return value;
     }
 
     @Override
-    public Optional<Type> clear() {
+    public boolean exists() {
+        return value != null;
+    }
+
+    @Override
+    public Type clear() {
         Type oldValue = this.value;
         this.value = null;
 
-        return Optional.ofNullable(oldValue);
+        return oldValue;
     }
 }
