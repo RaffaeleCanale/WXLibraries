@@ -18,9 +18,11 @@ public class URLBuilder {
         this.url = new StringBuilder(baseUrl);
     }
 
-    public void addParameter(String parameterName, String parameterValue) throws UnsupportedEncodingException {
+    public URLBuilder addParameter(String parameterName, String parameterValue) throws UnsupportedEncodingException {
         char separator = firstParameterAdded ? '&' : '?';
         addParameter(separator, parameterName, parameterValue);
+
+        return this;
     }
 
     public String build() {
