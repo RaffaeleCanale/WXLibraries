@@ -21,6 +21,7 @@ public class URLBuilder {
     public URLBuilder addParameter(String parameterName, String parameterValue) throws UnsupportedEncodingException {
         char separator = firstParameterAdded ? '&' : '?';
         addParameter(separator, parameterName, parameterValue);
+        firstParameterAdded = true;
 
         return this;
     }
