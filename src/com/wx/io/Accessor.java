@@ -51,10 +51,12 @@ public class Accessor implements DataOutput, DataInput, Closeable {
      * @param buffer_size Buffer size for reading/writing
      * @param limit       Maximum number of bytes to copy
      *
+     * @return {@code true} if the EOF has been reached
+     *
      * @throws IOException
      */
-    private static void pour(InputStream in, OutputStream out, int buffer_size,
-                             long limit) throws IOException {
+    private static boolean pour(InputStream in, OutputStream out, int buffer_size,
+                                long limit) throws IOException {
         byte[] buffer = new byte[buffer_size];
         int bytesReadCount;
         long bytesToRead = limit;
@@ -66,7 +68,8 @@ public class Accessor implements DataOutput, DataInput, Closeable {
             bytesToRead -= bytesReadCount;
             step = (int) Math.min(buffer_size, bytesToRead);
         }
-        out.flush();
+
+        return bytesToRead == -1;
     }
 
     private DataOutputStream out;
@@ -182,7 +185,7 @@ public class Accessor implements DataOutput, DataInput, Closeable {
     /**
      * Sets this Accessor OutputStream to the given file
      *
-     * @param file   File
+     * @param file File
      *
      * @return this
      *
@@ -240,15 +243,32 @@ public class Accessor implements DataOutput, DataInput, Closeable {
     /**
      * Pours all the content of this Accessor input stream into this Accessor output stream.
      *
-     * @param buffer_size Size of the read/write buffer
+     * @param bufferSize Size of the read/write buffer
      *
      * @throws IOException
      */
-    public void pourInOut(int buffer_size) throws IOException {
+    public void pourInOut(int bufferSize) throws IOException {
         checkInput();
         checkOutput();
 
-        pour(in, out, buffer_size);
+        pour(in, out, bufferSize);
+    }
+
+    /**
+     * Pours all the content of this Accessor input stream into this Accessor output stream.
+     *
+     * @param bufferSize Size of the read/write buffer
+     * @param limit      Maximum number of bytes to copy
+     *
+     * @return {@code true} if the EOF has been reached
+     *
+     * @throws IOException
+     */
+    public boolean pourInOut(int bufferSize, long limit) throws IOException {
+        checkInput();
+        checkOutput();
+
+        return pour(in, out, bufferSize, limit);
     }
 
     /**
@@ -286,13 +306,15 @@ public class Accessor implements DataOutput, DataInput, Closeable {
      * @param limit       Maximum number of bytes to copy.
      * @param destination Accessor where to pour
      *
+     * @return {@code true} if the EOF has been reached
+     *
      * @throws IOException
      */
-    public void pourInto(long limit, Accessor destination) throws IOException {
+    public boolean pourInto(long limit, Accessor destination) throws IOException {
         checkInput();
         destination.checkOutput();
 
-        pour(in, destination.out, DEFAULT_BUFFER_SIZE, limit);
+        return pour(in, destination.out, DEFAULT_BUFFER_SIZE, limit);
     }
 
     /**
@@ -306,9 +328,7 @@ public class Accessor implements DataOutput, DataInput, Closeable {
     public void readSerializable(Collection<Serializable> data) throws IOException,
             ClassNotFoundException {
         checkInput();
-        if (data == null) {
-            throw new NullPointerException();
-        }
+        Objects.requireNonNull(data);
 
         try {
             ObjectInputStream ois = new ObjectInputStream(in);
@@ -381,9 +401,8 @@ public class Accessor implements DataOutput, DataInput, Closeable {
     public <T> void read(Collection<T> data, Function<String, T> caster)
             throws IOException {
         checkInput();
-        if (data == null || caster == null) {
-            throw new NullPointerException();
-        }
+        Objects.requireNonNull(data);
+        Objects.requireNonNull(caster);
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(in));
         String line;
@@ -406,9 +425,8 @@ public class Accessor implements DataOutput, DataInput, Closeable {
     public <T> void read(Collection<T> data, Function<String, T> caster,
                          int limit) throws IOException {
         checkInput();
-        if (data == null || caster == null) {
-            throw new NullPointerException();
-        }
+        Objects.requireNonNull(data);
+        Objects.requireNonNull(caster);
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(in));
         String line;
@@ -428,9 +446,8 @@ public class Accessor implements DataOutput, DataInput, Closeable {
      */
     public void writeSerializable(Collection<Serializable> data) throws IOException {
         checkOutput();
-        if (data == null) {
-            throw new NullPointerException();
-        }
+        Objects.requireNonNull(data);
+
         ObjectOutputStream oos = new ObjectOutputStream(out);
 
         for (Object o : data) {
@@ -474,9 +491,9 @@ public class Accessor implements DataOutput, DataInput, Closeable {
     public <T> void write(Collection<T> data, Function<T, String> caster)
             throws IOException {
         checkOutput();
-        if (data == null || caster == null) {
-            throw new NullPointerException();
-        }
+        Objects.requireNonNull(data);
+        Objects.requireNonNull(caster);
+
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
         for (T value : data) {
             writer.write(caster.apply(value));
