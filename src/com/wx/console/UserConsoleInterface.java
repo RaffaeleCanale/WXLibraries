@@ -331,7 +331,6 @@ public class UserConsoleInterface {
 
 //</editor-fold>
 
-
     protected void printPrefix(String prefix) {
         console.print(prefix);
     }

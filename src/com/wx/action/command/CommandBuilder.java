@@ -31,8 +31,8 @@ package com.wx.action.command;
  */
 public interface CommandBuilder {
 
-    public Command build(String input);
-    public Command build(String... input);
-    public Command build(String cmdName, String[] args);
+    Command build(String input);
+    Command build(String... input);
+    Command build(String cmdName, String[] args);
     
 }

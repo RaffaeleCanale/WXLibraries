@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  *
@@ -40,12 +42,12 @@ public class EnumCasterLC<E extends Enum<E>> implements TypeCaster<String, E> {
     }
 
     @Override
-    public String castIn(E value) throws ClassCastException {
+    public String castIn(E value) {
         return value.name().toLowerCase();
     }
 
     @Override
-    public E castOut(String value) throws ClassCastException {
+    public E castOut(String value) {
         Objects.requireNonNull(value);
 
         for (E e : enumClass.getEnumConstants()) {
@@ -54,7 +56,7 @@ public class EnumCasterLC<E extends Enum<E>> implements TypeCaster<String, E> {
             }
         }
         throw new ClassCastException("No match found for '" + value + "',"
-                + " should be one of " + Arrays.toString(enumClass.getEnumConstants()));
+                + " should be one of " + Stream.of(enumClass.getEnumConstants()).map(this::castIn).collect(Collectors.joining(", ")));
     }
 
     private void checkEnumValidity() {

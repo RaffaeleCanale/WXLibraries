@@ -22,7 +22,6 @@ import java.util.Objects;
  */
 public class EnumCaster<E extends Enum<E>> implements TypeCaster<String, E> {
 
-//    private final E[] values;
     private final Class<E> enumClass;
 
     public EnumCaster(Class<E> enumClass) {
@@ -40,12 +39,12 @@ public class EnumCaster<E extends Enum<E>> implements TypeCaster<String, E> {
     }
     
     @Override
-    public String castIn(E value) throws ClassCastException {
+    public String castIn(E value) {
         return value.name();
     }
 
     @Override
-    public E castOut(String value) throws ClassCastException {
+    public E castOut(String value) {
         try {
             return Enum.valueOf(enumClass, value);
         } catch (IllegalArgumentException e) {
