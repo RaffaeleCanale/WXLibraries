@@ -41,4 +41,16 @@ public class Options {
         return new MutableOptions(options);
     }
 
+    public Map<String, Object> toMap() {
+        Map<String, Object> result = new HashMap<>(options.size());
+        options.forEach((key, value) -> {
+            if (value instanceof Options) {
+                value = ((Options) value).toMap();
+            }
+
+            result.put(key, value);
+        });
+
+        return result;
+    }
 }
