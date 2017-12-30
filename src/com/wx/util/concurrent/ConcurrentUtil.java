@@ -9,6 +9,8 @@ import java.util.function.Consumer;
  */
 public class ConcurrentUtil {
 
+    public static final Callback<?> NO_OP = (Callback<Object>) o -> null;
+
     public interface ExRunnable {
         void run() throws Exception;
     }
